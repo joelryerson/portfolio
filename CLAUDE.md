@@ -32,7 +32,7 @@ Build Joel's portfolio from scratch as a custom-coded site, replacing the Webflo
 2. **Finderly** (flagship, unrestricted IP — AI Vision Technologies): multi-modal AI UX (chat/photo/AR), Figma MCP token pipeline, React Native. Design + engineering in one story. **DRAFTED 2026-07-11** from Joel's design-cleanup branch summary (raw material: content/raw/finderly.md, LOCAL-ONLY): media-first-not-chatbot decision, 561 words + deep dive, live at /work/finderly/. Needs visuals (real screenshots allowed); see raw file's open questions for role/metrics gaps.
 3. **Portfolio + RAG assistant build** (meta case study): decisions, stack, AI collaboration.
 4. **StartupOS** (strongest legacy piece): rewrite into decision-narrative format, clearly dated, positioned as range. **DRAFTED 2026-07-11**: template-over-bespoke decision, 526 words, reuses old /work/startup-platform slug, closes by linking the instinct to Asteri. Joel to verify: the 2022 date and "Product Designer" role title in frontmatter are inferred from salvaged copy.
-5. **ArtPärdē** (confirmed 2026-07-11 as the fifth piece). UX Rooted: cut.
+5. **ArtPärdē** (confirmed 2026-07-11 as the fifth piece). UX Rooted: cut. **DRAFTED 2026-07-11**: tool-judgment narrative (Webflow + fee-free Zeffy chosen on purpose for a volunteer-run non-profit; craft spent on brand). Deliberately 413 words, under the 500-800 band: the honest size for the project, padding would be the anti-pattern. Live at /work/artparde/. Scope confirmed by Joel: brand + site + ongoing content updates (they do their own posters/promo).
 Legacy trAIn121 / Robert Half pieces: archive or cut. 2021 work dilutes.
 
 ## Tech Stack (defaults; revisit only with reason)
