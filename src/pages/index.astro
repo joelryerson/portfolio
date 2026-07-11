@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+// Drafts render everywhere except production builds, so previews show WIP.
+const studies = (await getCollection('work', ({ data }) => import.meta.env.DEV || !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<Base
+  title="Joel Ryerson — Design Engineer"
+  description="Design Engineer specializing in AI-native product design: design systems, token pipelines, and agentic build workflows for enterprise SaaS."
+>
+  <h1>Joel Ryerson — Design Engineer</h1>
+  <p>
+    Placeholder homepage. Real positioning statement, project cards, AI-stack strip, and contact
+    land in a later session. This page currently exists to prove the content pipeline.
+  </p>
+
+  <h2>Work</h2>
+  <ul>
+    {
+      studies.map((study) => (
+        <li>
+          <a href={`/work/${study.id}/`}>{study.data.title}</a>
+          <p>{study.data.outcome}</p>
+        </li>
+      ))
+    }
+  </ul>
+</Base>

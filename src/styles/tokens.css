@@ -1,0 +1,119 @@
+/*
+ * Design tokens — joelryerson.design v3
+ *
+ * Two layers:
+ *   1. Primitives (--raw-*): context-free values. Never referenced by components.
+ *   2. Semantic (--color-*, --space-*, --text-*, ...): meaning-bearing aliases.
+ *      Components and pages consume ONLY semantic tokens.
+ *
+ * All values below are PLACEHOLDERS. The real identity (full redesign, decided
+ * 2026-07-11) gets designed natively in this file. Structure is final; values are not.
+ */
+
+:root {
+  /* ---------- Primitives ---------- */
+
+  /* color ramps (placeholder grayscale + one accent) */
+  --raw-gray-0: #ffffff;
+  --raw-gray-100: #f4f4f5;
+  --raw-gray-300: #d4d4d8;
+  --raw-gray-500: #71717a;
+  --raw-gray-700: #3f3f46;
+  --raw-gray-900: #18181b;
+  --raw-gray-1000: #09090b;
+  --raw-accent-400: #6ea8fe;
+  --raw-accent-600: #2f6fed;
+  --raw-accent-800: #1d4ed8;
+
+  /* type scale (fluid, minor-third-ish; placeholder) */
+  --raw-font-sans: system-ui, -apple-system, sans-serif;
+  --raw-font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+  --raw-size-sm: clamp(0.83rem, 0.8rem + 0.15vw, 0.92rem);
+  --raw-size-base: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --raw-size-lg: clamp(1.2rem, 1.13rem + 0.35vw, 1.42rem);
+  --raw-size-xl: clamp(1.44rem, 1.32rem + 0.6vw, 1.8rem);
+  --raw-size-2xl: clamp(1.73rem, 1.53rem + 1vw, 2.28rem);
+  --raw-size-3xl: clamp(2.07rem, 1.76rem + 1.55vw, 2.88rem);
+
+  /* spacing (4px base) */
+  --raw-space-1: 0.25rem;
+  --raw-space-2: 0.5rem;
+  --raw-space-3: 0.75rem;
+  --raw-space-4: 1rem;
+  --raw-space-6: 1.5rem;
+  --raw-space-8: 2rem;
+  --raw-space-12: 3rem;
+  --raw-space-16: 4rem;
+  --raw-space-24: 6rem;
+
+  /* radius / motion / layout */
+  --raw-radius-sm: 4px;
+  --raw-radius-md: 8px;
+  --raw-radius-lg: 16px;
+  --raw-duration-fast: 120ms;
+  --raw-duration-base: 200ms;
+  --raw-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --raw-measure: 65ch;
+  --raw-content-max: 72rem;
+
+  /* ---------- Semantic: shared ---------- */
+  --font-body: var(--raw-font-sans);
+  --font-code: var(--raw-font-mono);
+  --text-sm: var(--raw-size-sm);
+  --text-base: var(--raw-size-base);
+  --text-lg: var(--raw-size-lg);
+  --text-xl: var(--raw-size-xl);
+  --text-2xl: var(--raw-size-2xl);
+  --text-3xl: var(--raw-size-3xl);
+  --space-xs: var(--raw-space-1);
+  --space-sm: var(--raw-space-2);
+  --space-md: var(--raw-space-4);
+  --space-lg: var(--raw-space-8);
+  --space-xl: var(--raw-space-16);
+  --space-section: var(--raw-space-24);
+  --radius-control: var(--raw-radius-sm);
+  --radius-card: var(--raw-radius-md);
+  --duration-hover: var(--raw-duration-fast);
+  --duration-enter: var(--raw-duration-base);
+  --ease-standard: var(--raw-ease-out);
+  --measure: var(--raw-measure);
+  --content-max: var(--raw-content-max);
+
+  /* ---------- Semantic: light theme (default) ---------- */
+  color-scheme: light;
+  --color-bg: var(--raw-gray-0);
+  --color-bg-subtle: var(--raw-gray-100);
+  --color-text: var(--raw-gray-900);
+  --color-text-muted: var(--raw-gray-500);
+  --color-border: var(--raw-gray-300);
+  --color-accent: var(--raw-accent-600);
+  --color-accent-strong: var(--raw-accent-800);
+  --color-focus-ring: var(--raw-accent-600);
+}
+
+/* Dark theme: applied by OS preference, overridable via data-theme. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --color-bg: var(--raw-gray-1000);
+    --color-bg-subtle: var(--raw-gray-900);
+    --color-text: var(--raw-gray-100);
+    --color-text-muted: var(--raw-gray-500);
+    --color-border: var(--raw-gray-700);
+    --color-accent: var(--raw-accent-400);
+    --color-accent-strong: var(--raw-accent-400);
+    --color-focus-ring: var(--raw-accent-400);
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-bg: var(--raw-gray-1000);
+  --color-bg-subtle: var(--raw-gray-900);
+  --color-text: var(--raw-gray-100);
+  --color-text-muted: var(--raw-gray-500);
+  --color-border: var(--raw-gray-700);
+  --color-accent: var(--raw-accent-400);
+  --color-accent-strong: var(--raw-accent-400);
+  --color-focus-ring: var(--raw-accent-400);
+}

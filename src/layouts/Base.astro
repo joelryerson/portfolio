@@ -1,0 +1,57 @@
+---
+import '../styles/tokens.css';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+}
+
+const { title, description, ogImage } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImageUrl = ogImage ? new URL(ogImage, Astro.site) : undefined;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="website" />
+    {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <main id="main">
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style>
+  main {
+    max-width: var(--content-max);
+    margin-inline: auto;
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .skip-link {
+    position: absolute;
+    left: -100vw;
+    top: 0;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-bg-subtle);
+  }
+
+  .skip-link:focus {
+    left: 0;
+  }
+</style>

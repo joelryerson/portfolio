@@ -1,0 +1,41 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const studies = await getCollection(
+    'work',
+    ({ data }) => import.meta.env.DEV || !data.draft
+  );
+  return studies.map((study) => ({
+    params: { slug: study.id },
+    props: { study },
+  }));
+}
+
+const { study } = Astro.props;
+const { Content } = await render(study);
+---
+
+<Base
+  title={`${study.data.title} — Joel Ryerson`}
+  description={study.data.description}
+  ogImage={study.data.ogImage}
+>
+  <article>
+    <header>
+      <h1>{study.data.title}</h1>
+      <dl>
+        <dt>Role</dt>
+        <dd>{study.data.role}</dd>
+        <dt>Timeframe</dt>
+        <dd>{study.data.timeframe}</dd>
+        <dt>Outcome</dt>
+        <dd>{study.data.outcome}</dd>
+        <dt>Stack</dt>
+        <dd>{study.data.stack.join(', ')}</dd>
+      </dl>
+    </header>
+    <Content />
+  </article>
+</Base>

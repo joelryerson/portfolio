@@ -1,0 +1,24 @@
+{
+  "name": "joelryerson.design",
+  "version": "1.0.0",
+  "description": "Portfolio of Joel Ryerson, Design Engineer. Custom-built; the repo is part of the portfolio.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joelryerson/portfolio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/joelryerson/portfolio/issues"
+  },
+  "homepage": "https://github.com/joelryerson/portfolio#readme",
+  "dependencies": {
+    "@astrojs/mdx": "^7.0.2",
+    "astro": "^7.0.7"
+  },
+  "type": "module"
+}

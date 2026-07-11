@@ -1,0 +1,40 @@
+---
+title: 'Dummy Case Study'
+role: 'Design Engineer'
+timeframe: 'July 2026'
+outcome: 'Proved the MDX pipeline renders frontmatter, prose, and code'
+stack: ['Astro', 'MDX', 'CSS custom properties']
+description: 'Throwaway case study that exercises the content pipeline end to end. Delete once a real one exists.'
+date: 2026-07-11
+# Deliberately not a draft: this page must appear in production builds to prove the
+# pipeline on deploy previews. Delete the whole file when the first real study lands.
+draft: false
+---
+
+This is a throwaway case study proving the pipeline works. It exercises the pieces a real
+decision narrative will use.
+
+## A section heading
+
+Prose renders. **Bold** renders. The frontmatter above is validated against the schema in
+`src/content.config.ts`, so a missing `outcome` or an overlong `description` fails the build
+instead of shipping.
+
+## Code renders
+
+```css
+.card {
+  background: var(--color-bg-subtle);
+  border-radius: var(--radius-card);
+  padding: var(--space-md);
+}
+```
+
+## Deep dive expansion
+
+<details>
+  <summary>Deep dive: the native details/summary pattern</summary>
+
+  Real case studies use this for the optional deep-dive layer: 500–800 words in the main
+  narrative, details like audit counts down here.
+</details>
