@@ -32,11 +32,11 @@ Build Joel's portfolio from scratch as a custom-coded site, replacing the Webflo
 2. **Finderly** (flagship, unrestricted IP — AI Vision Technologies): multi-modal AI UX (chat/photo/AR), Figma MCP token pipeline, React Native. Design + engineering in one story.
 3. **Portfolio + RAG assistant build** (meta case study): decisions, stack, AI collaboration.
 4. **StartupOS** (strongest legacy piece): rewrite into decision-narrative format, clearly dated, positioned as range.
-5. Optional: UX Rooted or ArtPärdē — only if it adds a distinct signal.
+5. **ArtPärdē** (confirmed 2026-07-11 as the fifth piece). UX Rooted: cut.
 Legacy trAIn121 / Robert Half pieces: archive or cut. 2021 work dilutes.
 
 ## Tech Stack (defaults; revisit only with reason)
-- **Framework**: Astro (MDX case studies, islands for interactive bits) or Next.js if React showcase value wins. Decide in session 1.
+- **Framework**: **Astro** (decided session 1, 2026-07-11). MDX content collections with typed frontmatter, zero-JS default for Lighthouse, islands for interactive bits. React appears where interactivity earns it (RAG chat island); React depth is proven by the Asteri/Finderly case studies, not the site framework.
 - **Styling**: CSS custom properties as the token system, documented as a mini design system.
 - **Content**: MDX per case study. Frontmatter: title, role, timeframe, outcome metric, stack, meta description, OG image.
 - **RAG assistant**: embeddings over site content; Claude API; serverless.
@@ -55,7 +55,7 @@ Legacy trAIn121 / Robert Half pieces: archive or cut. 2021 work dilutes.
 - Old Webflow site: leave live and untouched until the new site ships.
 - Keep /work/[slug] URL structure; reuse existing slugs where content carries over; 301 anything renamed.
 - Salvage from Webflow before cancellation: CDN assets (cdn.prod.website-files.com), case study copy, color variable values, résumé PDF. All publicly fetchable.
-- Cancel Webflow before next renewal. **Joel to confirm renewal date = deadline.**
+- Cancel Webflow before next renewal. **Renewal date confirmed: October 18, 2026 = cutover deadline.** Salvage early so the date never becomes a scramble.
 - DNS: point joelryerson.design + www to new host; verify OG previews, sitemap, robots after cutover.
 
 ## Workflow Rules
@@ -69,8 +69,8 @@ Legacy trAIn121 / Robert Half pieces: archive or cut. 2021 work dilutes.
 Direct, plainspoken, light wit, bolded key phrases, short sections. Outcome-first sentences. No em dashes, no filler affirmations, no sycophancy. Case studies read like an engineer-designer explaining a decision to a peer, not a methodology recital.
 
 ## Open Decisions (resolve in session 1)
-1. Astro vs Next.js
-2. Visual direction: evolve current identity vs full redesign (Joel is open to redoing everything)
-3. Webflow renewal date → cutover deadline
-4. Asteri screenshot/visuals scope (Joel to check with Julia; abstracted diagrams are the fallback and are already cleared)
-5. Which legacy pieces survive the cut
+1. ~~Astro vs Next.js~~ → **Astro** (2026-07-11)
+2. ~~Visual direction~~ → **Full redesign** (2026-07-11). New identity designed natively in the token system for the Design Engineer positioning. Webflow color values/assets salvaged as reference material only; nothing owed to the old look.
+3. ~~Webflow renewal date~~ → **October 18, 2026** = cutover deadline (2026-07-11)
+4. Asteri screenshot/visuals scope — STILL OPEN (checked 2026-07-11: no word from Julia yet; abstracted diagrams are the fallback and are already cleared)
+5. ~~Which legacy pieces survive the cut~~ → **ArtPärdē in, UX Rooted out, trAIn121/Robert Half archived** (2026-07-11). Slate: Asteri, Finderly, Portfolio+RAG, StartupOS, ArtPärdē.
