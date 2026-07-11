@@ -1,0 +1,95 @@
+<svg viewBox="0 0 720 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ftp-title" style="font-family: var(--font-body, system-ui, sans-serif); max-width: 100%; height: auto;">
+  <title id="ftp-title">Finderly color pipeline: five brand slots feed a Material HCT generator that produces tonal palettes; light and dark token maps pick tuned tones into 57 roles each; the theme provider serves every component.</title>
+  <defs>
+    <marker id="ftp-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0.5 0.5 L7.5 4 L0.5 7.5 Z" fill="var(--color-text-muted, #71717a)" />
+    </marker>
+  </defs>
+
+  <!-- Brand slots -->
+  <g>
+    <rect x="12" y="14" width="128" height="58" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-border, #d4d4d8)" />
+    <rect x="60" y="22" width="24" height="16" rx="4" fill="#9b00ff" />
+    <text x="76" y="52" text-anchor="middle" font-size="10.5" fill="var(--color-text, #18181b)">primary</text>
+    <text x="76" y="65" text-anchor="middle" font-size="9.5" fill="var(--color-text-muted, #71717a)">#9b00ff</text>
+  </g>
+  <g>
+    <rect x="154" y="14" width="128" height="58" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-border, #d4d4d8)" />
+    <rect x="202" y="22" width="24" height="16" rx="4" fill="#c9bcdc" />
+    <text x="218" y="52" text-anchor="middle" font-size="10.5" fill="var(--color-text, #18181b)">secondary</text>
+    <text x="218" y="65" text-anchor="middle" font-size="9.5" fill="var(--color-text-muted, #71717a)">selection lavender</text>
+  </g>
+  <g>
+    <rect x="296" y="14" width="128" height="58" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-border, #d4d4d8)" />
+    <rect x="344" y="22" width="24" height="16" rx="4" fill="#ea00d4" />
+    <text x="360" y="52" text-anchor="middle" font-size="10.5" fill="var(--color-text, #18181b)">tertiary</text>
+    <text x="360" y="65" text-anchor="middle" font-size="9.5" fill="var(--color-text-muted, #71717a)">#ea00d4</text>
+  </g>
+  <g>
+    <rect x="438" y="14" width="128" height="58" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-border, #d4d4d8)" />
+    <rect x="486" y="22" width="24" height="16" rx="4" fill="#ff004e" />
+    <text x="502" y="52" text-anchor="middle" font-size="10.5" fill="var(--color-text, #18181b)">quaternary</text>
+    <text x="502" y="65" text-anchor="middle" font-size="9.5" fill="var(--color-text-muted, #71717a)">#ff004e</text>
+  </g>
+  <g>
+    <rect x="580" y="14" width="128" height="58" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-border, #d4d4d8)" />
+    <rect x="628" y="22" width="24" height="16" rx="4" fill="#e6def0" />
+    <text x="644" y="52" text-anchor="middle" font-size="10.5" fill="var(--color-text, #18181b)">neutrals</text>
+    <text x="644" y="65" text-anchor="middle" font-size="9.5" fill="var(--color-text-muted, #71717a)">chromatic lavender</text>
+  </g>
+
+  <line x1="360" y1="72" x2="360" y2="102" stroke="var(--color-text-muted, #71717a)" marker-end="url(#ftp-arr)" />
+  <text x="374" y="92" font-size="10.5" fill="var(--color-text-muted, #71717a)">generated: official Material HCT engine, true M3 tones</text>
+
+  <!-- Tonal palettes -->
+  <rect x="60" y="108" width="600" height="92" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-border, #d4d4d8)" />
+  <text x="360" y="130" text-anchor="middle" font-size="13" font-weight="600" fill="var(--color-text, #18181b)">Tonal palettes</text>
+  <!-- primary ramp, real generated hexes -->
+  <g>
+    <rect x="120" y="140" width="40" height="24" fill="#000000" />
+    <rect x="160" y="140" width="40" height="24" fill="#2d004f" />
+    <rect x="200" y="140" width="40" height="24" fill="#4a007e" />
+    <rect x="240" y="140" width="40" height="24" fill="#6a00b1" />
+    <rect x="280" y="140" width="40" height="24" fill="#8b00e6" />
+    <rect x="320" y="140" width="40" height="24" fill="#a22dff" />
+    <rect x="360" y="140" width="40" height="24" fill="#b96bff" />
+    <rect x="400" y="140" width="40" height="24" fill="#cc92ff" />
+    <rect x="440" y="140" width="40" height="24" fill="#dfb7ff" />
+    <rect x="480" y="140" width="40" height="24" fill="#f1daff" />
+    <rect x="520" y="140" width="40" height="24" fill="#faecff" />
+    <rect x="560" y="140" width="40" height="24" fill="#ffffff" stroke="var(--color-border, #d4d4d8)" />
+  </g>
+  <text x="140" y="177" text-anchor="middle" font-size="9" fill="var(--color-text-muted, #71717a)">0</text>
+  <text x="220" y="177" text-anchor="middle" font-size="9" fill="var(--color-text-muted, #71717a)">20</text>
+  <text x="300" y="177" text-anchor="middle" font-size="9" fill="var(--color-text-muted, #71717a)">40</text>
+  <text x="340" y="177" text-anchor="middle" font-size="9" fill="var(--color-text-muted, #71717a)">48</text>
+  <text x="420" y="177" text-anchor="middle" font-size="9" fill="var(--color-text-muted, #71717a)">70</text>
+  <text x="500" y="177" text-anchor="middle" font-size="9" fill="var(--color-text-muted, #71717a)">90</text>
+  <text x="580" y="177" text-anchor="middle" font-size="9" fill="var(--color-text-muted, #71717a)">100</text>
+  <text x="360" y="192" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">the primary ramp, one of six; every tone a real M3 tone</text>
+
+  <line x1="360" y1="200" x2="360" y2="230" stroke="var(--color-text-muted, #71717a)" marker-end="url(#ftp-arr)" />
+  <text x="374" y="220" font-size="10.5" fill="var(--color-text-muted, #71717a)">role mapping, hand-tuned where contrast demands it</text>
+
+  <!-- Token maps -->
+  <g>
+    <rect x="60" y="236" width="290" height="92" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-data, #2f6fed)" stroke-width="1.5" />
+    <text x="205" y="260" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--color-text, #18181b)">LightTokenMap · 57 roles</text>
+    <text x="205" y="282" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">accents ride tone 48: the lightest</text>
+    <text x="205" y="297" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">stop that passes AA everywhere</text>
+  </g>
+  <g>
+    <rect x="370" y="236" width="290" height="92" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-data, #2f6fed)" stroke-width="1.5" />
+    <text x="515" y="260" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--color-text, #18181b)">DarkTokenMap · 57 roles</text>
+    <text x="515" y="282" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">primary rides tone 70; tone 80</text>
+    <text x="515" y="297" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">read too pastel for the brand</text>
+  </g>
+
+  <line x1="205" y1="328" x2="330" y2="360" stroke="var(--color-text-muted, #71717a)" marker-end="url(#ftp-arr)" />
+  <line x1="515" y1="328" x2="390" y2="360" stroke="var(--color-text-muted, #71717a)" marker-end="url(#ftp-arr)" />
+
+  <!-- ThemeProvider -->
+  <rect x="60" y="366" width="600" height="64" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-border, #d4d4d8)" />
+  <text x="360" y="392" text-anchor="middle" font-size="13" font-weight="600" fill="var(--color-text, #18181b)">ThemeProvider</text>
+  <text x="360" y="412" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">every component reads roles, never hexes; light and dark resolve from the same maps</text>
+</svg>

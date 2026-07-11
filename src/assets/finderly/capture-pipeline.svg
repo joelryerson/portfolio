@@ -1,0 +1,43 @@
+<svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fcp-title" style="font-family: var(--font-body, system-ui, sans-serif); max-width: 100%; height: auto;">
+  <title id="fcp-title">Finderly capture pipeline: capture up to six photos or one video, review on one surface, analyze with real monotonic progress, then confirm details in the project. Cancel returns to review with media and note intact.</title>
+  <defs>
+    <marker id="fcp-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0.5 0.5 L7.5 4 L0.5 7.5 Z" fill="var(--color-text-muted, #71717a)" />
+    </marker>
+  </defs>
+
+  <g>
+    <rect x="8" y="24" width="158" height="88" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-data, #2f6fed)" stroke-width="1.5" />
+    <text x="87" y="52" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--color-text, #18181b)">Capture</text>
+    <text x="87" y="74" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">six photos or one video,</text>
+    <text x="87" y="89" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">camera stays warm</text>
+  </g>
+  <line x1="166" y1="68" x2="188" y2="68" stroke="var(--color-text-muted, #71717a)" marker-end="url(#fcp-arr)" />
+
+  <g>
+    <rect x="192" y="24" width="158" height="88" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-data, #2f6fed)" stroke-width="1.5" />
+    <text x="271" y="52" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--color-text, #18181b)">Review</text>
+    <text x="271" y="74" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">one surface: swipe, note,</text>
+    <text x="271" y="89" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">one Analyze action</text>
+  </g>
+  <line x1="350" y1="68" x2="372" y2="68" stroke="var(--color-text-muted, #71717a)" marker-end="url(#fcp-arr)" />
+
+  <g>
+    <rect x="376" y="24" width="158" height="88" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-data, #2f6fed)" stroke-width="1.5" />
+    <text x="455" y="52" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--color-text, #18181b)">Analyze</text>
+    <text x="455" y="74" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">living blueprint; progress</text>
+    <text x="455" y="89" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">is real and monotonic</text>
+  </g>
+  <line x1="534" y1="68" x2="556" y2="68" stroke="var(--color-text-muted, #71717a)" marker-end="url(#fcp-arr)" />
+
+  <g>
+    <rect x="560" y="24" width="152" height="88" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-border, #d4d4d8)" />
+    <text x="636" y="52" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--color-text, #18181b)">Project</text>
+    <text x="636" y="74" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">a few things to confirm,</text>
+    <text x="636" y="89" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">then the diagnosis chat</text>
+  </g>
+
+  <!-- cancel return path -->
+  <path d="M455 112 v36 h-184 v-32" fill="none" stroke="var(--color-text-muted, #71717a)" stroke-dasharray="4 3" marker-end="url(#fcp-arr)" />
+  <text x="363" y="168" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">cancel returns with media and note intact</text>
+</svg>
