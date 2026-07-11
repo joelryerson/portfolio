@@ -67,6 +67,34 @@ video {
   height: auto;
 }
 
+figure {
+  margin: var(--space-lg) 0;
+}
+
+figcaption {
+  margin-top: var(--space-sm);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+/* side-by-side screenshots; caption spans both */
+figure.pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+  max-width: 40rem;
+  margin-inline: auto;
+}
+
+figure.pair figcaption {
+  grid-column: 1 / -1;
+}
+
+figure.pair img {
+  border-radius: var(--radius-card);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -1,0 +1,40 @@
+---
+// Looping UI capture that autoplays only when the user allows motion.
+// The one place this site ships JavaScript; prefers-reduced-motion users
+// get a poster + controls instead of autoplay.
+interface Props {
+  src: string;
+  poster: string;
+  label: string;
+}
+
+const { src, poster, label } = Astro.props;
+---
+
+<video
+  data-motion-video
+  src={src}
+  poster={poster}
+  loop
+  muted
+  playsinline
+  controls
+  preload="metadata"
+  aria-label={label}></video>
+
+<script>
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document
+      .querySelectorAll<HTMLVideoElement>('video[data-motion-video]')
+      .forEach((v) => v.play().catch(() => {}));
+  }
+</script>
+
+<style>
+  video {
+    display: block;
+    width: min(100%, 20rem);
+    margin-inline: auto;
+    border-radius: var(--radius-card);
+  }
+</style>

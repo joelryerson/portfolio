@@ -19,8 +19,17 @@ date: 2026-07-07
 draft: false
 ---
 
+import { Image } from 'astro:assets';
 import CapturePipeline from '../../assets/finderly/capture-pipeline.svg';
 import TokenPipeline from '../../assets/finderly/token-pipeline.svg';
+import MotionVideo from '../../components/MotionVideo.astro';
+import homeLight from '../../assets/finderly/shots/home-light.webp';
+import homeDark from '../../assets/finderly/shots/home-dark.webp';
+import captureShot from '../../assets/finderly/shots/capture.webp';
+import reviewShot from '../../assets/finderly/shots/review.webp';
+import soundShot from '../../assets/finderly/shots/sound.webp';
+import liveVideoShot from '../../assets/finderly/shots/live-video.webp';
+import privacyShot from '../../assets/finderly/shots/privacy.webp';
 
 Finderly, by AI Vision Technologies, is an AI repair expert: capture the broken thing,
 get a diagnosis, fix it yourself or hand it to a pro. It runs on React Native and web.
@@ -44,11 +53,22 @@ fixes. Phones got a real floating navigation dock plus a dedicated camera button
 a bottom bar where some tabs were navigation and some were decoration. Account stopped
 pretending to be a destination and moved behind the avatar, where it belongs.
 
+<figure class="pair">
+  <Image src={homeLight} alt="Finderly home screen in light theme: capture hero, recent projects rail, common fixes" />
+  <Image src={homeDark} alt="Finderly home screen in dark theme: capture hero, recent projects rail, common fixes" />
+  <figcaption>Home, both themes: capture leads, projects persist, navigation is honest.</figcaption>
+</figure>
+
 The same standard, **the interface should not lie**, drove decisions well past the home
 screen. Project cards hide their progress bars entirely, because the backend's step
 tracking was not yet trustworthy and a made-up percentage is worse than none. The native
 app dropped its misleading cookie banner for real privacy controls. The web app records
 AI consent as `passive` instead of falsely claiming the user explicitly agreed.
+
+<figure>
+  <Image src={privacyShot} alt="Finderly privacy settings listing each AI service that processes user data and what it does" style="max-width: 20rem; display: block; margin-inline: auto; border-radius: 12px;" />
+  <figcaption>The privacy pane names every AI service that touches user data, and what for.</figcaption>
+</figure>
 
 ## Making capture worth leading with
 
@@ -57,10 +77,25 @@ end to end. The camera now does **ordered multi-capture**, up to six photos or o
 stays warm between shots instead of relaunching, and never silently discards media. Review
 became one focused surface: swipe through what you shot, drop a note, hit **Analyze**.
 
+<figure class="pair">
+  <Image src={captureShot} alt="Finderly camera in multi-capture mode with a running count of two photos" />
+  <Image src={reviewShot} alt="Finderly media review with photo thumbnails and the note 'My faucet is leaking'" />
+  <figcaption>Multi-capture with a running count; review with one note and one Analyze.</figcaption>
+</figure>
+
 Then the wait. Instead of chat bubbles faking incremental progress, analysis renders a
 **living blueprint**: a theme-aware house sketch swept by a scanning gradient, driven by
 the real upload and analysis lifecycle. Progress only moves forward, respects
 reduced-motion, and cancelling returns your media and note intact.
+
+<figure>
+  <MotionVideo
+    src="/media/finderly/blueprint-scan.mp4"
+    poster="/media/finderly/blueprint-poster.webp"
+    label="The living blueprint analysis animation: a wireframe house swept by a gradient scan while media uploads"
+  />
+  <figcaption>The living blueprint, driven by the real analysis lifecycle.</figcaption>
+</figure>
 
 <figure>
   <CapturePipeline />
@@ -74,6 +109,15 @@ removed it: swipe plus thumbnails did the job without the gesture complexity. So
 recording came out of the review screen entirely, because sound is a contextual
 diagnostic the AI should ask for, not a universal way to start a project. Both cuts made
 the shipped product simpler than the one I first designed.
+
+<figure class="pair">
+  <Image src={soundShot} alt="Finderly sound diagnostic recording screen with a live waveform dial" />
+  <Image src={liveVideoShot} alt="Finderly live video session where the AI gives step-by-step shutoff instructions over the camera feed" />
+  <figcaption>
+    Where sound went: an AI-requested diagnostic with its own instrument. And live video,
+    where the assistant answers with real instructions.
+  </figcaption>
+</figure>
 
 ## How one designer ships this in a month
 
