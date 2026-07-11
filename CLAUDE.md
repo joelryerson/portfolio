@@ -31,7 +31,7 @@ Build Joel's portfolio from scratch as a custom-coded site, replacing the Webflo
 1. **Asteri AI** (now a lead piece — shipped, recent, enterprise AI): design system shipped to production in a six-week engagement. Raw material in content/raw/asteri.md (LOCAL-ONLY) — read its "Framing rules" section before any drafting. **DRAFTED 2026-07-11** (Joel authorized autonomous drafting; his edits still final): Narrative A, 523 words + deep-dive, live at /work/asteri/ on staging. Visuals are the four abstracted SVGs in src/assets/asteri/ (no screenshots, per decision 4).
 2. **Finderly** (flagship, unrestricted IP — AI Vision Technologies): multi-modal AI UX (chat/photo/AR), Figma MCP token pipeline, React Native. Design + engineering in one story.
 3. **Portfolio + RAG assistant build** (meta case study): decisions, stack, AI collaboration.
-4. **StartupOS** (strongest legacy piece): rewrite into decision-narrative format, clearly dated, positioned as range.
+4. **StartupOS** (strongest legacy piece): rewrite into decision-narrative format, clearly dated, positioned as range. **DRAFTED 2026-07-11**: template-over-bespoke decision, 526 words, reuses old /work/startup-platform slug, closes by linking the instinct to Asteri. Joel to verify: the 2022 date and "Product Designer" role title in frontmatter are inferred from salvaged copy.
 5. **ArtPärdē** (confirmed 2026-07-11 as the fifth piece). UX Rooted: cut.
 Legacy trAIn121 / Robert Half pieces: archive or cut. 2021 work dilutes.
 
