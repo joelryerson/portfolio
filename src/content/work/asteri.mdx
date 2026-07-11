@@ -1,0 +1,155 @@
+---
+title: 'Asteri AI'
+role: 'Design Engineer'
+timeframe: 'May to June 2026'
+outcome: 'First design system shipped to production in six weeks'
+stack:
+  [
+    'React',
+    'Next.js',
+    'TypeScript',
+    'Ant Design',
+    'CSS Modules',
+    'Design tokens',
+    'Figma',
+    'Codex',
+  ]
+description: "A seed-stage AI startup's first design system, shipped to production in six weeks: token infrastructure first, appearance unchanged on purpose."
+date: 2026-06-29
+draft: false
+---
+
+import TwoPaths from '../../assets/asteri/two-paths.svg';
+import TokenArchitecture from '../../assets/asteri/token-architecture.svg';
+import EngagementArc from '../../assets/asteri/engagement-arc.svg';
+import AuditFindings from '../../assets/asteri/audit-findings.svg';
+
+Asteri is a seed-stage AI startup, about ten people, building a work intelligence platform
+for Fortune 500 life sciences teams. They brought me in to improve the product experience.
+Six weeks later the company had its **first design system in production** and an
+engineering team continuing the rollout without me. The interesting part is the decision
+underneath that.
+
+## The finding
+
+The brief said "improve the product experience." The audit of the frontend said something
+more specific: **systemic UI inconsistency**. Colors, spacing, and radii varied screen to
+screen. Styling was restated inline, per file, by hand. Nothing shared a source of truth.
+None of it was scandalous on its own. Together it meant every new screen would drift a
+little further, and every fix would stay hand-made forever.
+
+## The tempting path
+
+The obvious move was to start restyling screens. It shows progress fast, it is what a
+six-week engagement is expected to produce, and every inconsistent screen begged for it.
+
+It is also a trap. Restyled screens without shared infrastructure drift right back. I
+would have spent six weeks producing before-and-afters, and the team would have inherited
+the same maintenance failure mode with nicer wallpaper.
+
+<figure>
+  <TwoPaths />
+  <figcaption>
+    Restyling was faster to show. Infrastructure was faster to compound.
+  </figcaption>
+</figure>
+
+## The pivot
+
+I proposed **token infrastructure first**: build the system, migrate gradually, leave
+rails the team can keep rolling on after I'm gone.
+
+That is a hard sell at a seed-stage startup, where visible progress is oxygen. So I didn't
+sell it in CSS terms. The pitch to leadership: the branding is strong, the implementation
+is inconsistent, and the inconsistency is expensive, because every UI change costs more
+than it should. Framed as **maintenance cost and regression risk**, infrastructure-first
+became the direction in one conversation.
+
+Leadership added one constraint: a business-critical data table was off-limits. No
+redesign, no restyle, no rebuild. I planned the migration around it instead of fighting
+it. A system that only works when nothing is off-limits is not much of a system.
+
+## What got built
+
+A two-layer token hierarchy: **primitives** (context-free color ramps, type scale,
+spacing) aliased into **semantic tokens** (surface, text, border, interaction states).
+The tokens generate CSS variables for CSS Modules and custom components, and map into the
+Ant Design theme layer so built-in components inherit them automatically. Change a value
+once, every surface updates.
+
+<figure>
+  <TokenArchitecture />
+  <figcaption>One source of truth; both styling systems consume the same tokens.</figcaption>
+</figure>
+
+Before, a typical dashboard stat card restated every style decision inline:
+
+```tsx
+<div style={{ background: '#f7f8fa', borderRadius: 8, padding: 16 }}>
+  <span style={{ color: '#6b7280', fontSize: 13 }}>Active studies</span>
+  <span style={{ color: '#111827', fontSize: 24, fontWeight: 600 }}>128</span>
+</div>
+```
+
+After, the same card consumes semantic tokens:
+
+```css
+.statCard {
+  background: var(--surface-raised);
+  border-radius: var(--radius-card);
+  padding: var(--space-inset);
+}
+.statCard .label { color: var(--text-muted); font: var(--text-label); }
+.statCard .value { color: var(--text-primary); font: var(--text-metric); }
+```
+
+Rendered output: identical. Which brings up the tradeoff.
+
+## The tradeoff
+
+For the pilot I migrated the dashboard surfaces and kept their appearance **intentionally
+unchanged**. Same look, new plumbing. Zero visual diff was a feature: it made the
+migration reviewable, testable, and boring, which is exactly what you want from
+infrastructure.
+
+It also cost me the flashy before-and-after. Six weeks of work you can show off, or six
+weeks of work that compounds. I picked the one that compounds.
+
+## Where it landed
+
+The design system **shipped to production** inside the engagement, with documentation and
+an open migration path the engineering team adopted to continue the rollout. The
+engagement ended when the budget did, on good terms, with the door open post-funding.
+
+The system kept working without me. That was the point.
+
+<figure>
+  <EngagementArc />
+</figure>
+
+<details>
+  <summary>Deep dive: the audit numbers and the second architecture</summary>
+
+  The audit covered roughly 370 frontend files. What it found, counted:
+
+  <figure>
+    <AuditFindings />
+    <figcaption>
+      Roughly one style decision in ten flowed through a token. The rest were restated
+      inline, per file, by hand.
+    </figcaption>
+  </figure>
+
+  The first token architecture I shipped had its own flaw: values duplicated across four
+  places that each claimed to be the source of truth (a TypeScript theme object, two
+  global stylesheets, and a primitives module). Duplication is a maintenance failure mode,
+  the same disease in token clothing. I iterated to a leaner semantic architecture with
+  fewer sources of truth, consumable by both React components and CSS Modules, mapped once
+  into the Ant Design theme layer.
+
+  Final token coverage: color (brand, neutrals, semantic, interaction states), typography,
+  spacing, layout, radius, elevation, motion, z-index, breakpoints, and icon sizing.
+
+  The pilot migration touched about seven dashboard files, QA'd against a mock server with
+  a clean diff: only the expected files modified, no visual changes.
+</details>
