@@ -54,7 +54,7 @@ Legacy trAIn121 / Robert Half pieces: archive or cut. 2021 work dilutes.
 ## Migration & Cutover
 - Old Webflow site: leave live and untouched until the new site ships.
 - Keep /work/[slug] URL structure; reuse existing slugs where content carries over; 301 anything renamed.
-- Salvage from Webflow before cancellation: CDN assets (cdn.prod.website-files.com), case study copy, color variable values, résumé PDF. All publicly fetchable.
+- ~~Salvage from Webflow before cancellation~~ → **DONE 2026-07-11.** Everything lives in content/raw/webflow-salvage/ (local-only): 6 pages of HTML + extracted copy, 247 original assets, résumé PDF, both stylesheets, full color/token inventory (old site had a Material-3-style token system in portfolio-assets.css). Old slugs for the 301 map are listed in its README.
 - Cancel Webflow before next renewal. **Renewal date confirmed: October 18, 2026 = cutover deadline.** Salvage early so the date never becomes a scramble.
 - DNS: point joelryerson.design + www to new host; verify OG previews, sitemap, robots after cutover.
 
