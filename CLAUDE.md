@@ -28,7 +28,7 @@ Build Joel's portfolio from scratch as a custom-coded site, replacing the Webflo
 - **Colophon/repo link**: public GitHub repo, stack notes, performance scores.
 
 ## Case Study Slate (target 4–5)
-1. **Asteri AI** (now a lead piece — shipped, recent, enterprise AI): design system shipped to production in a six-week engagement. Raw material in content/raw/asteri.md — read its "Framing rules" section before any drafting. Screenshots pending confidentiality clearance; abstracted diagrams and neutralized code snippets are the default visuals.
+1. **Asteri AI** (now a lead piece — shipped, recent, enterprise AI): design system shipped to production in a six-week engagement. Raw material in content/raw/asteri.md (LOCAL-ONLY) — read its "Framing rules" section before any drafting. **DRAFTED 2026-07-11** (Joel authorized autonomous drafting; his edits still final): Narrative A, 523 words + deep-dive, live at /work/asteri/ on staging. Visuals are the four abstracted SVGs in src/assets/asteri/ (no screenshots, per decision 4).
 2. **Finderly** (flagship, unrestricted IP — AI Vision Technologies): multi-modal AI UX (chat/photo/AR), Figma MCP token pipeline, React Native. Design + engineering in one story.
 3. **Portfolio + RAG assistant build** (meta case study): decisions, stack, AI collaboration.
 4. **StartupOS** (strongest legacy piece): rewrite into decision-narrative format, clearly dated, positioned as range.
