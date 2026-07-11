@@ -40,7 +40,7 @@ Legacy trAIn121 / Robert Half pieces: archive or cut. 2021 work dilutes.
 - **Styling**: CSS custom properties as the token system, documented as a mini design system.
 - **Content**: MDX per case study. Frontmatter: title, role, timeframe, outcome metric, stack, meta description, OG image.
 - **RAG assistant**: embeddings over site content; Claude API; serverless.
-- **Hosting**: Cloudflare Pages or Netlify free tier. Repo: GitHub, public.
+- **Hosting**: **Cloudflare Pages** (decided session 1, 2026-07-11; RAG assistant runs as a Pages Function + Vectorize on the same platform). Repo: GitHub, public — github.com/joelryerson/portfolio.
 - **Interactions**: modern primitives (IntersectionObserver, CSS scroll-driven animation, View Transitions, native details/summary). No jQuery-era patterns. Real SVG icons with aria-hidden on decorative ones; no icon-font ligatures.
 
 ## Build Standards (non-negotiable)
