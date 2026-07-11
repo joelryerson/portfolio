@@ -15,3 +15,6 @@ npm-debug.log*
 
 # macOS
 .DS_Store
+
+# raw case-study material stays local; framing rules and client context are not public
+content/raw/
