@@ -1,0 +1,26 @@
+<svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="af-title" style="font-family: var(--font-body, system-ui, sans-serif); max-width: 100%; height: auto;">
+  <title id="af-title">Audit findings, count of style declarations by kind: about 1,024 pixel literals, 487 literal color values, 389 inline style objects, and only 202 references to centralized tokens.</title>
+
+  <!-- baseline -->
+  <line x1="191.5" y1="18" x2="191.5" y2="216" stroke="var(--color-border, #d4d4d8)" />
+
+  <!-- px literals -->
+  <text x="180" y="42.5" text-anchor="end" font-size="13" fill="var(--color-text, #18181b)">px literals</text>
+  <path d="M192 28 h426 q4 0 4 4 v12 q0 4 -4 4 h-426 z" fill="var(--color-data, #2f6fed)" />
+  <text x="632" y="42.5" font-size="13" fill="var(--color-text, #18181b)">~1,024</text>
+
+  <!-- literal color values -->
+  <text x="180" y="96.5" text-anchor="end" font-size="13" fill="var(--color-text, #18181b)">literal color values</text>
+  <path d="M192 82 h200.5 q4 0 4 4 v12 q0 4 -4 4 h-200.5 z" fill="var(--color-data, #2f6fed)" />
+  <text x="406.5" y="96.5" font-size="13" fill="var(--color-text, #18181b)">~487</text>
+
+  <!-- inline style objects -->
+  <text x="180" y="150.5" text-anchor="end" font-size="13" fill="var(--color-text, #18181b)">inline style objects</text>
+  <path d="M192 136 h159.4 q4 0 4 4 v12 q0 4 -4 4 h-159.4 z" fill="var(--color-data, #2f6fed)" />
+  <text x="365.4" y="150.5" font-size="13" fill="var(--color-text, #18181b)">~389</text>
+
+  <!-- token references -->
+  <text x="180" y="204.5" text-anchor="end" font-size="13" fill="var(--color-text, #18181b)">token references</text>
+  <path d="M192 190 h80.8 q4 0 4 4 v12 q0 4 -4 4 h-80.8 z" fill="var(--color-data, #2f6fed)" />
+  <text x="286.8" y="204.5" font-size="13" fill="var(--color-text, #18181b)">~202</text>
+</svg>

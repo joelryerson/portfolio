@@ -72,5 +72,5 @@ Direct, plainspoken, light wit, bolded key phrases, short sections. Outcome-firs
 1. ~~Astro vs Next.js~~ → **Astro** (2026-07-11)
 2. ~~Visual direction~~ → **Full redesign** (2026-07-11). New identity designed natively in the token system for the Design Engineer positioning. Webflow color values/assets salvaged as reference material only; nothing owed to the old look.
 3. ~~Webflow renewal date~~ → **October 18, 2026** = cutover deadline (2026-07-11)
-4. Asteri screenshot/visuals scope — STILL OPEN (checked 2026-07-11: no word from Julia yet; abstracted diagrams are the fallback and are already cleared)
+4. ~~Asteri screenshot/visuals scope~~ → **Assume no screenshots** (2026-07-11). Case study visuals are abstracted diagrams + neutralized code snippets only. If Julia later clears screenshots, that's a bonus, not a dependency.
 5. ~~Which legacy pieces survive the cut~~ → **ArtPärdē in, UX Rooted out, trAIn121/Robert Half archived** (2026-07-11). Slate: Asteri, Finderly, Portfolio+RAG, StartupOS, ArtPärdē.

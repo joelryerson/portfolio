@@ -1,0 +1,52 @@
+<svg viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ea-title" style="font-family: var(--font-body, system-ui, sans-serif); max-width: 100%; height: auto;">
+  <title id="ea-title">Engagement arc: audit, business case, token architecture, pilot migration, then docs and handoff, six weeks end to end.</title>
+  <defs>
+    <marker id="ea-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0.5 0.5 L7.5 4 L0.5 7.5 Z" fill="var(--color-text-muted, #71717a)" />
+    </marker>
+  </defs>
+
+  <!-- Phase boxes -->
+  <g>
+    <rect x="6" y="24" width="128" height="84" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-border, #d4d4d8)" />
+    <text x="70" y="52" text-anchor="middle" font-size="12" font-weight="600" fill="var(--color-text, #18181b)">Audit</text>
+    <text x="70" y="72" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">every frontend</text>
+    <text x="70" y="86" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">surface reviewed</text>
+  </g>
+  <line x1="134" y1="66" x2="148" y2="66" stroke="var(--color-text-muted, #71717a)" marker-end="url(#ea-arr)" />
+
+  <g>
+    <rect x="150" y="24" width="128" height="84" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-border, #d4d4d8)" />
+    <text x="214" y="52" text-anchor="middle" font-size="12" font-weight="600" fill="var(--color-text, #18181b)">Business case</text>
+    <text x="214" y="72" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">debt translated to</text>
+    <text x="214" y="86" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">cost and risk</text>
+  </g>
+  <line x1="278" y1="66" x2="292" y2="66" stroke="var(--color-text-muted, #71717a)" marker-end="url(#ea-arr)" />
+
+  <g>
+    <rect x="294" y="24" width="128" height="84" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-border, #d4d4d8)" />
+    <text x="358" y="52" text-anchor="middle" font-size="12" font-weight="600" fill="var(--color-text, #18181b)">Token architecture</text>
+    <text x="358" y="72" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">primitives to</text>
+    <text x="358" y="86" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">semantic layers</text>
+  </g>
+  <line x1="422" y1="66" x2="436" y2="66" stroke="var(--color-text-muted, #71717a)" marker-end="url(#ea-arr)" />
+
+  <g>
+    <rect x="438" y="24" width="128" height="84" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-border, #d4d4d8)" />
+    <text x="502" y="52" text-anchor="middle" font-size="12" font-weight="600" fill="var(--color-text, #18181b)">Pilot migration</text>
+    <text x="502" y="72" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">same look,</text>
+    <text x="502" y="86" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">new plumbing</text>
+  </g>
+  <line x1="566" y1="66" x2="580" y2="66" stroke="var(--color-text-muted, #71717a)" marker-end="url(#ea-arr)" />
+
+  <g>
+    <rect x="582" y="24" width="128" height="84" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-border, #d4d4d8)" />
+    <text x="646" y="52" text-anchor="middle" font-size="12" font-weight="600" fill="var(--color-text, #18181b)">Docs + handoff</text>
+    <text x="646" y="72" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">engineering continues</text>
+    <text x="646" y="86" text-anchor="middle" font-size="10.5" fill="var(--color-text-muted, #71717a)">rollout on rails</text>
+  </g>
+
+  <!-- Duration bracket -->
+  <path d="M6 132 v8 h708 v-8" fill="none" stroke="var(--color-border, #d4d4d8)" />
+  <text x="360" y="164" text-anchor="middle" font-size="12" fill="var(--color-text-muted, #71717a)">six weeks, end to end</text>
+</svg>

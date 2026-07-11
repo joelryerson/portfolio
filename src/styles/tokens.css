@@ -22,6 +22,7 @@
   --raw-gray-900: #18181b;
   --raw-gray-1000: #09090b;
   --raw-accent-400: #6ea8fe;
+  --raw-accent-500: #4f8df2;
   --raw-accent-600: #2f6fed;
   --raw-accent-800: #1d4ed8;
 
@@ -89,6 +90,8 @@
   --color-accent: var(--raw-accent-600);
   --color-accent-strong: var(--raw-accent-800);
   --color-focus-ring: var(--raw-accent-600);
+  /* data marks in charts/diagrams; steps validated per-surface (dataviz six checks) */
+  --color-data: var(--raw-accent-600);
 }
 
 /* Dark theme: applied by OS preference, overridable via data-theme. */
@@ -103,6 +106,7 @@
     --color-accent: var(--raw-accent-400);
     --color-accent-strong: var(--raw-accent-400);
     --color-focus-ring: var(--raw-accent-400);
+    --color-data: var(--raw-accent-500);
   }
 }
 
@@ -116,4 +120,5 @@
   --color-accent: var(--raw-accent-400);
   --color-accent-strong: var(--raw-accent-400);
   --color-focus-ring: var(--raw-accent-400);
+  --color-data: var(--raw-accent-500);
 }

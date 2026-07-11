@@ -1,0 +1,56 @@
+<svg viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="tp-title" style="font-family: var(--font-body, system-ui, sans-serif); max-width: 100%; height: auto;">
+  <title id="tp-title">Two paths from the audit finding: restyling screens directly was tempting but compounds drift; building token infrastructure first was chosen and shipped to production.</title>
+  <defs>
+    <marker id="tp-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0.5 0.5 L7.5 4 L0.5 7.5 Z" fill="var(--color-text-muted, #71717a)" />
+    </marker>
+  </defs>
+
+  <!-- Finding -->
+  <rect x="210" y="16" width="300" height="60" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-border, #d4d4d8)" />
+  <text x="360" y="41" text-anchor="middle" font-size="14" font-weight="600" fill="var(--color-text, #18181b)">Systemic UI inconsistency</text>
+  <text x="360" y="61" text-anchor="middle" font-size="11" fill="var(--color-text-muted, #71717a)">found by auditing the entire frontend</text>
+
+  <line x1="360" y1="76" x2="187" y2="114" stroke="var(--color-text-muted, #71717a)" marker-end="url(#tp-arr)" />
+  <line x1="360" y1="76" x2="533" y2="114" stroke="var(--color-text-muted, #71717a)" marker-end="url(#tp-arr)" />
+
+  <!-- Left column: rejected path -->
+  <rect x="45" y="120" width="280" height="52" rx="8" fill="none" stroke="var(--color-border, #d4d4d8)" stroke-dasharray="4 3" />
+  <text x="185" y="142" text-anchor="middle" font-size="13" font-weight="600" fill="var(--color-text-muted, #71717a)">Restyle screens directly</text>
+  <text x="185" y="160" text-anchor="middle" font-size="11" fill="var(--color-text-muted, #71717a)">the tempting path</text>
+
+  <line x1="185" y1="172" x2="185" y2="192" stroke="var(--color-text-muted, #71717a)" marker-end="url(#tp-arr)" />
+
+  <rect x="45" y="196" width="280" height="52" rx="8" fill="none" stroke="var(--color-border, #d4d4d8)" stroke-dasharray="4 3" />
+  <text x="185" y="218" text-anchor="middle" font-size="12.5" fill="var(--color-text-muted, #71717a)">Fast, visible progress</text>
+  <text x="185" y="236" text-anchor="middle" font-size="11" fill="var(--color-text-muted, #71717a)">every fix re-styled by hand</text>
+
+  <line x1="185" y1="248" x2="185" y2="268" stroke="var(--color-text-muted, #71717a)" marker-end="url(#tp-arr)" />
+
+  <rect x="45" y="272" width="280" height="52" rx="8" fill="none" stroke="var(--color-border, #d4d4d8)" stroke-dasharray="4 3" />
+  <text x="185" y="294" text-anchor="middle" font-size="12.5" fill="var(--color-text-muted, #71717a)">Drift comes back</text>
+  <text x="185" y="312" text-anchor="middle" font-size="11" fill="var(--color-text-muted, #71717a)">no shared source of truth; regressions compound</text>
+
+  <!-- Right column: chosen path -->
+  <rect x="395" y="120" width="280" height="52" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-data, #2f6fed)" stroke-width="1.5" />
+  <text x="535" y="142" text-anchor="middle" font-size="13" font-weight="600" fill="var(--color-text, #18181b)">Token infrastructure first</text>
+  <text x="535" y="160" text-anchor="middle" font-size="11" fill="var(--color-text-muted, #71717a)">the chosen path</text>
+
+  <line x1="535" y1="172" x2="535" y2="192" stroke="var(--color-text-muted, #71717a)" marker-end="url(#tp-arr)" />
+
+  <rect x="395" y="196" width="280" height="52" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-data, #2f6fed)" stroke-width="1.5" />
+  <text x="535" y="218" text-anchor="middle" font-size="12.5" fill="var(--color-text, #18181b)">Primitives, then semantic tokens</text>
+  <text x="535" y="236" text-anchor="middle" font-size="11" fill="var(--color-text-muted, #71717a)">CSS variables + Ant Design theme mapping</text>
+
+  <line x1="535" y1="248" x2="535" y2="268" stroke="var(--color-text-muted, #71717a)" marker-end="url(#tp-arr)" />
+
+  <rect x="395" y="272" width="280" height="52" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-data, #2f6fed)" stroke-width="1.5" />
+  <text x="535" y="294" text-anchor="middle" font-size="12.5" fill="var(--color-text, #18181b)">Pilot migration, appearance unchanged</text>
+  <text x="535" y="312" text-anchor="middle" font-size="11" fill="var(--color-text-muted, #71717a)">modernized implementation, zero visual diff</text>
+
+  <line x1="535" y1="324" x2="535" y2="344" stroke="var(--color-text-muted, #71717a)" marker-end="url(#tp-arr)" />
+
+  <rect x="395" y="348" width="280" height="56" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-data, #2f6fed)" stroke-width="1.5" />
+  <text x="535" y="371" text-anchor="middle" font-size="13" font-weight="600" fill="var(--color-text, #18181b)">Shipped to production</text>
+  <text x="535" y="390" text-anchor="middle" font-size="11" fill="var(--color-text-muted, #71717a)">engineering continues the rollout</text>
+</svg>
