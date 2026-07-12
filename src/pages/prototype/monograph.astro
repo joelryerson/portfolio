@@ -1,0 +1,446 @@
+---
+/**
+ * ISOLATED CONCEPT PROOF — /prototype/monograph
+ * Prototype-scoped everything: own shell, own tokens (--p-*), own fonts.
+ * Touches no global layout, styles, or production routes. noindex.
+ */
+import { Image } from 'astro:assets';
+import CompareSlider from '../../components/prototype/CompareSlider.astro';
+import TokenArchitecture from '../../assets/asteri/token-architecture.svg';
+
+import beforeProjects from '../../assets/prototype/finderly-before-projects.webp';
+import homeLight from '../../assets/finderly/shots/home-light.webp';
+import homeDark from '../../assets/finderly/shots/home-dark.webp';
+import captureShot from '../../assets/finderly/shots/capture.webp';
+import reviewShot from '../../assets/finderly/shots/review.webp';
+import liveVideoShot from '../../assets/finderly/shots/live-video.webp';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Prototype · Monograph concept — Joel Ryerson</title>
+    <meta name="description" content="Isolated design prototype. Not the production homepage." />
+    <link rel="preload" href="/fonts/satoshi-variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/geist-mono.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+  <body>
+    <div class="proto-banner" role="note">PROTOTYPE · MONOGRAPH CONCEPT · NOT PRODUCTION</div>
+
+    <!-- ================= HERO (warm paper) ================= -->
+    <header class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Portfolio · East Bay, CA · Available July 2026</p>
+          <h1>Joel Ryerson</h1>
+          <p class="role">Product Designer &amp; Design Engineer</p>
+          <p class="value">
+            I make the product, UX, and UI decisions, and I carry them into production.
+            <span class="support">The mock is approved. The build ships. Something gets lost in between.</span>
+          </p>
+          <a class="to-work" href="#work">Selected work ↓</a>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="phone phone-back"><Image src={homeDark} alt="" widths={[480, 800]} sizes="(max-width: 900px) 40vw, 300px" /></div>
+          <div class="phone phone-front"><Image src={homeLight} alt="" widths={[480, 800]} sizes="(max-width: 900px) 52vw, 340px" /></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= FINDERLY PLATE ================= -->
+    <section class="plate plate-finderly" id="work" aria-labelledby="finderly-title">
+      <div class="wrap">
+        <p class="kicker">Finderly · AI Vision Technologies · 2026 · iOS, Android, web</p>
+        <h2 id="finderly-title">The repair app that leads with the camera.</h2>
+        <p class="plate-intro">
+          Finderly diagnoses home repairs: show it the problem, get guidance, fix it yourself
+          or hand it to a pro. I helped create the earlier versions, then led a one-month
+          overhaul across navigation, screen structure, and the visual system. The central
+          decision: <b>a repair starts with a broken thing, so the app now starts with the camera.</b>
+        </p>
+
+        <div class="plate-compare">
+          <CompareSlider
+            before={beforeProjects}
+            after={homeLight}
+            beforeAlt="Earlier Finderly design: the app opened on a searchable list of past projects"
+            afterAlt="Shipped Finderly home: a Start-a-fix capture hero, recent projects rail, and honest navigation dock"
+            beforeLabel="Earlier design"
+            afterLabel="Shipped · 2026"
+            annotations={[
+              { x: 50, y: 22, n: 1 },
+              { x: 78, y: 58, n: 2 },
+              { x: 50, y: 92, n: 3 },
+            ]}
+          />
+          <ol class="notes">
+            <li><b>Starting a fix became the primary action.</b> The old entry was a list of past projects; the overhaul leads with capture, because users arrive holding a broken thing.</li>
+            <li><b>Recent work stays one glance away.</b> A projects rail with status captions derived from real project state, instead of being the whole screen.</li>
+            <li><b>Navigation became honest.</b> A dock of real destinations plus a camera button; Account stopped posing as a tab and moved behind the avatar.</li>
+          </ol>
+        </div>
+
+        <div class="strip" aria-label="More Finderly screens">
+          <figure><Image src={captureShot} alt="Multi-capture camera with a running photo count" widths={[400, 640]} sizes="(max-width: 700px) 44vw, 240px" /><figcaption>Multi-capture, camera kept warm</figcaption></figure>
+          <figure><Image src={reviewShot} alt="Media review with thumbnails and a note field" widths={[400, 640]} sizes="(max-width: 700px) 44vw, 240px" /><figcaption>One review surface, one Analyze</figcaption></figure>
+          <figure><Image src={liveVideoShot} alt="Live video session with AI guidance overlaid on the camera feed" widths={[400, 640]} sizes="(max-width: 700px) 44vw, 240px" /><figcaption>Live video with real instructions</figcaption></figure>
+        </div>
+
+        <a class="open" href="/work/finderly/">Read the Finderly case study →</a>
+      </div>
+    </section>
+
+    <!-- ================= INTERLUDE ================= -->
+    <div class="interlude">
+      <div class="wrap"><p>Opposite constraint, same discipline: when the product can't be shown, the decisions still can.</p></div>
+    </div>
+
+    <!-- ================= ASTERI PLATE ================= -->
+    <section class="plate plate-asteri" aria-labelledby="asteri-title">
+      <div class="wrap">
+        <p class="kicker">Asteri AI · seed-stage work-intelligence startup · six-week engagement · 2026</p>
+        <h2 id="asteri-title">Foundations first, under a hard constraint.</h2>
+        <p class="plate-intro">
+          A ~10-person startup brought me in to improve the product experience; the audit
+          found systemic UI inconsistency instead. The CEO set one hard constraint: the
+          business-critical core table stayed as-is. <b>My first pass added another token
+          layer to an already fragmented system.</b> I corrected it: by week six, I had
+          consolidated the token foundation; the homepage migration remained under review.
+        </p>
+
+        <div class="asteri-grid">
+          <figure class="diagram">
+            <TokenArchitecture />
+            <figcaption>The consolidated architecture: primitives to semantic tokens, one source feeding both styling systems.</figcaption>
+          </figure>
+
+          <div class="code-toggle" data-codetoggle>
+            <div class="ct-buttons" role="tablist" aria-label="Code before and after">
+              <button role="tab" id="ct-tab-before" aria-selected="true" aria-controls="ct-before">Before</button>
+              <button role="tab" id="ct-tab-after" aria-selected="false" aria-controls="ct-after">After</button>
+            </div>
+            <pre id="ct-before" role="tabpanel" aria-labelledby="ct-tab-before"><code>// A dashboard stat card, restating
+// every style decision inline
+&lt;div style=&#123;&#123;
+  background: '#f7f8fa',
+  borderRadius: 8,
+  padding: 16,
+&#125;&#125;&gt;</code></pre>
+            <pre id="ct-after" role="tabpanel" aria-labelledby="ct-tab-after" hidden><code>/* the same card, on tokens */
+.statCard &#123;
+  background: var(--surface-raised);
+  border-radius: var(--radius-card);
+  padding: var(--space-inset);
+&#125;</code></pre>
+            <p class="ct-note">Same rendered card. The pilot migration changed the plumbing, not the pixels.</p>
+          </div>
+        </div>
+
+        <a class="open" href="/work/asteri/">Read the Asteri case study →</a>
+      </div>
+    </section>
+
+    <script>
+      const wireToggles = () => {
+        document.querySelectorAll<HTMLElement>('[data-codetoggle]:not(.js)').forEach((root) => {
+          root.classList.add('js');
+          const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role=tab]')];
+          tabs.forEach((tab) =>
+            tab.addEventListener('click', () => {
+              tabs.forEach((t) => {
+                const selected = t === tab;
+                t.setAttribute('aria-selected', String(selected));
+                const panel = document.getElementById(t.getAttribute('aria-controls') || '');
+                if (panel) panel.hidden = !selected;
+              });
+            })
+          );
+        });
+      };
+      wireToggles();
+      document.addEventListener('astro:page-load', wireToggles);
+    </script>
+
+    <style is:global>
+      @font-face {
+        font-family: 'Satoshi P';
+        font-style: normal;
+        font-weight: 300 900;
+        font-display: swap;
+        src: url('/fonts/satoshi-variable.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Geist Mono P';
+        font-style: normal;
+        font-weight: 400 700;
+        font-display: swap;
+        src: url('/fonts/geist-mono.woff2') format('woff2');
+      }
+    </style>
+
+    <style>
+      /* ---- prototype-scoped tokens ---- */
+      body {
+        --p-font: 'Satoshi P', system-ui, sans-serif;
+        --p-mono: 'Geist Mono P', ui-monospace, monospace;
+        --p-paper: #f3efe8;
+        --p-ink: #211d18;
+        --p-muted: #6c6459;
+        --p-line: #d8d1c4;
+        --p-accent: #b3610a;
+        --p-accent-ink: #fff;
+        margin: 0;
+        background: var(--p-paper);
+        color: var(--p-ink);
+        font: 17px/1.65 var(--p-font);
+      }
+
+      .wrap { max-width: 70rem; margin-inline: auto; padding-inline: 1.4rem; }
+
+      .proto-banner {
+        font: 600 max(0.7rem, 12px) / 1 var(--p-mono);
+        letter-spacing: 0.14em;
+        text-align: center;
+        padding: 0.55rem;
+        background: #211d18;
+        color: #f3efe8;
+      }
+
+      .eyebrow, .kicker {
+        font: 600 max(0.74rem, 12px) / 1.5 var(--p-mono);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--p-muted);
+        margin: 0 0 1rem;
+      }
+
+      /* ---------- HERO ---------- */
+      .hero { overflow: hidden; }
+      .hero-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+        gap: 2rem 3rem;
+        align-items: center;
+        min-height: min(88vh, 56rem);
+        padding-block: 3rem;
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(3rem, 8.5vw, 6.2rem);
+        font-weight: 880;
+        line-height: 0.98;
+        letter-spacing: -0.028em;
+      }
+      .role {
+        margin: 0.7rem 0 1.6rem;
+        font-size: clamp(1.05rem, 2vw, 1.35rem);
+        font-weight: 650;
+        color: var(--p-accent);
+      }
+      .value {
+        margin: 0 0 2rem;
+        font-size: 1.1rem;
+        max-width: 30rem;
+        color: var(--p-ink);
+      }
+      .value .support {
+        display: block;
+        margin-top: 0.7rem;
+        font-size: 0.95rem;
+        color: var(--p-muted);
+      }
+      .to-work {
+        display: inline-block;
+        font: 700 0.95rem/1 var(--p-font);
+        color: var(--p-ink);
+        text-decoration: none;
+        border: 2px solid var(--p-ink);
+        border-radius: 999px;
+        padding: 0.85rem 1.4rem;
+      }
+      .to-work:hover { background: var(--p-ink); color: var(--p-paper); }
+      .to-work:focus-visible { outline: 3px solid var(--p-accent); outline-offset: 3px; }
+
+      .hero-art { position: relative; height: min(70vh, 44rem); }
+      .phone {
+        position: absolute;
+        border-radius: 26px;
+        overflow: hidden;
+        box-shadow: 0 30px 70px rgba(33, 29, 24, 0.3);
+        border: 6px solid #211d18;
+        background: #211d18;
+      }
+      .phone img { display: block; width: 100%; height: auto; }
+      .phone-front { width: min(62%, 21rem); right: 8%; top: 4%; z-index: 2; }
+      .phone-back { width: min(52%, 17rem); left: 0; bottom: 0; opacity: 0.92; }
+
+      /* ---------- PLATES ---------- */
+      .plate { padding: 5.5rem 0 5rem; }
+      .plate h2 {
+        margin: 0 0 1.1rem;
+        font-size: clamp(1.9rem, 4.4vw, 3.1rem);
+        font-weight: 830;
+        line-height: 1.06;
+        letter-spacing: -0.022em;
+        max-width: 22ch;
+        text-wrap: balance;
+      }
+      .plate-intro {
+        margin: 0 0 2.6rem;
+        font-size: 1.06rem;
+        max-width: 42rem;
+      }
+      .plate-intro b { font-weight: 700; }
+      .open {
+        display: inline-block;
+        margin-top: 2.4rem;
+        font-weight: 750;
+        font-size: 1rem;
+        text-decoration: none;
+        border-bottom: 2px solid currentColor;
+        padding-bottom: 0.15rem;
+      }
+
+      /* Finderly atmosphere */
+      .plate-finderly {
+        background:
+          radial-gradient(60% 50% at 80% 0%, rgba(155, 0, 255, 0.16), transparent 70%),
+          #171420;
+        color: #efeaf6;
+        --p-muted: #a79fc0;
+        --p-line: #3a3352;
+        --p-accent: #d9b8ff;
+        --p-accent-ink: #211d3a;
+      }
+      .plate-finderly .kicker { color: #a79fc0; }
+      .plate-finderly .open { color: #d9b8ff; }
+
+      .plate-compare {
+        display: grid;
+        grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+        gap: 2.5rem 3.5rem;
+        align-items: start;
+      }
+      .plate-compare > :global(.cmp) { max-width: 30rem; }
+      .notes {
+        margin: 0.4rem 0 0;
+        padding-left: 1.2rem;
+        font-size: 0.98rem;
+        line-height: 1.6;
+      }
+      .notes li { margin-bottom: 1rem; }
+      .notes b { font-weight: 700; }
+
+      .strip {
+        margin-top: 3rem;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.2rem;
+        max-width: 46rem;
+      }
+      .strip figure { margin: 0; }
+      .strip img { width: 100%; height: auto; border-radius: 14px; }
+      .strip figcaption {
+        margin-top: 0.5rem;
+        font-size: max(0.82rem, 13px);
+        color: var(--p-muted);
+      }
+
+      /* interlude */
+      .interlude {
+        background: #211d18;
+        color: #cfc8bb;
+        padding: 2.2rem 0;
+      }
+      .interlude p {
+        margin: 0;
+        font-size: 1.05rem;
+        font-weight: 550;
+        max-width: 40rem;
+      }
+
+      /* Asteri atmosphere */
+      .plate-asteri {
+        background:
+          linear-gradient(rgba(240, 244, 250, 0.045) 1px, transparent 1px) 0 0 / 100% 44px,
+          linear-gradient(90deg, rgba(240, 244, 250, 0.045) 1px, transparent 1px) 0 0 / 44px 100%,
+          #131619;
+        color: #e8ecef;
+        --p-muted: #93a0ab;
+        --p-line: #2c343c;
+        --p-accent: #f0a43c;
+        --p-accent-ink: #131619;
+        /* the shared diagram consumes these globals; scope them to this plate */
+        --color-bg-subtle: #1b2026;
+        --color-border: #2c343c;
+        --color-text: #e8ecef;
+        --color-text-muted: #93a0ab;
+        --color-data: #f0a43c;
+        --font-body: var(--p-font);
+      }
+      .plate-asteri .kicker { color: #93a0ab; }
+      .plate-asteri .open { color: #f0a43c; }
+
+      .asteri-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+        gap: 2.5rem 3.5rem;
+        align-items: start;
+      }
+      .diagram { margin: 0; }
+      .diagram :global(svg) { width: 100%; height: auto; }
+      .diagram figcaption {
+        margin-top: 0.7rem;
+        font-size: max(0.85rem, 13px);
+        color: var(--p-muted);
+      }
+
+      .code-toggle { border: 1px solid var(--p-line); border-radius: 14px; padding: 1.1rem 1.2rem; }
+      .ct-buttons { display: flex; gap: 0.5rem; margin-bottom: 0.9rem; }
+      .ct-buttons button {
+        font: 600 max(0.74rem, 12px) / 1 var(--p-mono);
+        letter-spacing: 0.06em;
+        background: none;
+        border: 1px solid var(--p-line);
+        border-radius: 999px;
+        color: var(--p-muted);
+        padding: 0.5rem 0.9rem;
+        cursor: pointer;
+      }
+      .ct-buttons button[aria-selected='true'] {
+        background: var(--p-accent);
+        border-color: var(--p-accent);
+        color: var(--p-accent-ink);
+      }
+      .ct-buttons button:focus-visible { outline: 2px solid var(--p-accent); outline-offset: 2px; }
+      .code-toggle pre {
+        margin: 0;
+        overflow-x: auto;
+        font: 0.85rem/1.6 var(--p-mono);
+        color: #e8ecef;
+      }
+      .code-toggle:not(.js) #ct-after { display: block !important; }
+      .code-toggle:not(.js) #ct-after[hidden] { display: block !important; }
+      .ct-note { margin: 0.9rem 0 0; font-size: max(0.85rem, 13px); color: var(--p-muted); }
+
+      /* ---------- MOBILE ---------- */
+      @media (max-width: 900px) {
+        .hero-grid { grid-template-columns: 1fr; min-height: 0; padding-block: 2.4rem 1rem; }
+        .hero-art { height: auto; display: grid; grid-template-columns: 1.2fr 1fr; gap: 1rem; margin-top: 1.5rem; }
+        .phone { position: static; }
+        .phone-front, .phone-back { width: 100%; }
+        .plate-compare, .asteri-grid { grid-template-columns: 1fr; }
+        .plate-compare > :global(.cmp) { max-width: 26rem; margin-inline: auto; }
+        .strip { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.7rem; }
+        .strip figcaption { font-size: max(0.78rem, 12px); }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+      }
+    </style>
+  </body>
+</html>
