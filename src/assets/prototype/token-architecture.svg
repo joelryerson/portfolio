@@ -1,0 +1,42 @@
+<svg viewBox="0 0 720 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pta-title" style="font-family: var(--font-body, system-ui, sans-serif); max-width: 100%; height: auto;">
+  <title id="pta-title">Token architecture: primitives feed semantic tokens, which flow to CSS Modules and the Ant Design theme, so migrated surfaces consume one source of truth.</title>
+  <defs>
+    <marker id="pta-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0.5 0.5 L7.5 4 L0.5 7.5 Z" fill="var(--color-text-muted, #71717a)" />
+    </marker>
+  </defs>
+
+  <!-- Primitives -->
+  <rect x="200" y="16" width="320" height="72" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-border, #d4d4d8)" />
+  <text x="360" y="44" text-anchor="middle" font-size="14" font-weight="600" fill="var(--color-text, #18181b)">Primitives</text>
+  <text x="360" y="66" text-anchor="middle" font-size="11" fill="var(--color-text-muted, #71717a)">color ramps · type scale · spacing · radius · motion</text>
+
+  <line x1="360" y1="88" x2="360" y2="122" stroke="var(--color-text-muted, #71717a)" marker-end="url(#pta-arr)" />
+
+  <!-- Semantic tokens -->
+  <rect x="200" y="128" width="320" height="72" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-data, #2f6fed)" stroke-width="1.5" />
+  <text x="360" y="156" text-anchor="middle" font-size="14" font-weight="600" fill="var(--color-text, #18181b)">Semantic tokens</text>
+  <text x="360" y="178" text-anchor="middle" font-size="11" fill="var(--color-text-muted, #71717a)">surface · text · border · interaction states</text>
+
+  <line x1="360" y1="200" x2="202" y2="234" stroke="var(--color-text-muted, #71717a)" marker-end="url(#pta-arr)" />
+  <line x1="360" y1="200" x2="518" y2="234" stroke="var(--color-text-muted, #71717a)" marker-end="url(#pta-arr)" />
+
+  <!-- Consumers -->
+  <rect x="60" y="240" width="280" height="76" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-border, #d4d4d8)" />
+  <text x="200" y="268" text-anchor="middle" font-size="13" font-weight="600" fill="var(--color-text, #18181b)">Generated CSS variables</text>
+  <text x="200" y="287" text-anchor="middle" font-size="11" fill="var(--color-text-muted, #71717a)">consumed by CSS Modules</text>
+  <text x="200" y="302" text-anchor="middle" font-size="11" fill="var(--color-text-muted, #71717a)">and custom React components</text>
+
+  <rect x="380" y="240" width="280" height="76" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-border, #d4d4d8)" />
+  <text x="520" y="268" text-anchor="middle" font-size="13" font-weight="600" fill="var(--color-text, #18181b)">Ant Design theme mapping</text>
+  <text x="520" y="287" text-anchor="middle" font-size="11" fill="var(--color-text-muted, #71717a)">built-in components inherit</text>
+  <text x="520" y="302" text-anchor="middle" font-size="11" fill="var(--color-text-muted, #71717a)">tokens automatically</text>
+
+  <line x1="200" y1="316" x2="200" y2="352" stroke="var(--color-text-muted, #71717a)" marker-end="url(#pta-arr)" />
+  <line x1="520" y1="316" x2="520" y2="352" stroke="var(--color-text-muted, #71717a)" marker-end="url(#pta-arr)" />
+
+  <!-- Product UI -->
+  <rect x="60" y="358" width="600" height="64" rx="8" fill="var(--color-bg-subtle, #f4f4f5)" stroke="var(--color-border, #d4d4d8)" />
+  <text x="360" y="384" text-anchor="middle" font-size="13" font-weight="600" fill="var(--color-text, #18181b)">Migrated surfaces</text>
+  <text x="360" y="404" text-anchor="middle" font-size="11" fill="var(--color-text-muted, #71717a)">one source of truth: change a token once, every connected surface updates</text>
+</svg>

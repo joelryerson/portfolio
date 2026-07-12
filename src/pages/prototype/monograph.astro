@@ -6,9 +6,9 @@
  */
 import { Image } from 'astro:assets';
 import CompareSlider from '../../components/prototype/CompareSlider.astro';
-import TokenArchitecture from '../../assets/asteri/token-architecture.svg';
+import TokenArchitecture from '../../assets/prototype/token-architecture.svg';
 
-import beforeProjects from '../../assets/prototype/finderly-before-projects.webp';
+import earlierLanding from '../../assets/prototype/finderly-earlier-landing.webp';
 import homeLight from '../../assets/finderly/shots/home-light.webp';
 import homeDark from '../../assets/finderly/shots/home-dark.webp';
 import captureShot from '../../assets/finderly/shots/capture.webp';
@@ -38,7 +38,7 @@ import liveVideoShot from '../../assets/finderly/shots/live-video.webp';
           <h1>Joel Ryerson</h1>
           <p class="role">Product Designer &amp; Design Engineer</p>
           <p class="value">
-            I make the product, UX, and UI decisions, and I carry them into production.
+            I make product, UX, and UI decisions, and carry them into production.
             <span class="support">The mock is approved. The build ships. Something gets lost in between.</span>
           </p>
           <a class="to-work" href="#work">Selected work ↓</a>
@@ -59,17 +59,18 @@ import liveVideoShot from '../../assets/finderly/shots/live-video.webp';
           Finderly diagnoses home repairs: show it the problem, get guidance, fix it yourself
           or hand it to a pro. I helped create the earlier versions, then led a one-month
           overhaul across navigation, screen structure, and the visual system. The central
-          decision: <b>a repair starts with a broken thing, so the app now starts with the camera.</b>
+          decision: <b>the earlier experience opened on project management; the overhaul made
+          starting a repair primary, with recent work kept nearby.</b>
         </p>
 
         <div class="plate-compare">
           <CompareSlider
-            before={beforeProjects}
+            before={earlierLanding}
             after={homeLight}
-            beforeAlt="Earlier Finderly design: the app opened on a searchable list of past projects"
+            beforeAlt="Screenshot of the earlier Finderly app: the landing screen opened on project management, a searchable projects list"
             afterAlt="Shipped Finderly home: a Start-a-fix capture hero, recent projects rail, and honest navigation dock"
-            beforeLabel="Earlier design"
-            afterLabel="Shipped · 2026"
+            beforeLabel="Earlier landing model"
+            afterLabel="Shipped home · 2026"
             annotations={[
               { x: 50, y: 22, n: 1 },
               { x: 78, y: 58, n: 2 },
@@ -77,10 +78,11 @@ import liveVideoShot from '../../assets/finderly/shots/live-video.webp';
             ]}
           />
           <ol class="notes">
-            <li><b>Starting a fix became the primary action.</b> The old entry was a list of past projects; the overhaul leads with capture, because users arrive holding a broken thing.</li>
-            <li><b>Recent work stays one glance away.</b> A projects rail with status captions derived from real project state, instead of being the whole screen.</li>
-            <li><b>Navigation became honest.</b> A dock of real destinations plus a camera button; Account stopped posing as a tab and moved behind the avatar.</li>
+            <li><b>Starting a repair became primary.</b> The earlier landing opened on project management; the shipped home leads with capture.</li>
+            <li><b>Recent work stays one glance away.</b> A compact rail with status captions derived from real project state, instead of a full-screen list.</li>
+            <li><b>Navigation moved into the open.</b> A hamburger menu became a visible dock of real destinations, with a dedicated camera button.</li>
           </ol>
+          <p class="src-note">Left: screenshot of the earlier app. Right: the shipped 2026 home, demo data.</p>
         </div>
 
         <div class="strip" aria-label="More Finderly screens">
@@ -114,10 +116,11 @@ import liveVideoShot from '../../assets/finderly/shots/live-video.webp';
         <div class="asteri-grid">
           <figure class="diagram">
             <TokenArchitecture />
-            <figcaption>The consolidated architecture: primitives to semantic tokens, one source feeding both styling systems.</figcaption>
+            <figcaption>One foundation feeds both styling systems; each migrated surface shares the same source of truth.</figcaption>
           </figure>
 
           <div class="code-toggle" data-codetoggle>
+            <p class="ct-label">Representative example · neutralized names</p>
             <div class="ct-buttons" role="tablist" aria-label="Code before and after">
               <button role="tab" id="ct-tab-before" aria-selected="true" aria-controls="ct-before">Before</button>
               <button role="tab" id="ct-tab-after" aria-selected="false" aria-controls="ct-after">After</button>
@@ -407,8 +410,23 @@ import liveVideoShot from '../../assets/finderly/shots/live-video.webp';
         border: 1px solid var(--p-line);
         border-radius: 999px;
         color: var(--p-muted);
-        padding: 0.5rem 0.9rem;
+        padding: 0 0.95rem;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
         cursor: pointer;
+      }
+      .ct-label {
+        margin: 0 0 0.7rem;
+        font: 600 max(0.7rem, 12px) / 1.4 var(--p-mono);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--p-muted);
+      }
+      .src-note {
+        margin: 1.2rem 0 0;
+        font-size: max(0.82rem, 13px);
+        color: var(--p-muted);
       }
       .ct-buttons button[aria-selected='true'] {
         background: var(--p-accent);
