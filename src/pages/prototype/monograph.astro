@@ -5,8 +5,10 @@
  * Touches no global layout, styles, or production routes. noindex.
  */
 import { Image } from 'astro:assets';
+import CompareSlider from '../../components/prototype/CompareSlider.astro';
 import TokenArchitecture from '../../assets/prototype/token-architecture.svg';
 
+import formerHome from '../../assets/prototype/finderly-former-home-light.webp';
 import homeLight from '../../assets/finderly/shots/home-light.webp';
 import homeDark from '../../assets/finderly/shots/home-dark.webp';
 import captureShot from '../../assets/finderly/shots/capture.webp';
@@ -62,20 +64,25 @@ import liveVideoShot from '../../assets/finderly/shots/live-video.webp';
         </p>
 
         <div class="plate-compare">
-          <figure class="feature">
-            <div class="feature-frame">
-              <Image src={homeLight} alt="Shipped Finderly home: a Start-a-fix capture hero, recent projects rail, and a navigation dock with a dedicated camera button" widths={[480, 800]} sizes="(max-width: 700px) 86vw, 400px" />
-              <span class="pin" style="left:50%; top:22%;">1</span>
-              <span class="pin" style="left:78%; top:58%;">2</span>
-              <span class="pin" style="left:50%; top:92%;">3</span>
-            </div>
-          </figure>
+          <CompareSlider
+            before={formerHome}
+            after={homeLight}
+            beforeAlt="The former Finderly home: a chat-style prompt bar reading Ask Finderly about your project, above a static promo card, with a hamburger menu"
+            afterAlt="Shipped Finderly home: a What-needs-fixing capture hero, recent projects rail, and a navigation dock with a dedicated camera button"
+            beforeLabel="Former home"
+            afterLabel="Shipped home · 2026"
+            annotations={[
+              { x: 50, y: 22, n: 1 },
+              { x: 78, y: 58, n: 2 },
+              { x: 50, y: 92, n: 3 },
+            ]}
+          />
           <ol class="notes">
-            <li><b>The home leads with capture.</b> "What needs fixing?" starts a repair with the camera one tap away.</li>
-            <li><b>Recent work stays one glance away.</b> A compact rail with status captions derived from real project state.</li>
-            <li><b>Navigation is honest.</b> A dock of real destinations plus a camera button; Account lives behind the avatar instead of posing as a tab.</li>
+            <li><b>Starting a repair became primary.</b> The former home opened on a prompt bar and promo cards; the shipped home leads with capture, the camera one tap away.</li>
+            <li><b>The home now shows your work.</b> Static marketing cards gave way to a recents rail with status captions derived from real project state.</li>
+            <li><b>Navigation moved into the open.</b> A hamburger menu became a visible dock of real destinations plus a camera button.</li>
           </ol>
-          <p class="src-note">Shipped 2026 home, demo data. A before/after comparison returns here once an authentic pre-overhaul home capture exists.</p>
+          <p class="src-note">Left: the former home, from a screen recording of the app before the overhaul. Right: the shipped 2026 home, demo data.</p>
         </div>
 
         <div class="strip" aria-label="More Finderly screens">
@@ -320,18 +327,7 @@ import liveVideoShot from '../../assets/finderly/shots/live-video.webp';
         gap: 2.5rem 3.5rem;
         align-items: start;
       }
-      .feature { margin: 0; max-width: 26rem; }
-      .feature-frame { position: relative; border-radius: 18px; overflow: hidden; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35); }
-      .feature-frame img { display: block; width: 100%; height: auto; }
-      .pin {
-        position: absolute;
-        width: 1.6rem; height: 1.6rem; border-radius: 50%;
-        background: var(--p-accent); color: var(--p-accent-ink);
-        display: grid; place-items: center;
-        font: 700 0.8rem/1 var(--p-mono);
-        transform: translate(-50%, -50%);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
-      }
+      .plate-compare > :global(.cmp) { max-width: 30rem; }
       .notes {
         margin: 0.4rem 0 0;
         padding-left: 1.2rem;
@@ -455,7 +451,7 @@ import liveVideoShot from '../../assets/finderly/shots/live-video.webp';
         .phone { position: static; }
         .phone-front, .phone-back { width: 100%; }
         .plate-compare, .asteri-grid { grid-template-columns: 1fr; }
-        .feature { max-width: 24rem; margin-inline: auto; }
+        .plate-compare > :global(.cmp) { max-width: 26rem; margin-inline: auto; }
         .strip { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.7rem; }
         .strip figcaption { font-size: max(0.78rem, 12px); }
       }
