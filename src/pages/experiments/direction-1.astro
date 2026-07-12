@@ -1,0 +1,762 @@
+---
+/**
+ * EXPERIMENT · Direction 1 · "Look Closer"
+ * Isolated concept route. Standalone shell; nothing here touches production.
+ *
+ * Central idea: the work presented as specimens under examination. The signature
+ * interaction is a detail loupe: numbered markers on real shipped screens open a
+ * magnified crop beside the image with the observation behind that decision.
+ * No-JS default: the observations render as a plain numbered list.
+ */
+import { Image } from 'astro:assets';
+
+import homeLight from '../../assets/finderly/shots/home-light.webp';
+import captureShot from '../../assets/finderly/shots/capture.webp';
+import unitShot from '../../assets/experiments/startupos-unit.webp';
+import wizardShot from '../../assets/experiments/startupos-wizard.webp';
+import logoFinal from '../../assets/artparde/logo-final.png';
+
+// marker coords are percentages on the source image; zoom is background-size multiplier
+const finderlyDetails = [
+  {
+    n: 1,
+    x: 50,
+    y: 21,
+    zoom: 2.1,
+    label: 'The first screen leads with the camera',
+    note: 'No "ask me anything" box. Repair problems are physical, so capture gets the hero: "What needs fixing?" starts a fix with the camera one tap away.',
+  },
+  {
+    n: 2,
+    x: 30,
+    y: 56,
+    zoom: 2.2,
+    label: 'Recents carry real state',
+    note: 'Recent projects ride in a compact rail with captions derived from real project state, so the home screen shows your work, not marketing.',
+  },
+  {
+    n: 3,
+    x: 55,
+    y: 93,
+    zoom: 2.2,
+    label: 'Navigation stopped lying',
+    note: 'A dock of real destinations plus a dedicated camera button. Account stopped pretending to be a tab and moved behind the avatar.',
+  },
+];
+
+const startupDetails = [
+  {
+    n: 1,
+    x: 24,
+    y: 18,
+    zoom: 2.0,
+    label: 'One template, five iterations',
+    note: 'Every learning unit inherited this one template. When executive direction changed, the change landed in one place and propagated everywhere.',
+  },
+  {
+    n: 2,
+    x: 50,
+    y: 82,
+    zoom: 2.0,
+    label: 'The path carries the pedagogy',
+    note: 'Units are sequenced by dependency, so each one prepares founders for the next. Sequencing did work that bespoke design would have re-done per unit.',
+  },
+];
+
+const wizardDetail = {
+  n: 3,
+  label: 'One decision per screen',
+  note: 'Lean-startup method for overwhelmed non-experts: the validation experiment runs as a wizard, one decision per screen, with a review step before committing.',
+};
+
+const artpardeDetails = [
+  {
+    n: 1,
+    x: 30,
+    y: 50,
+    zoom: 2.4,
+    label: 'Every letter its own shape',
+    note: 'Like every act on the bill. Concepts explored partly with image models, then the final wordmark vectorized letter by letter. Machine breadth, human finish.',
+  },
+  {
+    n: 2,
+    x: 56,
+    y: 43,
+    zoom: 3.2,
+    label: 'Borrowed diacritics',
+    note: 'The umlaut and macron are decoration by theft, on purpose: a come-as-you-are wink instead of institutional polish.',
+  },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Direction 1 · Look Closer — Joel Ryerson</title>
+    <link rel="preload" href="/fonts/x/cabinet.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/x/generalsans.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+
+  <body>
+    <p class="ribbon" role="note">
+      Experiment · Direction 1 of 3 · “Look Closer” · not production ·
+      <a href="/experiments/direction-2/">Direction 2</a> ·
+      <a href="/experiments/direction-3/">Direction 3</a>
+    </p>
+
+    <header class="top">
+      <a class="wordmark" href="#top">Joel&nbsp;Ryerson</a>
+      <nav aria-label="Specimens">
+        <a href="#finderly"><span class="idx">01</span> Finderly</a>
+        <a href="#asteri"><span class="idx">02</span> Asteri</a>
+        <a href="#startupos"><span class="idx">03</span> StartupOS</a>
+        <a href="#artparde"><span class="idx">04</span> ArtPärdē</a>
+      </nav>
+      <a class="contact-link" href="#contact">Contact</a>
+    </header>
+
+    <main id="top">
+      <!-- ============ HERO ============ -->
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="kicker">Product designer &amp; design engineer · East Bay, CA · available July 2026</p>
+          <h1>Look closer.</h1>
+          <p class="lede">
+            Four shipped products, examined at the level where quality is decided.
+            I make product, UX, and UI decisions, and carry them into production.
+            The details are load-bearing; go ahead and magnify them.
+          </p>
+          <p class="hero-cta"><a href="#finderly">Begin with specimen 01 ↓</a></p>
+        </div>
+        <figure class="hero-loupe" aria-hidden="false">
+          <div
+            class="hero-glass"
+            role="img"
+            aria-label="Magnified detail of the Finderly home screen: the capture card that asks What needs fixing"
+            style={`background-image:url(${homeLight.src});`}
+          >
+          </div>
+          <figcaption>
+            Finderly, shipped July 2026.<br />Detail: the first screen leads with the camera.
+          </figcaption>
+        </figure>
+      </section>
+
+      <!-- ============ 01 FINDERLY ============ -->
+      <section class="spec" id="finderly" aria-labelledby="finderly-h">
+        <header class="spec-head">
+          <span class="spec-num" aria-hidden="true">01</span>
+          <div>
+            <h2 id="finderly-h">Finderly</h2>
+            <p class="spec-meta">AI home-repair app · AI Vision Technologies · Design Engineer · 2026 · iOS, Android, web</p>
+          </div>
+        </header>
+
+        <div class="spec-body flip">
+          <figure class="stage" data-loupe data-img={homeLight.src} data-w={homeLight.width} data-h={homeLight.height}>
+            <div class="stage-frame phone">
+              <Image
+                src={homeLight}
+                alt="Finderly home screen: capture hero asking What needs fixing, recent projects rail, navigation dock with camera button"
+                widths={[480, 760]}
+                sizes="(max-width: 900px) 90vw, 400px"
+              />
+              {finderlyDetails.map((d) => (
+                <button
+                  class="marker"
+                  type="button"
+                  style={`left:${d.x}%; top:${d.y}%;`}
+                  data-x={d.x}
+                  data-y={d.y}
+                  data-zoom={d.zoom}
+                  data-note={`${d.label}. ${d.note}`}
+                  aria-label={`Detail ${d.n}: ${d.label}`}
+                  aria-pressed="false"
+                >{d.n}</button>
+              ))}
+            </div>
+          </figure>
+
+          <div class="reading">
+            <p class="decision">
+              The call: <strong>media-first, not chat-first.</strong> In 2026 every AI product opens
+              on a text box. Finderly’s problems are physical, and the fastest way to describe a
+              leaking valve is to point a camera at it.
+            </p>
+            <p class="scope">
+              I helped create the earlier versions, then led a one-month, product-wide overhaul:
+              379 commits across 303 files, color system to camera to the server’s feedback endpoints.
+            </p>
+            <div class="lens" aria-live="polite">
+              <div class="lens-glass" hidden></div>
+              <ol class="lens-notes">
+                {finderlyDetails.map((d) => (
+                  <li>
+                    <b>{d.label}.</b> {d.note}
+                  </li>
+                ))}
+              </ol>
+            </div>
+            <a class="case-link" href="/work/finderly/">Read the Finderly case study →</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 02 ASTERI ============ -->
+      <section class="spec" id="asteri" aria-labelledby="asteri-h">
+        <header class="spec-head">
+          <span class="spec-num" aria-hidden="true">02</span>
+          <div>
+            <h2 id="asteri-h">Asteri AI</h2>
+            <p class="spec-meta">Work-intelligence platform · seed-stage startup · Design Engineer · six-week engagement · 2026</p>
+          </div>
+        </header>
+
+        <div class="spec-body">
+          <div class="reading">
+            <p class="decision">
+              The call: <strong>token infrastructure first, appearance unchanged on purpose.</strong>
+              The brief said improve the product experience; the audit found systemic UI
+              inconsistency. Restyled screens would have drifted right back.
+            </p>
+            <p class="scope">
+              Pitched to leadership as maintenance cost and regression risk, not CSS. Six weeks
+              later the company had its first design system in production and an engineering team
+              continuing the rollout without me.
+            </p>
+            <a class="case-link" href="/work/asteri/">Read the Asteri case study →</a>
+          </div>
+
+          <figure class="stage twins">
+            <p class="twins-title">The same dashboard card, before and after migration. Spot the difference.</p>
+            <div class="twin-row">
+              <div class="twin">
+                <div class="stat-card">
+                  <span class="stat-label">Active studies</span>
+                  <span class="stat-value">128</span>
+                </div>
+                <pre aria-label="Before: inline styles"><code>&lt;div style=&#123;&#123;
+  background: '#f7f8fa',
+  borderRadius: 8,
+  padding: 16 &#125;&#125;&gt;</code></pre>
+                <p class="twin-tag">Before · inline styles, restated per file</p>
+              </div>
+              <div class="twin">
+                <div class="stat-card">
+                  <span class="stat-label">Active studies</span>
+                  <span class="stat-value">128</span>
+                </div>
+                <pre aria-label="After: semantic tokens"><code>.statCard &#123;
+  background: var(--surface-raised);
+  border-radius: var(--radius-card);
+  padding: var(--space-inset); &#125;</code></pre>
+                <p class="twin-tag">After · semantic tokens, one source of truth</p>
+              </div>
+            </div>
+            <figcaption>
+              Zero visual diff was the feature: it made the migration reviewable, testable, and
+              boring, which is what you want from infrastructure. Representative example, neutralized names.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ============ 03 STARTUPOS ============ -->
+      <section class="spec" id="startupos" aria-labelledby="startupos-h">
+        <header class="spec-head">
+          <span class="spec-num" aria-hidden="true">03</span>
+          <div>
+            <h2 id="startupos-h">StartupOS</h2>
+            <p class="spec-meta">Founder-education platform · Product Designer · MVP in five months · 2022</p>
+          </div>
+        </header>
+
+        <div class="spec-body flip wide">
+          <figure class="stage" data-loupe data-img={unitShot.src} data-w={unitShot.width} data-h={unitShot.height}>
+            <div class="stage-frame desktop">
+              <Image
+                src={unitShot}
+                alt="StartupOS learning unit template: hero header, overview with time and difficulty, video, contents accordion"
+                widths={[640, 1100]}
+                sizes="(max-width: 900px) 92vw, 560px"
+              />
+              {startupDetails.map((d) => (
+                <button
+                  class="marker"
+                  type="button"
+                  style={`left:${d.x}%; top:${d.y}%;`}
+                  data-x={d.x}
+                  data-y={d.y}
+                  data-zoom={d.zoom}
+                  data-note={`${d.label}. ${d.note}`}
+                  aria-label={`Detail ${d.n}: ${d.label}`}
+                  aria-pressed="false"
+                >{d.n}</button>
+              ))}
+            </div>
+            <div class="stage-frame desktop inset">
+              <Image
+                src={wizardShot}
+                alt="StartupOS Problem-Solution Fit wizard with experiments list"
+                widths={[480, 800]}
+                sizes="(max-width: 900px) 70vw, 340px"
+              />
+            </div>
+          </figure>
+
+          <div class="reading">
+            <p class="decision">
+              The call: <strong>one reusable learning-unit template instead of bespoke unit
+              designs.</strong> Five months, a small team, direction that liked to change. Bespoke
+              would have bought three beautiful units and an apology.
+            </p>
+            <p class="scope">
+              One designer, every surface, copy included. The template went through five
+              iterations against user feedback; the MVP shipped inside the clock and Demo Day
+              feedback validated the platform. Clearly dated work; the instinct aged well.
+            </p>
+            <div class="lens" aria-live="polite">
+              <div class="lens-glass" hidden></div>
+              <ol class="lens-notes">
+                {startupDetails.map((d) => (
+                  <li>
+                    <b>{d.label}.</b> {d.note}
+                  </li>
+                ))}
+                <li>
+                  <b>{wizardDetail.label}.</b> {wizardDetail.note}
+                </li>
+              </ol>
+            </div>
+            <a class="case-link" href="/work/startup-platform/">Read the StartupOS case study →</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 04 ARTPARDE ============ -->
+      <section class="spec" id="artparde" aria-labelledby="artparde-h">
+        <header class="spec-head">
+          <span class="spec-num" aria-hidden="true">04</span>
+          <div>
+            <h2 id="artparde-h">ArtPärdē</h2>
+            <p class="spec-meta">Performing-arts non-profit, San Francisco · Brand &amp; web · 2024, ongoing</p>
+          </div>
+        </header>
+
+        <div class="spec-body">
+          <div class="reading">
+            <p class="decision">
+              The call: <strong>knowing when not to write custom code.</strong> Volunteer-run,
+              near-zero budget, content that changes in bursts. Custom code would have been for me,
+              not for them.
+            </p>
+            <p class="scope">
+              Webflow runs the site; ticketing and donations go through Zeffy because it takes zero
+              platform fees, and a non-profit this size feels every point. The craft budget went to
+              the brand. Two years on, nothing has needed rescuing.
+            </p>
+            <div class="lens" aria-live="polite">
+              <div class="lens-glass" hidden></div>
+              <ol class="lens-notes">
+                {artpardeDetails.map((d) => (
+                  <li>
+                    <b>{d.label}.</b> {d.note}
+                  </li>
+                ))}
+              </ol>
+            </div>
+            <a class="case-link" href="/work/artparde/">Read the ArtPärdē case study →</a>
+          </div>
+
+          <figure class="stage" data-loupe data-img={logoFinal.src} data-w={logoFinal.width} data-h={logoFinal.height}>
+            <div class="stage-frame plate">
+              <Image
+                src={logoFinal}
+                alt="ArtPärdē logo: hand-drawn multicolor letterforms inside a sunburst circle on black"
+                widths={[480, 800]}
+                sizes="(max-width: 900px) 88vw, 440px"
+              />
+              {artpardeDetails.map((d) => (
+                <button
+                  class="marker"
+                  type="button"
+                  style={`left:${d.x}%; top:${d.y}%;`}
+                  data-x={d.x}
+                  data-y={d.y}
+                  data-zoom={d.zoom}
+                  data-note={`${d.label}. ${d.note}`}
+                  aria-label={`Detail ${d.n}: ${d.label}`}
+                  aria-pressed="false"
+                >{d.n}</button>
+              ))}
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ============ CONTACT ============ -->
+      <footer class="end" id="contact">
+        <h2>Worth a closer look?</h2>
+        <p>
+          <a class="mail" href="mailto:joelryerson@gmail.com">joelryerson@gmail.com</a>
+        </p>
+        <p class="end-meta">Joel Ryerson · East Bay, CA · available for full-time or contract, July 2026</p>
+      </footer>
+    </main>
+
+    <script>
+      // Loupe: markers reveal a magnified crop + the matching observation.
+      const stages = document.querySelectorAll<HTMLElement>('[data-loupe]');
+      stages.forEach((stage) => {
+        const section = stage.closest('.spec');
+        const lens = section?.querySelector<HTMLElement>('.lens');
+        const glass = lens?.querySelector<HTMLElement>('.lens-glass');
+        const notes = lens ? [...lens.querySelectorAll<HTMLElement>('.lens-notes li')] : [];
+        const markers = [...stage.querySelectorAll<HTMLButtonElement>('.marker')];
+        if (!glass || !markers.length) return;
+        const img = stage.dataset.img!;
+        stage.classList.add('js');
+
+        const select = (m: HTMLButtonElement | null) => {
+          markers.forEach((b) => b.setAttribute('aria-pressed', String(b === m)));
+          notes.forEach((n, i) => n.classList.toggle('on', m ? markers.indexOf(m) === i : false));
+          if (!m) {
+            glass.hidden = true;
+            return;
+          }
+          const zoom = Number(m.dataset.zoom || 2);
+          glass.hidden = false;
+          glass.style.backgroundImage = `url(${img})`;
+          glass.style.backgroundSize = `${zoom * 100}% auto`;
+          glass.style.backgroundPosition = `${m.dataset.x}% ${m.dataset.y}%`;
+        };
+        markers.forEach((m) => {
+          m.addEventListener('click', () => select(m.getAttribute('aria-pressed') === 'true' ? null : m));
+        });
+        select(markers[0]);
+      });
+
+      // Scrollspy for the specimen nav
+      const links = [...document.querySelectorAll<HTMLAnchorElement>('.top nav a')];
+      const spy = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (!e.isIntersecting) return;
+            links.forEach((l) => l.classList.toggle('here', l.hash === '#' + e.target.id));
+          });
+        },
+        { rootMargin: '-40% 0px -55% 0px' }
+      );
+      document.querySelectorAll('.spec').forEach((s) => spy.observe(s));
+    </script>
+
+    <style>
+      /* ---------- scoped identity: paper, ink, one vermilion ---------- */
+      @font-face {
+        font-family: 'Cabinet X';
+        src: url('/fonts/x/cabinet.woff2') format('woff2');
+        font-weight: 100 1000;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'General X';
+        src: url('/fonts/x/generalsans.woff2') format('woff2');
+        font-weight: 200 700;
+        font-display: swap;
+      }
+
+      :root {
+        --paper: #f6f5f1;
+        --ink: #17150f;
+        --muted: #6e6a5e;
+        --line: #ddd9cc;
+        --accent: #e23b22;
+        --display: 'Cabinet X', system-ui, sans-serif;
+        --text: 'General X', system-ui, sans-serif;
+        color-scheme: light;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        * { transition: none !important; }
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font: 400 max(1.02rem, 16px)/1.62 var(--text);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .ribbon {
+        margin: 0;
+        padding: 0.55rem 1.2rem;
+        background: var(--ink);
+        color: var(--paper);
+        font: 500 max(0.8rem, 13px)/1.4 var(--text);
+        text-align: center;
+      }
+      .ribbon a { color: inherit; }
+
+      /* ---------- header ---------- */
+      .top {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        padding: 0.85rem clamp(1.2rem, 4vw, 3rem);
+        background: color-mix(in srgb, var(--paper) 92%, transparent);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid var(--line);
+      }
+      .wordmark {
+        font: 800 1.05rem/1 var(--display);
+        color: var(--ink);
+        text-decoration: none;
+        letter-spacing: 0.01em;
+      }
+      .top nav {
+        display: flex;
+        gap: 1.4rem;
+        margin-inline: auto;
+        flex-wrap: wrap;
+      }
+      .top nav a, .contact-link {
+        font: 500 max(0.88rem, 14px)/1 var(--text);
+        color: var(--muted);
+        text-decoration: none;
+        padding: 0.5rem 0;
+      }
+      .top nav a .idx { color: var(--accent); font-weight: 700; margin-right: 0.25em; }
+      .top nav a.here { color: var(--ink); box-shadow: 0 2px 0 var(--accent); }
+      .top nav a:hover, .contact-link:hover { color: var(--ink); }
+      .contact-link { border: 1px solid var(--line); border-radius: 999px; padding: 0.5rem 1.05rem; }
+
+      /* ---------- hero ---------- */
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+        gap: clamp(2rem, 5vw, 4rem);
+        align-items: center;
+        padding: clamp(3rem, 8vh, 6rem) clamp(1.2rem, 4vw, 3rem) clamp(3rem, 7vh, 5rem);
+        max-width: 78rem;
+        margin-inline: auto;
+      }
+      .kicker {
+        font: 600 max(0.88rem, 14px)/1.5 var(--text);
+        color: var(--muted);
+        margin: 0 0 1.2rem;
+      }
+      h1 {
+        font: 900 clamp(3.4rem, 9vw, 7rem)/0.95 var(--display);
+        letter-spacing: -0.02em;
+        margin: 0 0 1.4rem;
+      }
+      .lede { max-width: 34rem; font-size: max(1.12rem, 17px); margin: 0 0 1.6rem; }
+      .hero-cta a { color: var(--accent); font-weight: 600; text-decoration: none; }
+      .hero-cta a:hover { text-decoration: underline; }
+
+      .hero-loupe { margin: 0; justify-self: center; text-align: center; }
+      .hero-glass {
+        width: clamp(240px, 26vw, 340px);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        border: 1px solid var(--ink);
+        box-shadow: 0 0 0 6px var(--paper), 0 0 0 7px var(--line), 0 30px 50px rgba(23, 21, 15, 0.15);
+        background-size: 250% auto;
+        background-position: 50% 24%;
+        background-color: #fff;
+      }
+      .hero-loupe figcaption {
+        margin-top: 1.1rem;
+        font: 500 max(0.85rem, 13px)/1.5 var(--text);
+        color: var(--muted);
+      }
+
+      /* ---------- specimens ---------- */
+      .spec {
+        border-top: 1px solid var(--line);
+        padding: clamp(2.5rem, 6vh, 4.5rem) clamp(1.2rem, 4vw, 3rem);
+        max-width: 78rem;
+        margin-inline: auto;
+        scroll-margin-top: 4.2rem;
+      }
+      .spec-head {
+        display: flex;
+        align-items: baseline;
+        gap: 1.4rem;
+        margin-bottom: clamp(1.8rem, 4vh, 3rem);
+      }
+      .spec-num {
+        font: 900 clamp(3rem, 6vw, 5rem)/1 var(--display);
+        color: transparent;
+        -webkit-text-stroke: 1.5px var(--accent);
+      }
+      .spec h2 { font: 800 clamp(1.9rem, 4vw, 2.8rem)/1.05 var(--display); margin: 0 0 0.35rem; }
+      .spec-meta { font: 500 max(0.9rem, 14px)/1.5 var(--text); color: var(--muted); margin: 0; }
+
+      .spec-body {
+        display: grid;
+        grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+        gap: clamp(2rem, 5vw, 4.5rem);
+        align-items: start;
+      }
+      .spec-body.wide { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+
+      .reading { max-width: 36rem; }
+      .decision { font-size: max(1.15rem, 17px); margin: 0 0 1rem; }
+      .decision strong { background: linear-gradient(transparent 68%, color-mix(in srgb, var(--accent) 26%, transparent) 0); }
+      .scope { color: var(--muted); margin: 0 0 1.6rem; }
+      .case-link {
+        display: inline-block;
+        margin-top: 1.4rem;
+        font-weight: 600;
+        color: var(--ink);
+        text-decoration: none;
+        border-bottom: 2px solid var(--accent);
+        padding-bottom: 2px;
+      }
+      .case-link:hover { color: var(--accent); }
+
+      /* stage + markers */
+      .stage { margin: 0; position: relative; }
+      .stage-frame { position: relative; }
+      .stage-frame img { display: block; width: 100%; height: auto; }
+      .stage-frame.phone {
+        max-width: 400px;
+        margin-inline: auto;
+        border-radius: 26px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        box-shadow: 0 24px 48px rgba(23, 21, 15, 0.14);
+      }
+      .stage-frame.desktop {
+        max-width: 560px;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        box-shadow: 0 20px 44px rgba(23, 21, 15, 0.13);
+      }
+      .stage-frame.desktop.inset {
+        max-width: 340px;
+        margin: -14% 0 0 auto;
+        transform: rotate(0.6deg);
+      }
+      .stage-frame.plate {
+        max-width: 440px;
+        margin-inline: auto;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 24px 48px rgba(23, 21, 15, 0.2);
+      }
+
+      .marker {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: none;
+        background: var(--accent);
+        color: #fff;
+        font: 700 0.85rem/1 var(--text);
+        cursor: pointer;
+        display: none;
+        box-shadow: 0 0 0 3px color-mix(in srgb, #fff 75%, transparent), 0 4px 10px rgba(0, 0, 0, 0.3);
+      }
+      .marker::after { content: ''; position: absolute; inset: -8px; border-radius: 50%; }
+      .stage.js .marker { display: grid; place-items: center; }
+      .marker[aria-pressed='true'] { background: var(--ink); }
+      .marker:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+      /* lens: magnified crop + notes */
+      .lens { border-top: 1px solid var(--line); padding-top: 1.3rem; }
+      .lens-glass {
+        width: min(100%, 320px);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        border: 1px solid var(--ink);
+        box-shadow: 0 0 0 5px var(--paper), 0 0 0 6px var(--line);
+        background-color: #fff;
+        background-repeat: no-repeat;
+        margin-bottom: 1.2rem;
+      }
+      .lens-notes { margin: 0; padding-left: 1.3rem; display: grid; gap: 0.7rem; }
+      .lens-notes li { font-size: max(0.95rem, 15px); color: var(--muted); }
+      .lens-notes li::marker { color: var(--accent); font-weight: 700; }
+      .lens-notes li.on { color: var(--ink); }
+      .lens-notes li b { color: inherit; }
+
+      /* Asteri twins */
+      .twins { max-width: 560px; }
+      .twins-title { font: 600 max(0.95rem, 15px)/1.5 var(--text); margin: 0 0 1rem; }
+      .twin-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+      .stat-card {
+        background: #f7f8fa;
+        border-radius: 8px;
+        padding: 16px;
+        display: grid;
+        gap: 2px;
+        border: 1px solid #e5e7eb;
+      }
+      .stat-label { color: #6b7280; font-size: 13px; font-family: var(--text); }
+      .stat-value { color: #111827; font-size: 24px; font-weight: 600; font-family: var(--text); }
+      .twin pre {
+        margin: 0.8rem 0 0.5rem;
+        padding: 0.8rem;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        font: 400 max(0.72rem, 11.5px)/1.55 ui-monospace, Menlo, monospace;
+        overflow-x: auto;
+      }
+      .twin-tag { font: 600 max(0.8rem, 13px)/1.4 var(--text); color: var(--muted); margin: 0; }
+      .twins figcaption { margin-top: 1.1rem; font: 400 max(0.88rem, 14px)/1.55 var(--text); color: var(--muted); }
+
+      /* flipped sections put the image first visually */
+      @media (min-width: 901px) {
+        .spec-body.flip .stage { order: -1; }
+      }
+
+      /* ---------- contact ---------- */
+      .end {
+        border-top: 1px solid var(--line);
+        text-align: center;
+        padding: clamp(3.5rem, 10vh, 6rem) 1.2rem clamp(3rem, 8vh, 5rem);
+      }
+      .end h2 { font: 900 clamp(2.2rem, 6vw, 4rem)/1 var(--display); margin: 0 0 1.4rem; }
+      .mail {
+        font: 700 clamp(1.15rem, 3vw, 1.6rem)/1 var(--display);
+        color: var(--ink);
+        text-decoration: none;
+        border-bottom: 3px solid var(--accent);
+        padding-bottom: 3px;
+      }
+      .mail:hover { color: var(--accent); }
+      .end-meta { color: var(--muted); font-size: max(0.9rem, 14px); margin-top: 1.6rem; }
+
+      /* ---------- mobile ---------- */
+      @media (max-width: 900px) {
+        .top { gap: 0.9rem; flex-wrap: wrap; padding-block: 0.7rem; }
+        .top nav { order: 3; width: 100%; gap: 1rem; margin: 0; overflow-x: auto; padding-bottom: 0.2rem; }
+        .contact-link { margin-left: auto; }
+        .hero { grid-template-columns: 1fr; padding-top: 2.2rem; }
+        .hero-loupe { justify-self: start; display: flex; align-items: center; gap: 1.2rem; text-align: left; }
+        .hero-glass { width: clamp(150px, 38vw, 220px); }
+        .spec-body, .spec-body.wide { grid-template-columns: 1fr; }
+        .stage-frame.phone { max-width: min(88vw, 360px); margin-inline: 0; }
+        .stage-frame.desktop { max-width: 100%; }
+        .stage-frame.desktop.inset { max-width: 72%; margin-top: -10%; }
+        .stage-frame.plate { margin-inline: 0; max-width: min(88vw, 380px); }
+        .twin-row { grid-template-columns: 1fr; }
+      }
+    </style>
+  </body>
+</html>

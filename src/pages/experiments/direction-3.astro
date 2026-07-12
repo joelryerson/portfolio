@@ -1,0 +1,454 @@
+---
+/**
+ * EXPERIMENT · Direction 3 · "The Through-Line"
+ * Isolated concept route. Standalone shell; nothing here touches production.
+ *
+ * Central idea: one continuous drawn line carries each project from the
+ * judgment call (in Joel's words) to the shipped artifact. Each segment of the
+ * line is labeled with the real time the carry took. The duration pill is a
+ * native <details> toggle: opening it reveals what the carry actually involved.
+ * Motion: the line draws itself on scroll (CSS scroll-driven, motion-safe);
+ * reduced-motion and no-JS get the fully drawn line.
+ */
+import { Image } from 'astro:assets';
+
+import homeDark from '../../assets/finderly/shots/home-dark.webp';
+import wizardShot from '../../assets/experiments/startupos-wizard.webp';
+import logoFinal from '../../assets/artparde/logo-final.png';
+
+const stations = [
+  {
+    id: 'finderly',
+    name: 'Finderly',
+    meta: 'AI home-repair app · AI Vision Technologies · Design Engineer · 2026',
+    call: 'Every AI product opens with a text box. Finderly’s problems are physical. Point the camera instead.',
+    duration: 'carried for one month',
+    carry:
+      '379 commits across 303 files: the home rebuilt around capture, a warm multi-shot camera, honest navigation, and a design system underneath. AI agents built at my direction; the taste, the cuts, and the QA stayed human.',
+    href: '/work/finderly/',
+    shippedCaption: 'Shipped: the home leads with the camera. Demo data, dark theme.',
+  },
+  {
+    id: 'asteri',
+    name: 'Asteri AI',
+    meta: 'Work-intelligence platform · seed-stage startup · Design Engineer · 2026',
+    call: 'Restyling screens would look like progress for six weeks. Tokens first, even if nothing looks different.',
+    duration: 'carried for six weeks',
+    carry:
+      'Pitched to leadership as maintenance cost and regression risk, not CSS; it became the direction in one conversation. Primitives, semantic tokens, and a pilot migration with zero visual diff, shipped to production with the rollout continuing after I left.',
+    href: '/work/asteri/',
+    shippedCaption: 'Shipped: the same dashboard card, before and after. Identical on purpose.',
+  },
+  {
+    id: 'startupos',
+    name: 'StartupOS',
+    meta: 'Founder-education platform · Product Designer · 2022',
+    call: 'Every topic “deserves” bespoke design. Five months say otherwise: one template, and put the craft there.',
+    duration: 'carried for five months',
+    carry:
+      'One designer, every surface, copy included. Five template iterations against user feedback; direction changes landed in one place and propagated everywhere. The MVP shipped inside the clock and Demo Day validated it.',
+    href: '/work/startup-platform/',
+    shippedCaption: 'Shipped: the validation wizard, one decision per screen.',
+  },
+  {
+    id: 'artparde',
+    name: 'ArtPärdē',
+    meta: 'Performing-arts non-profit, San Francisco · Brand & web · 2024, ongoing',
+    call: 'I build custom sites for a living. They needed one a volunteer can run. Put the craft in the brand instead.',
+    duration: 'two years, still holding',
+    carry:
+      'Webflow for content edits, Zeffy for fee-free ticketing and donations, and a wordmark vectorized letter by letter. Updates take minutes; nothing has needed rescuing.',
+    href: '/work/artparde/',
+    shippedCaption: 'Shipped: the mark. Every letter its own shape, like every act on the bill.',
+  },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Direction 3 · The Through-Line — Joel Ryerson</title>
+    <link rel="preload" href="/fonts/x/fraunces.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/x/fraunces-italic.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/x/albertsans.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+
+  <body>
+    <p class="ribbon" role="note">
+      Experiment · Direction 3 of 3 · “The Through-Line” · not production ·
+      <a href="/experiments/direction-1/">Direction 1</a> ·
+      <a href="/experiments/direction-2/">Direction 2</a>
+    </p>
+
+    <header class="top">
+      <a class="wordmark" href="#top">Joel Ryerson</a>
+      <nav aria-label="Stations on the line">
+        {stations.map((s, i) => (
+          <a href={`#${s.id}`}><i aria-hidden="true"></i>{s.name}</a>
+        ))}
+        <a class="last" href="#contact"><i aria-hidden="true"></i>Contact</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <!-- ============ HERO ============ -->
+      <section class="hero">
+        <p class="kicker">Joel Ryerson · product designer &amp; design engineer · East Bay, CA</p>
+        <h1>Ideas don’t ship <br class="wide" />themselves.</h1>
+        <p class="lede">
+          Somebody has to carry them: through the pushback, the constraints, the fifth iteration,
+          all the way into production. Below are four carries, drawn to scale in real time.
+        </p>
+        <svg class="seg hero-seg" viewBox="0 0 120 220" aria-hidden="true" preserveAspectRatio="xMidYMax meet">
+          <path d="M60,6 C 88,50 30,90 56,130 C 76,160 48,190 60,214" pathLength="1"></path>
+        </svg>
+      </section>
+
+      <!-- ============ STATIONS ============ -->
+      {stations.map((s, i) => (
+        <section class="station" id={s.id} aria-labelledby={`${s.id}-h`}>
+          <div class={`row ${i % 2 ? 'swap' : ''}`}>
+            <div class="call">
+              <h2 id={`${s.id}-h`}>{s.name}</h2>
+              <p class="meta">{s.meta}</p>
+              <blockquote class="the-call">
+                <p>“{s.call}”</p>
+                <cite>the call</cite>
+              </blockquote>
+              <a class="case-link" href={s.href}>Read the case study →</a>
+            </div>
+
+            <div class="carry">
+              <svg class="seg" viewBox="0 0 120 260" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+                <path d="M60,0 C 92,40 28,80 54,120 C 74,150 40,200 60,258" pathLength="1"></path>
+              </svg>
+              <details class="pill-wrap">
+                <summary><span class="pill">{s.duration}</span></summary>
+                <p class="carry-note">{s.carry}</p>
+              </details>
+            </div>
+
+            <figure class="shipped">
+              {s.id === 'finderly' && (
+                <div class="frame phone">
+                  <Image src={homeDark} alt="Finderly home screen, dark theme: capture hero, recents rail, navigation dock" widths={[420, 720]} sizes="(max-width: 900px) 80vw, 330px" />
+                </div>
+              )}
+              {s.id === 'asteri' && (
+                <div class="frame cardstack" role="img" aria-label="The same dashboard stat card rendered twice, identical before and after the token migration">
+                  <div class="stat-card"><span>Active studies</span><b>128</b><small>before · inline styles</small></div>
+                  <div class="stat-card"><span>Active studies</span><b>128</b><small>after · semantic tokens</small></div>
+                </div>
+              )}
+              {s.id === 'startupos' && (
+                <div class="frame desktop">
+                  <Image src={wizardShot} alt="StartupOS Problem-Solution Fit wizard with experiments list" widths={[480, 900]} sizes="(max-width: 900px) 88vw, 430px" />
+                </div>
+              )}
+              {s.id === 'artparde' && (
+                <div class="frame plate">
+                  <Image src={logoFinal} alt="ArtPärdē logo: hand-drawn multicolor letterforms in a sunburst circle" widths={[420, 700]} sizes="(max-width: 900px) 76vw, 340px" />
+                </div>
+              )}
+              <figcaption>{s.shippedCaption}</figcaption>
+            </figure>
+          </div>
+
+          {i < stations.length - 1 && (
+            <svg class="seg between" viewBox="0 0 120 160" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+              <path d="M60,0 C 30,40 90,80 62,120 C 50,138 66,150 60,160" pathLength="1"></path>
+            </svg>
+          )}
+        </section>
+      ))}
+
+      <!-- ============ CONTACT ============ -->
+      <footer class="end" id="contact">
+        <svg class="seg end-seg" viewBox="0 0 120 140" aria-hidden="true" preserveAspectRatio="xMidYMin meet">
+          <path d="M60,0 C 84,30 36,60 58,92 C 70,110 52,124 60,136" pathLength="1"></path>
+        </svg>
+        <h2>The line’s open.</h2>
+        <p class="mail-line">
+          <a class="mail" href="mailto:joelryerson@gmail.com">joelryerson@gmail.com</a>
+          <svg class="swash" viewBox="0 0 300 24" aria-hidden="true" preserveAspectRatio="none">
+            <path d="M4,14 C 60,22 130,6 180,12 C 230,18 270,10 296,13"></path>
+          </svg>
+        </p>
+        <p class="end-meta">Available for full-time or contract, July 2026 · East Bay, CA</p>
+      </footer>
+    </main>
+
+    <style>
+      @font-face {
+        font-family: 'Fraunces X';
+        src: url('/fonts/x/fraunces.woff2') format('woff2');
+        font-weight: 300 800;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'Fraunces X';
+        src: url('/fonts/x/fraunces-italic.woff2') format('woff2');
+        font-weight: 300 800;
+        font-style: italic;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'Albert X';
+        src: url('/fonts/x/albertsans.woff2') format('woff2');
+        font-weight: 300 800;
+        font-display: swap;
+      }
+
+      :root {
+        --cream: #fbf4e9;
+        --ink: #33261b;
+        --muted: #7c6a58;
+        --terra: #c2542b;
+        --card: #f5e9d7;
+        --line-w: 2.5px;
+        --serif: 'Fraunces X', Georgia, serif;
+        --sans: 'Albert X', system-ui, sans-serif;
+        color-scheme: light;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        * { transition: none !important; animation: none !important; }
+      }
+
+      body {
+        margin: 0;
+        background: var(--cream);
+        color: var(--ink);
+        font: 400 max(1.03rem, 16px)/1.65 var(--sans);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .ribbon {
+        margin: 0;
+        padding: 0.55rem 1.2rem;
+        background: var(--ink);
+        color: var(--cream);
+        font: 500 max(0.8rem, 13px)/1.4 var(--sans);
+        text-align: center;
+      }
+      .ribbon a { color: inherit; }
+
+      /* ---------- header ---------- */
+      .top {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        gap: 1.6rem;
+        padding: 0.8rem clamp(1.2rem, 4vw, 3rem);
+        background: color-mix(in srgb, var(--cream) 90%, transparent);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+      }
+      .wordmark { font: 600 1.1rem/1 var(--serif); color: var(--ink); text-decoration: none; }
+      .top nav { display: flex; gap: 1.3rem; margin-left: auto; flex-wrap: wrap; }
+      .top nav a {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45em;
+        font: 500 max(0.88rem, 14px)/1 var(--sans);
+        color: var(--muted);
+        text-decoration: none;
+        padding: 0.5rem 0;
+      }
+      .top nav a i { width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--terra); display: inline-block; }
+      .top nav a.last i { background: var(--terra); }
+      .top nav a:hover { color: var(--ink); }
+
+      /* ---------- the line ---------- */
+      .seg { display: block; width: clamp(70px, 8vw, 120px); margin-inline: auto; overflow: visible; }
+      .seg path {
+        fill: none;
+        stroke: var(--terra);
+        stroke-width: var(--line-w);
+        stroke-linecap: round;
+      }
+      /* scroll-driven draw, motion-safe and progressive */
+      @supports (animation-timeline: view()) {
+        @media (prefers-reduced-motion: no-preference) {
+          .seg path {
+            stroke-dasharray: 1;
+            stroke-dashoffset: 1;
+            animation: draw linear both;
+            animation-timeline: view();
+            animation-range: entry 0% cover 45%;
+          }
+        }
+      }
+      @keyframes draw { to { stroke-dashoffset: 0; } }
+
+      /* ---------- hero ---------- */
+      .hero {
+        max-width: 46rem;
+        margin-inline: auto;
+        text-align: center;
+        padding: clamp(3rem, 9vh, 6rem) 1.4rem 0;
+      }
+      .kicker { font: 600 max(0.9rem, 14px)/1.5 var(--sans); color: var(--muted); margin: 0 0 1.3rem; }
+      h1 {
+        font: 550 clamp(2.35rem, 8vw, 5.6rem)/1.02 var(--serif);
+        letter-spacing: -0.015em;
+        margin: 0 0 1.4rem;
+      }
+      .hero .lede { max-width: 33rem; margin: 0 auto; font-size: max(1.12rem, 17px); }
+      .hero-seg { margin-top: 1.6rem; }
+
+      /* ---------- stations ---------- */
+      .station { max-width: 74rem; margin-inline: auto; padding: 0 clamp(1.2rem, 4vw, 3rem); scroll-margin-top: 4.5rem; }
+      .row {
+        display: grid;
+        grid-template-columns: minmax(0, 5fr) minmax(0, 2fr) minmax(0, 5fr);
+        gap: clamp(1.2rem, 3vw, 2.6rem);
+        align-items: center;
+      }
+      .row.swap .call { order: 3; }
+      .row.swap .shipped { order: 1; }
+      .row.swap .carry { order: 2; }
+
+      .station h2 { font: 600 clamp(1.9rem, 4vw, 2.7rem)/1.05 var(--serif); margin: 0 0 0.4rem; }
+      .meta { font: 500 max(0.88rem, 14px)/1.5 var(--sans); color: var(--muted); margin: 0 0 1.3rem; }
+
+      .the-call {
+        margin: 0;
+        background: var(--card);
+        border-radius: 16px;
+        padding: 1.4rem 1.6rem 1.1rem;
+        transform: rotate(-0.7deg);
+        box-shadow: 0 14px 30px rgba(51, 38, 27, 0.1);
+      }
+      .row.swap .the-call { transform: rotate(0.6deg); }
+      .the-call p {
+        font: 500 italic clamp(1.2rem, 2.2vw, 1.5rem)/1.4 var(--serif);
+        margin: 0 0 0.5rem;
+      }
+      .the-call cite {
+        font: 600 max(0.78rem, 13px)/1 var(--sans);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--terra);
+        font-style: normal;
+      }
+      .case-link {
+        display: inline-block;
+        margin-top: 1.3rem;
+        font: 600 max(0.95rem, 15px)/1 var(--sans);
+        color: var(--ink);
+        text-decoration: none;
+        border-bottom: 2px solid var(--terra);
+        padding-bottom: 2px;
+      }
+      .case-link:hover { color: var(--terra); }
+
+      /* the carry column */
+      .carry { text-align: center; position: relative; }
+      .pill-wrap { margin: -0.4rem 0 0; }
+      .pill-wrap summary { list-style: none; cursor: pointer; display: inline-block; }
+      .pill-wrap summary::-webkit-details-marker { display: none; }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        padding: 0 1.1rem;
+        border-radius: 999px;
+        border: 2px solid var(--terra);
+        background: var(--cream);
+        color: var(--terra);
+        font: 700 max(0.85rem, 13.5px)/1.2 var(--sans);
+        letter-spacing: 0.02em;
+      }
+      .pill::after { content: ' +'; font-weight: 800; margin-left: 0.35em; }
+      .pill-wrap[open] .pill { background: var(--terra); color: var(--cream); }
+      .pill-wrap[open] .pill::after { content: ' −'; }
+      .pill-wrap summary:focus-visible .pill { outline: 2px solid var(--ink); outline-offset: 3px; }
+      .carry-note {
+        text-align: left;
+        font-size: max(0.92rem, 14.5px);
+        color: var(--muted);
+        background: var(--card);
+        border-radius: 12px;
+        padding: 0.9rem 1rem;
+        margin: 0.8rem 0 0;
+        max-width: 24rem;
+      }
+
+      /* shipped artifacts */
+      .shipped { margin: 0; }
+      .frame { border-radius: 20px; overflow: hidden; box-shadow: 0 22px 44px rgba(51, 38, 27, 0.16); }
+      .frame img { display: block; width: 100%; height: auto; }
+      .frame.phone { max-width: 330px; margin-inline: auto; }
+      .frame.desktop { max-width: 440px; margin-inline: auto; }
+      .frame.plate { max-width: 340px; margin-inline: auto; }
+      .frame.cardstack {
+        max-width: 320px;
+        margin-inline: auto;
+        background: #fff;
+        padding: 1.1rem;
+        display: grid;
+        gap: 0.9rem;
+        box-shadow: 0 22px 44px rgba(51, 38, 27, 0.12);
+      }
+      .stat-card {
+        background: #f7f8fa;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 16px;
+        display: grid;
+        gap: 2px;
+        font-family: var(--sans);
+      }
+      .stat-card span { color: #6b7280; font-size: 13px; }
+      .stat-card b { color: #111827; font-size: 24px; font-weight: 600; }
+      .stat-card small { color: var(--muted); font-size: 12px; margin-top: 6px; }
+      .shipped figcaption {
+        text-align: center;
+        font: 500 max(0.85rem, 13.5px)/1.5 var(--sans);
+        color: var(--muted);
+        margin-top: 0.9rem;
+      }
+
+      .seg.between { margin-block: 0.4rem; }
+
+      /* ---------- contact ---------- */
+      .end { text-align: center; padding: 0 1.4rem clamp(3.5rem, 9vh, 6rem); }
+      .end h2 { font: 600 clamp(2.3rem, 6vw, 4.2rem)/1.05 var(--serif); margin: 0.6rem 0 1.6rem; }
+      .mail-line { position: relative; display: inline-block; margin: 0; }
+      .mail { font: 550 clamp(1.2rem, 3vw, 1.7rem)/1 var(--serif); color: var(--ink); text-decoration: none; }
+      .mail:hover { color: var(--terra); }
+      .swash { position: absolute; left: -2%; right: -2%; bottom: -0.55em; width: 104%; height: 0.6em; }
+      .swash path { fill: none; stroke: var(--terra); stroke-width: 2.5; stroke-linecap: round; }
+      .end-meta { color: var(--muted); font-size: max(0.92rem, 14px); margin-top: 1.8rem; }
+
+      /* ---------- mobile ---------- */
+      @media (max-width: 480px) {
+        h1 .wide { display: none; }
+      }
+      @media (max-width: 900px) {
+        .top { gap: 0.8rem; }
+        .top nav { width: 100%; overflow-x: auto; padding-bottom: 0.15rem; gap: 1rem; }
+        .top { flex-wrap: wrap; }
+        .row, .row.swap { grid-template-columns: 1fr; }
+        .row.swap .call { order: 1; }
+        .row.swap .carry { order: 2; }
+        .row.swap .shipped { order: 3; }
+        .call { order: 1; }
+        .carry { order: 2; }
+        .shipped { order: 3; }
+        .carry-note { margin-inline: auto; }
+        .the-call, .row.swap .the-call { transform: none; }
+        .station { padding-inline: 1.2rem; }
+        .frame.desktop { max-width: 100%; }
+      }
+    </style>
+  </body>
+</html>

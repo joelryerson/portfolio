@@ -1,0 +1,492 @@
+---
+/**
+ * EXPERIMENT · Direction 2 · "The Front Page"
+ * Isolated concept route. Standalone shell; nothing here touches production.
+ *
+ * Central idea: a portfolio as a broadsheet front page. The decisions are the
+ * headlines; the four projects are the day's stories. Signature interaction:
+ * "Lead by" edition tabs (Product / Systems / Craft / Business) re-lead the
+ * page, showing how the same four projects prove different parts of the range.
+ * No-JS default: the Product edition, fully readable.
+ */
+import { Image } from 'astro:assets';
+
+import homeLight from '../../assets/finderly/shots/home-light.webp';
+import unitShot from '../../assets/experiments/startupos-unit.webp';
+import logoFinal from '../../assets/artparde/logo-final.png';
+
+const rankings: Record<string, string[]> = {
+  product: ['finderly', 'startupos', 'asteri', 'artparde'],
+  systems: ['asteri', 'finderly', 'startupos', 'artparde'],
+  craft: ['artparde', 'finderly', 'asteri', 'startupos'],
+  business: ['asteri', 'startupos', 'artparde', 'finderly'],
+};
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Direction 2 · The Front Page — Joel Ryerson</title>
+    <link rel="preload" href="/fonts/x/newsreader.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/x/newsreader-italic.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/x/archivo.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+
+  <body>
+    <p class="ribbon" role="note">
+      Experiment · Direction 2 of 3 · “The Front Page” · not production ·
+      <a href="/experiments/direction-1/">Direction 1</a> ·
+      <a href="/experiments/direction-3/">Direction 3</a>
+    </p>
+
+    <div class="sheet">
+      <!-- ============ MASTHEAD ============ -->
+      <header class="masthead">
+        <div class="ears">
+          <p class="ear">Product designer<br />&amp; design engineer</p>
+          <h1>Joel Ryerson</h1>
+          <p class="ear right">East Bay, California<br />Available July 2026</p>
+        </div>
+        <p class="dateline">
+          <span>Shipped-work edition</span>
+          <span>Four products · 2022–2026</span>
+          <a href="mailto:joelryerson@gmail.com">Contact the newsroom: joelryerson@gmail.com</a>
+        </p>
+      </header>
+
+      <!-- ============ EDITION SWITCH ============ -->
+      <fieldset class="editions" id="editions">
+        <legend>Lead today’s front page by</legend>
+        <label><input type="radio" name="lens" value="product" checked /> <span>Product</span></label>
+        <label><input type="radio" name="lens" value="systems" /> <span>Systems</span></label>
+        <label><input type="radio" name="lens" value="craft" /> <span>Craft</span></label>
+        <label><input type="radio" name="lens" value="business" /> <span>Business</span></label>
+      </fieldset>
+
+      <!-- ============ FRONT PAGE ============ -->
+      <main class="front" data-lens="product">
+        <!-- FINDERLY -->
+        <article class="story lead" id="finderly" style="order:1">
+          <p class="kicker">
+            <span class="k k-product">Product judgment</span>
+            <span class="k k-systems">Design systems</span>
+            <span class="k k-craft">Interaction craft</span>
+            <span class="k k-business">Speed to ship</span>
+          </p>
+          <h2>Repair app fires its chatbot; camera takes the home screen</h2>
+          <p class="deck">
+            Month-long overhaul at AI Vision Technologies touches 303 files; recents carry real
+            project state, and the navigation stops lying.
+          </p>
+          <div class="story-body">
+            <div class="col-text">
+              <p class="byline">Design Engineer · June–July 2026 · iOS, Android, web</p>
+              <p class="lede">
+                Finderly diagnoses home repairs from what you show it, yet its first screen had
+                drifted toward the same text box every AI product ships. The overhaul rebuilt the
+                home around capture, 379 commits across 303 files, from the color system to the
+                camera pipeline.
+              </p>
+              <a class="jump" href="/work/finderly/">Continue to the case study →</a>
+            </div>
+            <figure>
+              <Image
+                src={homeLight}
+                alt="Finderly home screen: capture hero asking What needs fixing, recent projects rail, navigation dock"
+                widths={[420, 760]}
+                sizes="(max-width: 900px) 88vw, 330px"
+              />
+              <figcaption>The shipped home: capture leads, projects persist. Demo data.</figcaption>
+            </figure>
+          </div>
+        </article>
+
+        <!-- RAIL -->
+        <aside class="rail" style="order:2">
+          <section class="box index">
+            <h3>In this edition</h3>
+            <ol>
+              <li><a href="#finderly">Finderly · the chatbot firing</a></li>
+              <li><a href="#asteri">Asteri · invisible plumbing</a></li>
+              <li><a href="#startupos">StartupOS · one template</a></li>
+              <li><a href="#artparde">ArtPärdē · declined to code</a></li>
+            </ol>
+          </section>
+          <section class="box corrections">
+            <h3>Corrections</h3>
+            <p>
+              The designer’s first pass at Asteri added a token layer to an already fragmented
+              system. Corrected by week six; the consolidated foundation shipped. This page regrets
+              nothing else.
+            </p>
+          </section>
+          <section class="box offhours">
+            <h3>Off hours</h3>
+            <p>Twenty-plus years of guitar. Two dogs, Conan and Pinto. East Bay fog, most mornings.</p>
+          </section>
+          <section class="box hire">
+            <h3>Classifieds</h3>
+            <p>
+              <strong>Situation wanted.</strong> Product designer &amp; design engineer, four
+              shipped products above. Full-time or contract, July 2026.
+              <a href="mailto:joelryerson@gmail.com">Reply: joelryerson@gmail.com</a>
+            </p>
+          </section>
+        </aside>
+
+        <!-- ASTERI -->
+        <article class="story" id="asteri" style="order:3">
+          <p class="kicker">
+            <span class="k k-product">Product experience</span>
+            <span class="k k-systems">Token infrastructure</span>
+            <span class="k k-craft">Restraint as craft</span>
+            <span class="k k-business">Maintenance economics</span>
+          </p>
+          <h2>Designer refuses flashy before-and-after, ships plumbing instead</h2>
+          <p class="deck">
+            Seed-stage AI startup gets its first design system into production in six weeks.
+            Dashboards look exactly the same, on purpose.
+          </p>
+          <p class="byline">Design Engineer · six-week engagement · 2026</p>
+          <p class="lede">
+            The audit found systemic UI inconsistency; restyled screens would have drifted back.
+            Pitched to leadership as maintenance cost, token infrastructure won in one
+            conversation, and the rollout continued after the engagement ended.
+          </p>
+          <div class="twins" role="img" aria-label="The same dashboard stat card rendered twice, identical before and after the token migration">
+            <div class="stat-card"><span>Active studies</span><b>128</b></div>
+            <div class="stat-card"><span>Active studies</span><b>128</b></div>
+          </div>
+          <p class="caption">Unretouched: the same card before and after migration. Zero visual diff was the feature.</p>
+          <a class="jump" href="/work/asteri/">Continue to the case study →</a>
+        </article>
+
+        <!-- STARTUPOS -->
+        <article class="story" id="startupos" style="order:4">
+          <p class="kicker">
+            <span class="k k-product">Product structure</span>
+            <span class="k k-systems">Template systems</span>
+            <span class="k k-craft">Fifth-draft craft</span>
+            <span class="k k-business">Five-month clock</span>
+          </p>
+          <h2>One template teaches them all</h2>
+          <p class="deck">
+            Founder platform ships its MVP in five months by refusing bespoke lesson design.
+          </p>
+          <p class="byline">Product Designer · 2022 · every surface, copy included</p>
+          <p class="lede">
+            Executive direction liked to change; the reusable learning-unit template, five
+            iterations deep, turned churn into a non-event. Change landed in one place and
+            propagated everywhere. Demo Day validated the platform.
+          </p>
+          <figure>
+            <Image
+              src={unitShot}
+              alt="StartupOS learning unit template with overview, video, and contents"
+              widths={[420, 760]}
+              sizes="(max-width: 900px) 88vw, 300px"
+            />
+            <figcaption>The template every unit inherited.</figcaption>
+          </figure>
+          <a class="jump" href="/work/startup-platform/">Continue to the case study →</a>
+        </article>
+
+        <!-- ARTPARDE -->
+        <article class="story" id="artparde" style="order:5">
+          <p class="kicker">
+            <span class="k k-product">Audience routing</span>
+            <span class="k k-systems">Durable tooling</span>
+            <span class="k k-craft">Brand craft</span>
+            <span class="k k-business">Zero platform fees</span>
+          </p>
+          <h2>Designer who codes for a living declines to code</h2>
+          <p class="deck">
+            San Francisco arts non-profit gets its craft in the brand and a site volunteers can run.
+          </p>
+          <p class="byline">Brand &amp; web · 2024, ongoing</p>
+          <p class="lede">
+            Custom code would have been debt for a volunteer-run 501(c)(3). Webflow runs the site,
+            ticketing goes through fee-free Zeffy, and the wordmark was vectorized letter by
+            letter. Two years on, zero rescues.
+          </p>
+          <figure>
+            <Image
+              src={logoFinal}
+              alt="ArtPärdē logo: hand-drawn multicolor letterforms in a sunburst circle"
+              widths={[420, 700]}
+              sizes="(max-width: 900px) 70vw, 280px"
+            />
+            <figcaption>Every letter its own shape, like every act on the bill.</figcaption>
+          </figure>
+          <a class="jump" href="/work/artparde/">Continue to the case study →</a>
+        </article>
+      </main>
+
+      <footer class="colophon-line">
+        <p>
+          Joel Ryerson · product designer &amp; design engineer · East Bay, CA ·
+          <a href="mailto:joelryerson@gmail.com">joelryerson@gmail.com</a>
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      const rankings: Record<string, string[]> = {
+        product: ['finderly', 'startupos', 'asteri', 'artparde'],
+        systems: ['asteri', 'finderly', 'startupos', 'artparde'],
+        craft: ['artparde', 'finderly', 'asteri', 'startupos'],
+        business: ['asteri', 'startupos', 'artparde', 'finderly'],
+      };
+      const front = document.querySelector<HTMLElement>('.front')!;
+      const rail = front.querySelector<HTMLElement>('.rail')!;
+      document.querySelectorAll<HTMLInputElement>('.editions input').forEach((r) => {
+        r.addEventListener('change', () => {
+          const rank = rankings[r.value];
+          front.dataset.lens = r.value;
+          rank.forEach((id, i) => {
+            const el = document.getElementById(id)!;
+            el.classList.toggle('lead', i === 0);
+            el.style.order = String(i === 0 ? 1 : i + 2);
+          });
+          rail.style.order = '2';
+        });
+      });
+    </script>
+
+    <style>
+      @font-face {
+        font-family: 'Newsreader X';
+        src: url('/fonts/x/newsreader.woff2') format('woff2');
+        font-weight: 300 800;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'Newsreader X';
+        src: url('/fonts/x/newsreader-italic.woff2') format('woff2');
+        font-weight: 300 800;
+        font-style: italic;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'Archivo X';
+        src: url('/fonts/x/archivo.woff2') format('woff2');
+        font-weight: 400 800;
+        font-display: swap;
+      }
+
+      :root {
+        --paper: #faf7f0;
+        --ink: #1b1915;
+        --muted: #57534a;
+        --rule: #c9c2b2;
+        --red: #a03325;
+        --serif: 'Newsreader X', Georgia, serif;
+        --sans: 'Archivo X', system-ui, sans-serif;
+        color-scheme: light;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        * { transition: none !important; }
+      }
+
+      body {
+        margin: 0;
+        background: #efeadf;
+        color: var(--ink);
+        font: 400 max(1.02rem, 16px)/1.55 var(--serif);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .ribbon {
+        margin: 0;
+        padding: 0.55rem 1.2rem;
+        background: var(--ink);
+        color: var(--paper);
+        font: 500 max(0.8rem, 13px)/1.4 var(--sans);
+        text-align: center;
+      }
+      .ribbon a { color: inherit; }
+
+      .sheet {
+        max-width: 80rem;
+        margin: clamp(0.6rem, 2vw, 1.8rem) auto;
+        background: var(--paper);
+        padding: clamp(1.2rem, 3.5vw, 3rem);
+        box-shadow: 0 10px 40px rgba(27, 25, 21, 0.16);
+      }
+
+      /* ---------- masthead ---------- */
+      .masthead { border-bottom: 4px double var(--ink); padding-bottom: 0.9rem; }
+      .ears {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: end;
+        gap: 1rem;
+      }
+      .ear { font: 500 max(0.82rem, 13px)/1.45 var(--sans); color: var(--muted); margin: 0; }
+      .ear.right { text-align: right; }
+      .masthead h1 {
+        font: 800 clamp(2.4rem, 9vw, 6.2rem)/0.95 var(--serif);
+        letter-spacing: 0.01em;
+        margin: 0;
+        text-align: center;
+        text-transform: none;
+      }
+      .dateline {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+        border-top: 1px solid var(--ink);
+        margin: 0.9rem 0 0;
+        padding-top: 0.55rem;
+        font: 500 max(0.82rem, 13px)/1.4 var(--sans);
+        color: var(--muted);
+      }
+      .dateline a { color: var(--ink); text-decoration: none; }
+      .dateline a:hover { color: var(--red); }
+
+      /* ---------- editions ---------- */
+      .editions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        border: none;
+        border-bottom: 1px solid var(--ink);
+        margin: 0;
+        padding: 0.7rem 0;
+        position: sticky;
+        top: 0;
+        background: var(--paper);
+        z-index: 5;
+      }
+      .editions legend {
+        float: left;
+        font: 600 max(0.85rem, 13px)/1 var(--sans);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-right: 0.9rem;
+        padding: 0.6rem 0;
+      }
+      .editions label { position: relative; cursor: pointer; }
+      .editions input { position: absolute; opacity: 0; inset: 0; }
+      .editions span {
+        display: inline-flex;
+        align-items: center;
+        min-height: 40px;
+        padding: 0 1rem;
+        border: 1px solid var(--rule);
+        border-radius: 999px;
+        font: 600 max(0.88rem, 14px)/1 var(--sans);
+        color: var(--muted);
+        background: transparent;
+      }
+      .editions input:checked + span { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+      .editions input:focus-visible + span { outline: 2px solid var(--red); outline-offset: 2px; }
+
+      /* ---------- front grid ---------- */
+      .front {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 1.6rem 2rem;
+        padding-top: 1.8rem;
+      }
+      .story { grid-column: span 4; min-width: 0; }
+      .story.lead { grid-column: span 8; }
+      .rail { grid-column: span 4; }
+
+      .story + .story, .rail { border-left: 1px solid var(--rule); padding-left: 2rem; }
+      .story.lead { border-left: none; padding-left: 0; }
+
+      .kicker { margin: 0 0 0.4rem; font: 700 max(0.8rem, 13px)/1 var(--sans); letter-spacing: 0.09em; text-transform: uppercase; color: var(--red); }
+      .k { display: none; }
+      [data-lens='product'] .k-product,
+      [data-lens='systems'] .k-systems,
+      [data-lens='craft'] .k-craft,
+      [data-lens='business'] .k-business { display: inline; }
+
+      .story h2 {
+        font: 700 clamp(1.45rem, 2.6vw, 1.9rem)/1.12 var(--serif);
+        letter-spacing: -0.005em;
+        margin: 0 0 0.5rem;
+        text-wrap: balance;
+      }
+      .story.lead h2 { font-size: clamp(2.2rem, 4.6vw, 3.4rem); line-height: 1.04; }
+      .story h2::after { content: ''; display: block; width: 3.2rem; border-bottom: 2px solid var(--red); margin-top: 0.6rem; }
+
+      .deck { font: 500 italic max(1.05rem, 16px)/1.45 var(--serif); color: var(--muted); margin: 0 0 0.7rem; }
+      .story.lead .deck { font-size: max(1.2rem, 18px); }
+      .byline { font: 600 max(0.8rem, 13px)/1.4 var(--sans); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); margin: 0 0 0.7rem; }
+      .lede { margin: 0 0 1rem; }
+
+      .story.lead .story-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 330px); gap: 1.6rem; align-items: start; }
+      .story:not(.lead) .story-body { display: block; }
+      .story:not(.lead) .story-body figure { max-width: 330px; }
+
+      .story figure { margin: 0.4rem 0 1rem; }
+      .story img { width: 100%; height: auto; display: block; border: 1px solid var(--rule); }
+      .story:not(.lead) img { max-height: 300px; object-fit: cover; object-position: top; }
+      #artparde img { max-width: 280px; }
+      .story figcaption, .caption { font: 400 max(0.82rem, 13px)/1.45 var(--sans); color: var(--muted); margin-top: 0.45rem; }
+
+      .jump { font: 600 max(0.9rem, 14px)/1 var(--sans); color: var(--ink); text-decoration: none; border-bottom: 2px solid var(--red); padding-bottom: 2px; }
+      .jump:hover { color: var(--red); }
+
+      /* Asteri twins */
+      .twins { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-top: 0.4rem; }
+      .stat-card {
+        background: #f7f8fa;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 16px;
+        display: grid;
+        gap: 2px;
+        font-family: var(--sans);
+      }
+      .stat-card span { color: #6b7280; font-size: 13px; }
+      .stat-card b { color: #111827; font-size: 24px; font-weight: 600; }
+
+      /* ---------- rail ---------- */
+      .rail .box { border-bottom: 1px solid var(--rule); padding-bottom: 1.1rem; margin-bottom: 1.1rem; }
+      .rail .box:last-child { border-bottom: none; margin-bottom: 0; }
+      .rail h3 {
+        font: 700 max(0.82rem, 13px)/1 var(--sans);
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        margin: 0 0 0.6rem;
+        color: var(--ink);
+      }
+      .rail p, .rail ol { font-size: max(0.95rem, 15px); margin: 0; color: var(--muted); }
+      .rail ol { padding-left: 1.2rem; display: grid; gap: 0.35rem; }
+      .rail a { color: var(--ink); }
+      .rail a:hover { color: var(--red); }
+      .corrections p::first-letter { initial-letter: 2; padding-right: 0.4rem; font-weight: 700; }
+
+      .colophon-line { border-top: 4px double var(--ink); margin-top: 2rem; padding-top: 0.8rem; }
+      .colophon-line p { font: 500 max(0.85rem, 13px)/1.5 var(--sans); color: var(--muted); margin: 0; text-align: center; }
+      .colophon-line a { color: var(--ink); }
+
+      /* ---------- mobile ---------- */
+      @media (max-width: 900px) {
+        .sheet { margin: 0; box-shadow: none; }
+        .ears { grid-template-columns: 1fr; text-align: center; }
+        .ear, .ear.right { text-align: center; }
+        .front { display: flex; flex-direction: column; gap: 0; }
+        .story, .rail { border-left: none; padding-left: 0; border-top: 1px solid var(--rule); padding-top: 1.4rem; margin-top: 1.4rem; }
+        .story.lead { border-top: none; margin-top: 0; }
+        .rail { order: 99 !important; }
+        .story.lead .story-body { grid-template-columns: 1fr; }
+        .story:not(.lead) img { max-height: 340px; }
+        .editions { overflow-x: auto; flex-wrap: nowrap; }
+        .editions legend { white-space: nowrap; }
+      }
+    </style>
+  </body>
+</html>
