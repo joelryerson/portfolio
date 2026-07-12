@@ -4,9 +4,10 @@
 Build Joel's portfolio from scratch as a custom-coded site, replacing the Webflow site entirely. Decision is made: full rebuild, nothing sacred from the old site. Target: the strongest possible Design Engineer positioning for the July 2026 market. Do not relitigate the rebuild decision or pad plans with caution about scope.
 
 ## Positioning
+- **THE ANCHOR IS JOEL, THE PERSON (decided 2026-07-12; supersedes anything below that conflicts).** The site sells his judgment, character, instincts, empathy, standards, and singular path (caregiver → EMT → barista → BDR → design engineer). Design and coding skill are presented as the byproduct of who he is. Character is SHOWN through voice, story, structure, and decisions — never listed as traits. Raw material: content/raw/joel.md (LOCAL-ONLY; contains sensitive items with public scope TBD).
 - Title: **Design Engineer** (not Senior Product Designer)
 - Specialty: AI-native product design + design engineering — design systems, token pipelines, agentic/AI-assisted build workflows, enterprise SaaS
-- The site itself is Exhibit A: custom-built, public repo, real token system, AI-native features. The portfolio must prove the positioning, not just claim it.
+- The site itself is Exhibit A: custom-built, public repo, real token system. **AI is a tool he directs, mentioned inside How I Build — never the flag.** Leading with AI is explicitly rejected: everyone codes with AI in 2026; it reads as leaning on AI rather than being the talent.
 
 ## 2026 Market Research (drives all decisions)
 - **~78% of recruiters run AI-assisted screening before a human visits.** Site must be semantic HTML, real text (never text-in-images), structured data, keyword-legible. Machines read it first.
