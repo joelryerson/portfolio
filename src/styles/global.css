@@ -10,7 +10,7 @@ body {
   margin: 0;
   font-family: var(--font-body);
   font-size: var(--text-base);
-  line-height: 1.6;
+  line-height: 1.65;
   background: var(--color-bg);
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
@@ -19,12 +19,15 @@ body {
 h1,
 h2,
 h3 {
-  line-height: 1.2;
+  line-height: 1.15;
+  letter-spacing: -0.018em;
   text-wrap: balance;
+  font-weight: 780;
 }
 
 h1 {
   font-size: var(--text-3xl);
+  font-weight: 850;
 }
 
 h2 {
@@ -33,6 +36,10 @@ h2 {
 
 h3 {
   font-size: var(--text-lg);
+}
+
+p {
+  margin-block: 0 var(--space-md);
 }
 
 a {
@@ -48,6 +55,11 @@ a:hover {
   outline-offset: 2px;
 }
 
+::selection {
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+
 code,
 pre {
   font-family: var(--font-code);
@@ -58,6 +70,7 @@ pre {
   overflow-x: auto;
   padding: var(--space-md);
   border-radius: var(--radius-card);
+  border: 1px solid var(--color-border-soft);
 }
 
 img,
@@ -65,6 +78,16 @@ svg,
 video {
   max-width: 100%;
   height: auto;
+}
+
+/* mono metadata: never below 12px, never decorative */
+.kicker {
+  font-family: var(--font-code);
+  font-size: max(0.75rem, 12px);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
 }
 
 figure {

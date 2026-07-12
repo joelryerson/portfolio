@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import '../styles/tokens.css';
 import '../styles/global.css';
 
@@ -6,11 +7,34 @@ interface Props {
   title: string;
   description: string;
   ogImage?: string;
+  /** wide pages (homepage plates) manage their own containers */
+  fullBleed?: boolean;
 }
 
-const { title, description, ogImage } = Astro.props;
+const { title, description, ogImage, fullBleed = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImageUrl = ogImage ? new URL(ogImage, Astro.site) : undefined;
+
+const jsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Joel Ryerson',
+  jobTitle: 'Design Engineer',
+  url: 'https://joelryerson.design',
+  sameAs: ['https://github.com/joelryerson', 'https://www.linkedin.com/in/joelryerson/'],
+  knowsAbout: [
+    'product design',
+    'design engineering',
+    'design systems',
+    'design tokens',
+    'UX design',
+    'UI design',
+    'front-end development',
+    'React Native',
+    'Astro',
+    'accessibility',
+  ],
+});
 ---
 
 <!doctype html>
@@ -21,23 +45,57 @@ const ogImageUrl = ogImage ? new URL(ogImage, Astro.site) : undefined;
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <link rel="preload" href="/fonts/satoshi-variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/geist-mono.woff2" as="font" type="font/woff2" crossorigin />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:type" content="website" />
     {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
     <meta name="generator" content={Astro.generator} />
+    <script type="application/ld+json" set:html={jsonLd} />
+    <ClientRouter />
   </head>
   <body>
     <a href="#main" class="skip-link">Skip to content</a>
-    <main id="main">
+
+    <header class="site-head">
+      <div class="head-wrap">
+        <a class="brand" href="/">Joel Ryerson</a>
+        <span class="role">Design Engineer</span>
+        <span class="avail">Available · July 2026</span>
+        <nav aria-label="Site">
+          <a href="/#work">Work</a>
+          <a href="mailto:joelryerson@gmail.com">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class={fullBleed ? 'full' : ''}>
       <slot />
     </main>
+
+    <footer class="site-foot">
+      <div class="foot-wrap">
+        <span>Joel Ryerson · East Bay, California</span>
+        <span class="dogs">Two dogs supervised this site; neither approved the kerning.</span>
+        <span class="links">
+          <a href="mailto:joelryerson@gmail.com">Email</a>
+          <a href="https://github.com/joelryerson/portfolio">Repo</a>
+          <a href="https://www.linkedin.com/in/joelryerson/">LinkedIn</a>
+        </span>
+      </div>
+      <div class="colophon-line">
+        <div class="foot-wrap">
+          <span>designed by Joel · built with AI agents in the loop · <a href="https://github.com/joelryerson/portfolio">repo public</a></span>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>
 
 <style>
-  main {
+  main:not(.full) {
     max-width: var(--content-max);
     margin-inline: auto;
     padding: var(--space-lg) var(--space-md);
@@ -49,9 +107,109 @@ const ogImageUrl = ogImage ? new URL(ogImage, Astro.site) : undefined;
     top: 0;
     padding: var(--space-sm) var(--space-md);
     background: var(--color-bg-subtle);
+    z-index: 100;
   }
 
   .skip-link:focus {
     left: 0;
+  }
+
+  .site-head {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .head-wrap,
+  .foot-wrap {
+    max-width: var(--content-max);
+    margin-inline: auto;
+    padding-inline: var(--space-md);
+    display: flex;
+    align-items: center;
+    gap: var(--space-md) var(--space-lg);
+    flex-wrap: wrap;
+  }
+
+  .head-wrap {
+    height: 3.6rem;
+  }
+
+  .brand {
+    font-family: var(--font-code);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .role,
+  .avail {
+    font-family: var(--font-code);
+    font-size: max(0.72rem, 12px);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .avail {
+    color: var(--color-accent);
+  }
+
+  .site-head nav {
+    margin-left: auto;
+    display: flex;
+    gap: var(--space-md);
+  }
+
+  .site-head nav a {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+
+  .site-head nav a:hover {
+    color: var(--color-text);
+  }
+
+  .site-foot {
+    margin-top: var(--space-section);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .site-foot .foot-wrap {
+    padding-block: var(--space-md);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .site-foot .links {
+    margin-left: auto;
+    display: flex;
+    gap: var(--space-md);
+  }
+
+  .site-foot a {
+    color: var(--color-text-muted);
+  }
+
+  .site-foot a:hover {
+    color: var(--color-text);
+  }
+
+  .colophon-line {
+    border-top: 1px solid var(--color-border-soft);
+  }
+
+  .colophon-line .foot-wrap {
+    padding-block: var(--space-sm);
+    font-family: var(--font-code);
+    font-size: max(0.72rem, 12px);
+  }
+
+  @media (max-width: 640px) {
+    .role {
+      display: none;
+    }
   }
 </style>
