@@ -1,70 +1,40 @@
 /*
  * Design tokens — joelryerson.design v3
- * Identity: "Monograph" (approved 2026-07-13). Warm-dark studio default,
- * equally-designed light theme, amber accent, per-project plate fields.
  *
  * Two layers:
  *   1. Primitives (--raw-*): context-free values. Never referenced by components.
  *   2. Semantic (--color-*, --space-*, --text-*, ...): meaning-bearing aliases.
  *      Components and pages consume ONLY semantic tokens.
+ *
+ * All values below are PLACEHOLDERS. The real identity (full redesign, decided
+ * 2026-07-11) gets designed natively in this file. Structure is final; values are not.
  */
-
-@font-face {
-  font-family: 'Satoshi';
-  font-style: normal;
-  font-weight: 300 900;
-  font-display: swap;
-  src: url('/fonts/satoshi-variable.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Geist Mono';
-  font-style: normal;
-  font-weight: 400 700;
-  font-display: swap;
-  src: url('/fonts/geist-mono.woff2') format('woff2');
-}
 
 :root {
   /* ---------- Primitives ---------- */
 
-  /* warm neutrals (studio) */
-  --raw-warm-0: #faf8f3;
-  --raw-warm-50: #f2efe9;
-  --raw-warm-100: #e9e5dd;
-  --raw-warm-300: #d9d3c8;
-  --raw-warm-500: #9a938a;
-  --raw-warm-600: #6f6960;
-  --raw-warm-800: #2f2b26;
-  --raw-warm-850: #262320;
-  --raw-warm-900: #1e1b18;
-  --raw-warm-950: #161412;
+  /* color ramps (placeholder grayscale + one accent) */
+  --raw-gray-0: #ffffff;
+  --raw-gray-100: #f4f4f5;
+  --raw-gray-300: #d4d4d8;
+  --raw-gray-500: #71717a;
+  --raw-gray-700: #3f3f46;
+  --raw-gray-900: #18181b;
+  --raw-gray-1000: #09090b;
+  --raw-accent-400: #6ea8fe;
+  --raw-accent-500: #4f8df2;
+  --raw-accent-600: #2f6fed;
+  --raw-accent-800: #1d4ed8;
 
-  /* amber accent ramp */
-  --raw-amber-300: #f6c079;
-  --raw-amber-400: #f0a43c;
-  --raw-amber-600: #b96e0a;
-  --raw-amber-700: #9c5a00;
-
-  /* plate fields (art-directed constants per project) */
-  --raw-plate-finderly: #171420;
-  --raw-plate-finderly-glow: #2b2340;
-  --raw-plate-asteri: #131619;
-  --raw-plate-asteri-line: #2a3139;
-  --raw-plate-artparde: #f6f3ec;
-  --raw-plate-artparde-ink: #1c1a16;
-  --raw-plate-startupos: #1a1714;
-
-  /* type */
-  --raw-font-sans: 'Satoshi', system-ui, -apple-system, sans-serif;
-  --raw-font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-  --raw-size-sm: clamp(0.85rem, 0.82rem + 0.15vw, 0.94rem);
+  /* type scale (fluid, minor-third-ish; placeholder) */
+  --raw-font-sans: system-ui, -apple-system, sans-serif;
+  --raw-font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+  --raw-size-sm: clamp(0.83rem, 0.8rem + 0.15vw, 0.92rem);
   --raw-size-base: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
   --raw-size-lg: clamp(1.2rem, 1.13rem + 0.35vw, 1.42rem);
   --raw-size-xl: clamp(1.44rem, 1.32rem + 0.6vw, 1.8rem);
   --raw-size-2xl: clamp(1.73rem, 1.53rem + 1vw, 2.28rem);
   --raw-size-3xl: clamp(2.07rem, 1.76rem + 1.55vw, 2.88rem);
-  --raw-size-display: clamp(2.4rem, 1.9rem + 2.6vw, 4rem);
 
   /* spacing (4px base) */
   --raw-space-1: 0.25rem;
@@ -79,14 +49,13 @@
 
   /* radius / motion / layout */
   --raw-radius-sm: 4px;
-  --raw-radius-md: 10px;
+  --raw-radius-md: 8px;
   --raw-radius-lg: 16px;
   --raw-duration-fast: 120ms;
   --raw-duration-base: 200ms;
-  --raw-duration-slow: 450ms;
-  --raw-ease-out: cubic-bezier(0.2, 0.9, 0.3, 1);
+  --raw-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --raw-measure: 65ch;
-  --raw-content-max: 68rem;
+  --raw-content-max: 72rem;
 
   /* ---------- Semantic: shared ---------- */
   --font-body: var(--raw-font-sans);
@@ -97,7 +66,6 @@
   --text-xl: var(--raw-size-xl);
   --text-2xl: var(--raw-size-2xl);
   --text-3xl: var(--raw-size-3xl);
-  --text-display: var(--raw-size-display);
   --space-xs: var(--raw-space-1);
   --space-sm: var(--raw-space-2);
   --space-md: var(--raw-space-4);
@@ -106,71 +74,51 @@
   --space-section: var(--raw-space-24);
   --radius-control: var(--raw-radius-sm);
   --radius-card: var(--raw-radius-md);
-  --radius-plate: var(--raw-radius-lg);
   --duration-hover: var(--raw-duration-fast);
   --duration-enter: var(--raw-duration-base);
-  --duration-plate: var(--raw-duration-slow);
   --ease-standard: var(--raw-ease-out);
   --measure: var(--raw-measure);
   --content-max: var(--raw-content-max);
 
-  /* plate fields: constants across themes (art direction, not theming) */
-  --plate-finderly: var(--raw-plate-finderly);
-  --plate-finderly-glow: var(--raw-plate-finderly-glow);
-  --plate-asteri: var(--raw-plate-asteri);
-  --plate-asteri-line: var(--raw-plate-asteri-line);
-  --plate-artparde: var(--raw-plate-artparde);
-  --plate-artparde-ink: var(--raw-plate-artparde-ink);
-  --plate-startupos: var(--raw-plate-startupos);
-  /* ink that works on every dark plate */
-  --plate-ink: var(--raw-warm-50);
-  --plate-muted: var(--raw-warm-500);
-
-  /* ---------- Semantic: dark theme (default) ---------- */
-  color-scheme: dark;
-  --color-bg: var(--raw-warm-950);
-  --color-bg-subtle: var(--raw-warm-900);
-  --color-text: #ede9e2;
-  --color-text-muted: var(--raw-warm-500);
-  --color-border: var(--raw-warm-800);
-  --color-border-soft: var(--raw-warm-850);
-  --color-accent: var(--raw-amber-400);
-  --color-accent-strong: var(--raw-amber-300);
-  --color-accent-ink: var(--raw-warm-950);
-  --color-focus-ring: var(--raw-amber-400);
-  /* data marks in charts/diagrams (single-series; ≥3:1 on both surfaces) */
-  --color-data: var(--raw-amber-400);
+  /* ---------- Semantic: light theme (default) ---------- */
+  color-scheme: light;
+  --color-bg: var(--raw-gray-0);
+  --color-bg-subtle: var(--raw-gray-100);
+  --color-text: var(--raw-gray-900);
+  --color-text-muted: var(--raw-gray-500);
+  --color-border: var(--raw-gray-300);
+  --color-accent: var(--raw-accent-600);
+  --color-accent-strong: var(--raw-accent-800);
+  --color-focus-ring: var(--raw-accent-600);
+  /* data marks in charts/diagrams; steps validated per-surface (dataviz six checks) */
+  --color-data: var(--raw-accent-600);
 }
 
-/* Light theme: applied by OS preference, overridable via data-theme. */
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme='dark']) {
-    color-scheme: light;
-    --color-bg: var(--raw-warm-50);
-    --color-bg-subtle: var(--raw-warm-0);
-    --color-text: #211d18;
-    --color-text-muted: var(--raw-warm-600);
-    --color-border: var(--raw-warm-300);
-    --color-border-soft: var(--raw-warm-100);
-    --color-accent: var(--raw-amber-700);
-    --color-accent-strong: var(--raw-amber-600);
-    --color-accent-ink: var(--raw-warm-0);
-    --color-focus-ring: var(--raw-amber-700);
-    --color-data: var(--raw-amber-700);
+/* Dark theme: applied by OS preference, overridable via data-theme. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --color-bg: var(--raw-gray-1000);
+    --color-bg-subtle: var(--raw-gray-900);
+    --color-text: var(--raw-gray-100);
+    --color-text-muted: var(--raw-gray-500);
+    --color-border: var(--raw-gray-700);
+    --color-accent: var(--raw-accent-400);
+    --color-accent-strong: var(--raw-accent-400);
+    --color-focus-ring: var(--raw-accent-400);
+    --color-data: var(--raw-accent-500);
   }
 }
 
-:root[data-theme='light'] {
-  color-scheme: light;
-  --color-bg: var(--raw-warm-50);
-  --color-bg-subtle: var(--raw-warm-0);
-  --color-text: #211d18;
-  --color-text-muted: var(--raw-warm-600);
-  --color-border: var(--raw-warm-300);
-  --color-border-soft: var(--raw-warm-100);
-  --color-accent: var(--raw-amber-700);
-  --color-accent-strong: var(--raw-amber-600);
-  --color-accent-ink: var(--raw-warm-0);
-  --color-focus-ring: var(--raw-amber-700);
-  --color-data: var(--raw-amber-700);
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-bg: var(--raw-gray-1000);
+  --color-bg-subtle: var(--raw-gray-900);
+  --color-text: var(--raw-gray-100);
+  --color-text-muted: var(--raw-gray-500);
+  --color-border: var(--raw-gray-700);
+  --color-accent: var(--raw-accent-400);
+  --color-accent-strong: var(--raw-accent-400);
+  --color-focus-ring: var(--raw-accent-400);
+  --color-data: var(--raw-accent-500);
 }
