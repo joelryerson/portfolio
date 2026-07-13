@@ -1,0 +1,417 @@
+---
+/**
+ * "Shared Canvas — Structured" · corrected Option B. Static, responsive, no JS.
+ * L-structure: active stage upper-left, two secondary previews in a right
+ * rail, one in a bottom rail, all on one continuous canvas. The info strip
+ * under the header carries the active project's copy. Switching is implied
+ * by static per-state routes; regions trade roles between states.
+ * Scoped to /experiments/shared-canvas-structured/. Not production.
+ */
+import homeLight from '../../assets/finderly/shots/home-light.webp';
+import captureShot from '../../assets/finderly/shots/capture.webp';
+import unitHifi from '../../assets/experiments/startupos-unit.webp';
+import studiesStrip from '../../assets/experiments/artparde-studies.webp';
+import logoFinal from '../../assets/artparde/logo-final.png';
+
+interface Props {
+  active: 'finderly' | 'asteri';
+  overview?: boolean;
+}
+const { active, overview = false } = Astro.props;
+
+const copy = {
+  finderly: {
+    name: 'Finderly',
+    spec: '2026 · AI-guided home repair',
+    roles: 'Product design, UX/UI, and front-end implementation',
+    desc: 'Rebuilt the home around starting a repair, with camera, video, and recent work available from one clear entry point.',
+    href: '/work/finderly/',
+  },
+  asteri: {
+    name: 'Asteri AI',
+    spec: '2026 · AI work platform',
+    roles: 'Product design and design systems',
+    desc: 'Consolidated a fragmented token foundation while preserving the product’s core table and preparing the homepage for migration.',
+    href: '/work/asteri/',
+  },
+}[active];
+
+// rail-top slot holds whichever of finderly/asteri is inactive; the two
+// lower slots are fixed, so states trade exactly one pair of positions.
+const railTop = active === 'finderly'
+  ? { id: 'asteri', name: 'Asteri AI', year: '2026', cat: 'AI work platform', href: '/experiments/shared-canvas-structured/asteri/' }
+  : { id: 'finderly', name: 'Finderly', year: '2026', cat: 'AI home repair', href: '/experiments/shared-canvas-structured/' };
+---
+
+<div class={`page ${overview ? 'overview' : ''}`}>
+  <header class="top">
+    <span class="who">Joel Ryerson</span>
+    <span class="role">Product Designer &amp; Design Engineer</span>
+    <nav class="links" aria-label="Site">
+      <a href="#" aria-disabled="true">About</a>
+      <a href="mailto:joelryerson@gmail.com">Contact</a>
+    </nav>
+  </header>
+
+  <!-- active-project information strip -->
+  <section class="strip" aria-label={`Active project: ${copy.name}`}>
+    <h1 class="s-name">{copy.name}</h1>
+    <div class="s-meta">
+      <p class="s-spec">{copy.spec}</p>
+      <p class="s-roles">{copy.roles}</p>
+    </div>
+    <p class="s-desc">{copy.desc}</p>
+    <a class="s-case" href={copy.href}>Read case study<span aria-hidden="true"> →</span></a>
+    {overview && <span class="note n-strip">Information strip · active project</span>}
+  </section>
+
+  <!-- the L-shaped canvas -->
+  <main class="canvas">
+    <div class="stage" aria-label={`${copy.name} work`}>
+      {active === 'finderly' ? (
+        <div class="stage-fin">
+          <div class="crop home" style={`background-image:url(${homeLight.src})`} role="img" aria-label="Finderly shipped home: capture-first entry, recent projects, honest navigation"></div>
+          <div class="crop cam" style={`background-image:url(${captureShot.src})`} role="img" aria-label="Finderly camera in ordered multi-capture"></div>
+        </div>
+      ) : (
+        <div class="stage-ast" role="img" aria-label="Asteri system evidence: identical stat cards before and after the token migration, with the semantic chain that produces them">
+          <div class="ast-band">
+            <div class="card"><span>Active studies</span><b>128</b><i>before · inline styles, restated per file</i></div>
+            <div class="card"><span>Active studies</span><b>128</b><i>after · semantic tokens</i></div>
+            <div class="card"><span>Active studies</span><b>128</b><i>after · semantic tokens</i></div>
+          </div>
+          <div class="ast-chain">
+            <span class="swatch" title="#f7f8fa"></span>
+            <span class="wire"></span>
+            <span class="tok">--surface-raised</span>
+            <span class="wire"></span>
+            <span class="applied">card background</span>
+          </div>
+        </div>
+      )}
+      {overview && <span class="note n-stage">Active stage · {copy.name}</span>}
+    </div>
+
+    <!-- right rail: two secondary previews -->
+    <aside class="rail" aria-label="More projects">
+      <a class="pv" href={railTop.href}>
+        <p class="pv-label"><b>{railTop.name}</b><span>{railTop.year} · {railTop.cat}</span><i aria-hidden="true">→</i></p>
+        <div class="pv-visual">
+          {railTop.id === 'asteri' ? (
+            <div class="card sm"><span>Active studies</span><b>128</b></div>
+          ) : (
+            <div class="crop pv-fin" style={`background-image:url(${homeLight.src})`}></div>
+          )}
+        </div>
+        {overview && <span class="note">Rail · selects {railTop.name}</span>}
+      </a>
+      <a class="pv" href="/work/startup-platform/" title="Active state not built in this study; link goes to the case study">
+        <p class="pv-label"><b>StartupOS</b><span>2022 · Founder education</span><i aria-hidden="true">→</i></p>
+        <div class="pv-visual">
+          <div class="crop pv-sos" style={`background-image:url(${unitHifi.src})`}></div>
+        </div>
+        {overview && <span class="note">Rail · selects StartupOS</span>}
+      </a>
+    </aside>
+
+    <!-- bottom rail: one secondary preview -->
+    <a class="bottom pv" href="/work/artparde/" title="Active state not built in this study; link goes to the case study">
+      <p class="pv-label"><b>ArtPärdē</b><span>2024 · Performing-arts nonprofit</span><i aria-hidden="true">→</i></p>
+      <div class="pv-visual wide">
+        <div class="crop pv-ap" style={`background-image:url(${studiesStrip.src})`}></div>
+        <div class="crop pv-mark" style={`background-image:url(${logoFinal.src})`}></div>
+      </div>
+      {overview && <span class="note">Bottom rail · selects ArtPärdē</span>}
+    </a>
+  </main>
+</div>
+
+<style>
+  .page {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    background: #f2f0eb;
+    color: #141311;
+    font-family: 'Satoshi X', system-ui, sans-serif;
+    --mute: #6e6a60;
+    --line: #cdcabf;
+    --signal: #e94a10;
+  }
+  .page * { margin: 0; box-sizing: border-box; }
+
+  /* ---------- header ---------- */
+  .top {
+    height: 68px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 0 clamp(16px, 2.5vw, 32px);
+    border-bottom: 1px solid var(--line);
+  }
+  .who { font-size: 16px; font-weight: 800; letter-spacing: -0.01em; white-space: nowrap; }
+  .role { font-size: 13.5px; font-weight: 500; color: var(--mute); }
+  .links { margin-left: auto; display: flex; gap: 18px; }
+  .links a { font-size: 14px; font-weight: 650; color: #141311; text-decoration: none; padding: 8px 0; }
+  .links a:hover { color: var(--signal); }
+  .links a:last-child { border-bottom: 2px solid var(--signal); padding-bottom: 2px; }
+  .links a:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+  /* ---------- info strip ---------- */
+  .strip {
+    min-height: 96px;
+    display: flex;
+    align-items: center;
+    gap: clamp(18px, 2.5vw, 40px);
+    padding: 14px clamp(16px, 2.5vw, 32px);
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  .s-name { font-size: clamp(24px, 2.2vw, 30px); font-weight: 800; letter-spacing: -0.02em; white-space: nowrap; }
+  .s-meta { flex: 0 0 auto; }
+  .s-spec { font-size: 13px; font-weight: 650; }
+  .s-roles { font-size: 12.5px; color: var(--mute); margin-top: 2px; }
+  .s-desc { flex: 1 1 0; min-width: 0; font-size: 14.5px; line-height: 1.45; color: #141311; max-width: 52ch; }
+  .s-case {
+    flex: 0 0 auto;
+    font-size: 14px;
+    font-weight: 700;
+    color: #141311;
+    text-decoration: none;
+    border-bottom: 2px solid var(--signal);
+    padding-bottom: 2px;
+    white-space: nowrap;
+  }
+  .s-case:hover { color: var(--signal); }
+  .s-case:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+  /* ---------- the L canvas ---------- */
+  .canvas {
+    flex: 1;
+    min-height: 440px;
+    display: grid;
+    grid-template-columns: 1fr clamp(220px, 19.5%, 300px);
+    grid-template-rows: 1fr clamp(140px, 19%, 190px);
+    grid-template-areas:
+      'stage rail'
+      'bottom rail';
+  }
+  .stage { grid-area: stage; position: relative; overflow: hidden; }
+  .rail { grid-area: rail; display: grid; grid-template-rows: 1fr 1fr; border-left: 1px solid var(--line); }
+  .bottom { grid-area: bottom; border-top: 1px solid var(--line); }
+
+  /* ---------- previews (shared) ---------- */
+  .pv {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding: 14px 16px 16px;
+    text-decoration: none;
+    color: #141311;
+    transition: background-color 0.2s;
+  }
+  .rail .pv + .pv { border-top: 1px solid var(--line); }
+  .pv:hover { background: #eceae3; }
+  .pv:hover .pv-label i { color: var(--signal); transform: translateX(2px); }
+  .pv:focus-visible { outline: 3px solid var(--signal); outline-offset: -3px; }
+  .pv-label { display: flex; align-items: baseline; gap: 8px; flex: 0 0 auto; }
+  .pv-label b { font-size: 15px; font-weight: 750; }
+  .pv-label span { font-size: 12px; color: var(--mute); }
+  .pv-label i { margin-left: auto; font-style: normal; font-weight: 800; color: var(--mute); transition: color 0.2s, transform 0.2s; }
+  .pv-visual { flex: 1 1 0; min-height: 0; margin-top: 10px; position: relative; }
+
+  .crop { background-repeat: no-repeat; }
+
+  /* rail visuals */
+  .pv-visual .card.sm { position: absolute; inset: 8% 12%; max-height: 120px; margin: auto; }
+  .pv-fin { position: absolute; inset: 0; background-size: cover; background-position: 50% 13%; border: 1px solid var(--line); }
+  .pv-sos { position: absolute; inset: 0; background-size: 130% auto; background-position: 15% 0; border: 1px solid var(--line); }
+
+  /* bottom rail: wide identity band */
+  .pv-visual.wide { display: flex; gap: 14px; }
+  .pv-ap { flex: 1 1 0; background-size: auto 290%; background-position: 10% 16%; background-color: #141414; }
+  .pv-mark { flex: 0 0 auto; aspect-ratio: 1; height: 100%; background-size: cover; background-position: 50% 50%; }
+
+  /* the stat-card artifact */
+  .card {
+    background: #f7f8fa;
+    border: 1px solid #e2e4e9;
+    border-radius: 10px;
+    padding: clamp(12px, 1.4vw, 22px);
+  }
+  .card span { display: block; font-size: clamp(11px, 0.95vw, 14px); color: #6b7280; }
+  .card b { display: block; font-size: clamp(18px, 2vw, 30px); font-weight: 650; color: #111827; margin-top: 2px; }
+  .card i { display: block; font-style: normal; font-size: clamp(10px, 0.85vw, 12.5px); color: var(--mute); margin-top: 12px; }
+  .card.sm { padding: 12px 14px; }
+  .card.sm span { font-size: 11px; }
+  .card.sm b { font-size: 20px; }
+
+  /* ---------- stage: Finderly ---------- */
+  .stage-fin {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: clamp(14px, 1.6vw, 24px);
+    padding: clamp(20px, 3vh, 36px) clamp(20px, 3vw, 48px) 0;
+  }
+  .stage-fin .home {
+    width: clamp(340px, 42%, 560px);
+    height: 96%;
+    background-size: 100% auto;
+    background-position: 0 0;
+    border: 1px solid var(--line);
+    border-bottom: none;
+  }
+  .stage-fin .cam {
+    width: clamp(140px, 17%, 230px);
+    height: 66%;
+    background-size: cover;
+    background-position: 50% 30%;
+    border: 1px solid var(--line);
+    border-bottom: none;
+  }
+
+  /* ---------- stage: Asteri ---------- */
+  .stage-ast {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(24px, 4vh, 44px);
+    padding: clamp(20px, 3vh, 36px) clamp(20px, 3.5vw, 56px);
+    background:
+      linear-gradient(to bottom, transparent 24%, #faf9f6 24%, #faf9f6 76%, transparent 76%);
+  }
+  .ast-band {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(16px, 2.2vw, 36px);
+    align-items: start;
+  }
+  .ast-chain {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: clamp(12px, 1vw, 13.5px);
+    font-weight: 600;
+  }
+  .swatch { width: 22px; height: 22px; border-radius: 5px; background: #f7f8fa; border: 1px solid #d6d9df; }
+  .wire { width: clamp(24px, 3vw, 52px); height: 1px; background: var(--line); position: relative; }
+  .wire::after { content: ''; position: absolute; right: -2px; top: -2.5px; width: 6px; height: 6px; border-radius: 50%; background: var(--signal); }
+  .tok { color: #141311; }
+  .applied { color: var(--mute); font-weight: 500; }
+
+  /* ---------- overview annotations ---------- */
+  .note {
+    display: none;
+    position: absolute;
+    z-index: 6;
+    font-size: 12.5px;
+    font-weight: 700;
+    background: #141311;
+    color: #f2f0eb;
+    padding: 6px 10px;
+    letter-spacing: 0.02em;
+  }
+  .overview .note { display: block; }
+  .overview .n-strip { right: 16px; top: -14px; }
+  .overview .n-stage { left: 50%; top: 46%; transform: translate(-50%, -50%); }
+  .overview .pv .note { left: 50%; bottom: 10px; transform: translateX(-50%); white-space: nowrap; }
+  .overview .stage > *:not(.note), .overview .pv-visual { opacity: 0.45; }
+  .overview .stage, .overview .pv { outline: 1px dashed #9b968a; outline-offset: -6px; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 1100px) {
+    .s-desc { max-width: 40ch; }
+    .stage-fin .home { width: clamp(300px, 44%, 460px); }
+  }
+
+  @media (max-width: 760px) {
+    .top { height: 58px; }
+    .role { display: none; }
+
+    .strip {
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-areas: 'name case' 'meta case' 'desc desc';
+      row-gap: 4px;
+      padding: 12px 16px 14px;
+    }
+    .s-name { grid-area: name; font-size: 22px; }
+    .s-meta { grid-area: meta; }
+    .s-roles { display: inline; margin-left: 6px; }
+    .s-roles::before { content: '· '; }
+    .s-spec, .s-roles { display: inline; font-size: 11.5px; }
+    .s-desc { grid-area: desc; font-size: 13.5px; max-width: none; margin-top: 4px; }
+    .s-case { grid-area: case; align-self: start; font-size: 13px; }
+
+    /* the L rotates: stage on top, one structured bottom rail of three segments */
+    .canvas {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr auto;
+      grid-template-areas: 'stage' 'railrow';
+      min-height: 0;
+    }
+    .stage { grid-area: stage; min-height: 300px; }
+    .rail, .bottom { grid-area: railrow; }
+    .rail {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr;
+      border-left: none;
+      border-top: 1px solid var(--line);
+    }
+    .rail .pv + .pv { border-top: none; border-left: 1px solid var(--line); }
+    /* bottom rail merges into the same three-segment row */
+    .bottom { border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+    .canvas { grid-template-areas: 'stage stage stage' 'r1 r2 r3'; grid-template-columns: 1fr 1fr 1fr; }
+    .stage { grid-column: 1 / -1; }
+    .rail { display: contents; }
+    .rail .pv:first-child { grid-area: r1; border-top: 1px solid var(--line); }
+    .rail .pv:last-child { grid-area: r2; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+    .bottom { grid-area: r3; }
+
+    .pv { padding: 10px 12px 12px; min-height: 108px; }
+    .pv-label { flex-wrap: wrap; row-gap: 2px; }
+    .pv-label b { font-size: 13px; }
+    .pv-label span { font-size: 10.5px; width: 100%; order: 3; }
+    .pv-label i { position: absolute; right: 10px; top: 10px; }
+    .pv-visual { margin-top: 6px; }
+    .pv-visual .card.sm { inset: 0 6%; max-height: none; }
+    .card.sm { padding: 8px 10px; }
+    .card.sm span { font-size: 9.5px; }
+    .card.sm b { font-size: 15px; }
+    .pv-visual.wide { gap: 0; }
+    .pv-ap { display: none; }
+    .pv-mark { flex: 1 1 0; aspect-ratio: auto; height: auto; background-size: 120%; background-position: 50% 42%; }
+
+    .stage-fin {
+      padding: 16px 16px 0;
+      gap: 12px;
+    }
+    .stage-fin .home { width: min(62%, 300px); height: 97%; }
+    .stage-fin .cam { width: min(24%, 120px); height: 60%; }
+
+    .stage-ast { padding: 18px 16px; gap: 18px; }
+    .ast-band { grid-template-columns: 1fr 1fr; }
+    .ast-band .card:last-child { display: none; }
+    .ast-chain { flex-wrap: wrap; }
+  }
+
+  /* short mobile viewports: compress so the rail stays on screen */
+  @media (max-width: 760px) and (max-height: 700px) {
+    .stage { min-height: 248px; }
+    .pv { min-height: 92px; }
+    .strip { padding-block: 10px 12px; }
+    .s-desc { font-size: 12.5px; }
+    .card.sm b { font-size: 13px; }
+    .card.sm span { font-size: 9px; }
+  }
+</style>
