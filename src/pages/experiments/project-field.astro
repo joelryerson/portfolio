@@ -1,0 +1,563 @@
+---
+/**
+ * EXPERIMENT · "Project Field" · full-viewport four-region homepage prototype.
+ * Isolated route; nothing here touches production.
+ *
+ * The viewport below the header is one field of four adjacent regions, all
+ * always visible and always mounted. One region is active (~58%); the other
+ * three stay meaningful (~14% each: name, year, category, real crop).
+ * Switching reallocates the same field via flex-grow transitions: widths
+ * reallocate, crops adjust, titles scale into place, facts become readable.
+ * Mobile rotates the identical model into a vertical field (collapsed rows
+ * 60px, active fills the rest). Reduced motion switches instantly.
+ * No-JS: the field falls back to a linear sequence with everything visible.
+ */
+import homeLight from '../../assets/finderly/shots/home-light.webp';
+import captureShot from '../../assets/finderly/shots/capture.webp';
+import unitHifi from '../../assets/experiments/startupos-unit.webp';
+import unitLofi from '../../assets/experiments/startupos-unit-lofi.webp';
+import wizardShot from '../../assets/experiments/startupos-wizard.webp';
+import logoFinal from '../../assets/artparde/logo-final.png';
+import studiesStrip from '../../assets/experiments/artparde-studies.webp';
+
+const projects = [
+  {
+    id: 'finderly',
+    name: 'Finderly',
+    year: '2026',
+    cat: 'AI-guided home repair',
+    roles: 'Product design, UX/UI, and front-end implementation',
+    desc: 'Rebuilt the home around starting a repair, with camera, video, and recent work available from one clear entry point.',
+    href: '/work/finderly/',
+  },
+  {
+    id: 'asteri',
+    name: 'Asteri',
+    year: '2026',
+    cat: 'AI work platform',
+    roles: 'Product design and design systems',
+    desc: 'Consolidated a fragmented token foundation while preserving the product’s core table and preparing the homepage for migration.',
+    href: '/work/asteri/',
+  },
+  {
+    id: 'startupos',
+    name: 'StartupOS',
+    year: '2022',
+    cat: 'Founder platform',
+    roles: 'Product design',
+    desc: 'Designed the reusable template system the team used to ship the MVP in five months.',
+    href: '/work/startup-platform/',
+  },
+  {
+    id: 'artparde',
+    name: 'ArtPärdē',
+    year: '2024',
+    cat: 'Performing-arts nonprofit',
+    roles: 'Brand and web design',
+    desc: 'Created the identity and maintainable website the organization continues to run without me.',
+    href: '/work/artparde/',
+  },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Project Field · homepage prototype — Joel Ryerson</title>
+    <link rel="preload" href="/fonts/x/satoshi.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+
+  <body>
+    <p class="ribbon" role="note">Experiment · “Project Field” · homepage prototype · not production</p>
+
+    <header class="top">
+      <span class="who">Joel Ryerson</span>
+      <span class="role">Product Designer &amp; Design Engineer</span>
+      <span class="pos">Product design, systems, and front-end execution.</span>
+      <nav class="nav" aria-label="Site">
+        <a href="#field">Work</a>
+        <a href="#" aria-disabled="true">About</a>
+        <a href="mailto:joelryerson@gmail.com">Contact</a>
+      </nav>
+    </header>
+
+    <main class="field" id="field" aria-label="Selected work">
+      {projects.map((p, i) => (
+        <section
+          class={`region r-${p.id} ${i === 0 ? 'active' : ''}`}
+          id={`p-${p.id}`}
+          data-p={p.id}
+          aria-label={p.name}
+        >
+          <h2 class="name">{p.name}</h2>
+          <p class="cmeta"><b>{p.year}</b> · {p.cat}</p>
+
+          <div class="art" aria-hidden="true">
+            {p.id === 'finderly' && (
+              <>
+                <div class="f-cam" style={`background-image:url(${captureShot.src})`}></div>
+                <div class="f-home" style={`background-image:url(${homeLight.src})`}></div>
+              </>
+            )}
+            {p.id === 'asteri' && (
+              <>
+                <div class="a-chips">
+                  <span class="chip">--surface-raised</span>
+                  <span class="chip">--radius-card</span>
+                  <span class="chip">--space-inset</span>
+                </div>
+                <span class="a-link l1"></span>
+                <span class="a-link l2"></span>
+                <span class="a-link l3"></span>
+                <div class="a-surface">
+                  <span class="a-slabel">Dashboard surface</span>
+                  <div class="stat-card">
+                    <span>Active studies</span><b>128</b>
+                  </div>
+                </div>
+                <p class="a-cap">One source of truth: change a token once, every connected surface updates.</p>
+              </>
+            )}
+            {p.id === 'startupos' && (
+              <>
+                <div class="s-lofi" style={`background-image:url(${unitLofi.src})`}></div>
+                <div class="s-hifi" style={`background-image:url(${unitHifi.src})`}></div>
+                <div class="s-wiz" style={`background-image:url(${wizardShot.src})`}></div>
+              </>
+            )}
+            {p.id === 'artparde' && (
+              <>
+                <div class="p-band" style={`background-image:url(${studiesStrip.src})`}></div>
+                <div class="p-mark" style={`background-image:url(${logoFinal.src})`}></div>
+              </>
+            )}
+          </div>
+
+          <div class="facts">
+            <p class="cat">{p.cat}</p>
+            <p class="roles">{p.roles}</p>
+            <p class="desc">{p.desc}</p>
+            <a class="case" href={p.href}>Read the case study<span aria-hidden="true"> →</span></a>
+          </div>
+
+          <a
+            class="hit"
+            href={`?p=${p.id}`}
+            data-select={p.id}
+            aria-expanded={i === 0 ? 'true' : 'false'}
+            aria-controls={`p-${p.id}`}
+            aria-label={`View ${p.name} (${p.year}, ${p.cat})`}
+          ></a>
+        </section>
+      ))}
+    </main>
+
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        root.classList.add('js');
+        const regions = [...document.querySelectorAll('.region')];
+        const hits = [...document.querySelectorAll('[data-select]')];
+        const ids = regions.map((r) => r.dataset.p);
+
+        const activate = (id, push) => {
+          regions.forEach((r) => r.classList.toggle('active', r.dataset.p === id));
+          hits.forEach((h) => h.setAttribute('aria-expanded', String(h.dataset.select === id)));
+          if (push) history.replaceState(null, '', '?p=' + id);
+        };
+
+        hits.forEach((h) => {
+          h.addEventListener('click', (e) => {
+            e.preventDefault();
+            activate(h.dataset.select, true);
+          });
+        });
+
+        const wanted = new URLSearchParams(location.search).get('p');
+        activate(ids.includes(wanted) ? wanted : 'finderly', false);
+      })();
+    </script>
+
+    <style>
+      @font-face {
+        font-family: 'Satoshi X';
+        src: url('/fonts/x/satoshi.woff2') format('woff2');
+        font-weight: 300 900;
+        font-display: swap;
+      }
+
+      :root {
+        --shell: #f2f0eb;
+        --ink: #141311;
+        --mute: #6e6a60;
+        --line: #cdcabf;
+        --signal: #e94a10;
+        --dur: 620ms;
+        --ease: cubic-bezier(0.32, 0.72, 0.05, 1);
+        color-scheme: light;
+      }
+      * { box-sizing: border-box; }
+
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        background: var(--shell);
+        color: var(--ink);
+        font-family: 'Satoshi X', system-ui, sans-serif;
+        font-size: max(1rem, 16px);
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .ribbon {
+        margin: 0;
+        padding: 0.5rem 1.2rem;
+        background: var(--ink);
+        color: var(--shell);
+        font-size: max(0.8rem, 13px);
+        font-weight: 500;
+        text-align: center;
+      }
+
+      /* ---------- header ---------- */
+      .top {
+        height: 80px;
+        display: flex;
+        align-items: center;
+        gap: 1.6rem;
+        padding: 0 clamp(1rem, 2.5vw, 2rem);
+        border-bottom: 1px solid var(--line);
+      }
+      .who { font-size: 17px; font-weight: 800; letter-spacing: -0.01em; white-space: nowrap; }
+      .role { font-size: 14px; font-weight: 550; color: var(--mute); white-space: nowrap; }
+      .pos { font-size: 14px; color: var(--mute); margin-left: auto; }
+      .nav { display: flex; gap: 1.3rem; }
+      .pos + .nav { margin-left: 0; }
+      .nav a {
+        font-size: 14.5px;
+        font-weight: 650;
+        color: var(--ink);
+        text-decoration: none;
+        padding: 0.6rem 0;
+      }
+      .nav a:hover { color: var(--signal); }
+      .nav a:last-child { border-bottom: 2px solid var(--signal); padding-bottom: 2px; }
+      .nav a:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+      /* ---------- the field ---------- */
+      .field {
+        display: flex;
+        flex: 1;
+        min-height: 480px;
+      }
+      .region {
+        position: relative;
+        min-width: 0;
+        overflow: hidden;
+        flex: 1 1 0;
+        transition: flex-grow var(--dur) var(--ease), background-color 0.3s;
+      }
+      .js .region.active { flex-grow: 4.143; } /* 58% active · 14% each inactive */
+      .region + .region { border-left: 1px solid var(--line); }
+      .js .region:not(.active):hover { background: #eceae3; }
+
+      .name {
+        position: absolute;
+        top: 20px;
+        left: 22px;
+        z-index: 4;
+        margin: 0;
+        font-size: clamp(34px, 3.6vw, 52px);
+        font-weight: 800;
+        letter-spacing: -0.025em;
+        line-height: 1;
+        white-space: nowrap;
+        transform: scale(0.56);
+        transform-origin: top left;
+        transition: transform var(--dur) var(--ease);
+      }
+      .js .region.active .name { transform: scale(1); }
+
+      .cmeta {
+        position: absolute;
+        left: 22px;
+        bottom: 16px;
+        z-index: 4;
+        margin: 0;
+        font-size: 13.5px;
+        color: var(--mute);
+        transition: opacity 0.3s;
+      }
+      .cmeta b { color: var(--ink); font-weight: 750; }
+      .js .region.active .cmeta { opacity: 0; }
+
+      /* the switch target: full-region overlay for inactive regions */
+      .hit { position: absolute; inset: 0; z-index: 5; }
+      .js .region.active .hit { display: none; }
+      .hit:focus-visible { outline: 3px solid var(--signal); outline-offset: -3px; }
+
+      /* ---------- art layer ---------- */
+      .art {
+        position: absolute;
+        inset: 92px 0 0 0;
+        left: 0;
+        transition: left var(--dur) var(--ease);
+      }
+      .js .region.active .art { left: 40%; }
+      .art > * { position: absolute; transition: opacity 0.35s ease, left var(--dur) var(--ease), width var(--dur) var(--ease); }
+      /* readability scrim behind cmeta on imagery, inactive only */
+      .art::after {
+        content: '';
+        position: absolute;
+        left: 0; right: 0; bottom: 0;
+        height: 110px;
+        background: linear-gradient(to top, rgba(242, 240, 235, 0.96) 38%, rgba(242, 240, 235, 0));
+        transition: opacity 0.3s;
+        pointer-events: none;
+      }
+      .js .region.active .art::after { opacity: 0; }
+
+      /* ---------- facts ---------- */
+      .facts {
+        position: absolute;
+        left: 22px;
+        bottom: 24px;
+        width: min(34%, 360px);
+        z-index: 3;
+        opacity: 0;
+        transform: translateY(12px);
+        transition: opacity 0.28s ease, transform 0.45s var(--ease);
+        pointer-events: none;
+      }
+      .js .region.active .facts {
+        opacity: 1;
+        transform: none;
+        transition-delay: 0.24s;
+        pointer-events: auto;
+      }
+      .facts .cat { margin: 0; font-size: 13.5px; font-weight: 700; }
+      .facts .roles { margin: 2px 0 0; font-size: 13.5px; color: var(--mute); }
+      .facts .desc { margin: 12px 0 0; font-size: 16.5px; line-height: 1.55; letter-spacing: -0.004em; }
+      .case {
+        display: inline-block;
+        margin-top: 14px;
+        font-size: 14.5px;
+        font-weight: 700;
+        color: var(--ink);
+        text-decoration: none;
+        border-bottom: 2px solid var(--signal);
+        padding-bottom: 2px;
+      }
+      .case:hover { color: var(--signal); }
+      .case:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+      /* ============ FINDERLY art ============ */
+      .f-home {
+        left: 32%; right: 0; top: 0; bottom: 0;
+        background-size: cover;
+        background-position: 50% 10%;
+        border-left: 1px solid var(--line);
+      }
+      .f-cam {
+        left: 3%; width: 26%; top: 7%; bottom: 24%;
+        background-size: cover;
+        background-position: 50% 30%;
+        border: 1px solid var(--line);
+      }
+      .js .region:not(.active) .f-home { left: 0; border-left: none; }
+      .js .region:not(.active) .f-cam { opacity: 0; }
+
+      /* ============ ASTERI art ============ */
+      .a-chips { left: 4%; top: 12%; display: grid; gap: 12px; }
+      .chip {
+        font: 550 13px/1 ui-monospace, 'SF Mono', Menlo, monospace;
+        background: #fbfaf7;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 10px 13px;
+        color: var(--ink);
+        white-space: nowrap;
+      }
+      .a-link { height: 1px; background: var(--line); top: 0; }
+      .a-link.l1 { left: 27.5%; width: 10%; top: calc(12% + 17px); }
+      .a-link.l2 { left: 27.5%; width: 10%; top: calc(12% + 63px); }
+      .a-link.l3 { left: 27.5%; width: 10%; top: calc(12% + 109px); }
+      .a-link::after {
+        content: '';
+        position: absolute;
+        right: -2px; top: -2.5px;
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        background: var(--signal);
+      }
+      .a-surface {
+        left: 38%; right: 6%; top: 8%; height: 62%;
+        background: #fbfbf9;
+        border: 1px solid var(--line);
+      }
+      .a-slabel {
+        position: absolute;
+        top: 12px; left: 14px;
+        font-size: 12px;
+        font-weight: 650;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--mute);
+      }
+      .stat-card {
+        position: absolute;
+        left: 14px; bottom: 14px;
+        width: min(280px, 82%);
+        background: #f7f8fa;
+        border: 1px solid #e2e4e9;
+        border-radius: 10px;
+        padding: 18px;
+      }
+      .stat-card span { display: block; font-size: 13px; color: #6b7280; }
+      .stat-card b { display: block; font-size: 26px; font-weight: 650; color: #111827; margin-top: 2px; }
+      .a-cap { left: 4%; bottom: 10%; width: 60%; margin: 0; font-size: 13px; color: var(--mute); }
+      .js .region:not(.active) .a-chips,
+      .js .region:not(.active) .a-link,
+      .js .region:not(.active) .a-slabel,
+      .js .region:not(.active) .a-cap { opacity: 0; }
+      .js .region:not(.active) .a-surface { left: 10%; right: 10%; top: 16%; height: 58%; }
+      .js .region:not(.active) .stat-card { left: 8%; right: 8%; width: auto; }
+
+      /* ============ STARTUPOS art ============ */
+      .s-lofi, .s-hifi, .s-wiz {
+        background-size: cover;
+        background-position: 50% 0;
+        border: 1px solid var(--line);
+      }
+      .s-lofi { left: 2%; width: 28%; top: 6%; height: 48%; }
+      .s-hifi { left: 33%; width: 42%; top: 6%; height: 58%; }
+      .s-wiz { left: 78%; width: 20%; top: 6%; height: 40%; }
+      .js .region:not(.active) .s-hifi { left: 0; width: 100%; top: 0; height: 100%; border: none; }
+      .js .region:not(.active) .s-lofi,
+      .js .region:not(.active) .s-wiz { opacity: 0; }
+
+      /* ============ ARTPARDE art ============ */
+      .p-band {
+        right: 0; top: 0; bottom: 0; width: 24%;
+        background-color: #141414;
+        background-size: 210% auto;
+        background-position: 30% 50%;
+      }
+      .p-mark {
+        left: 6%; top: 6%;
+        width: min(52%, 360px);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background-size: 114%;
+        background-position: 50% 50%;
+      }
+      .js .region:not(.active) .p-band { opacity: 0; }
+      .js .region:not(.active) .p-mark { left: 18%; width: 120%; top: 10%; }
+
+      /* ---------- reduced motion ---------- */
+      @media (prefers-reduced-motion: reduce) {
+        .region, .name, .art, .art > *, .facts, .cmeta, .art::after { transition: none !important; }
+      }
+
+      /* ---------- no-JS: linear sequence ---------- */
+      html:not(.js) .field { flex-direction: column; }
+      html:not(.js) .region { min-height: 92vh; }
+      html:not(.js) .region + .region { border-left: none; border-top: 1px solid var(--line); }
+      html:not(.js) .name { transform: scale(1); }
+      html:not(.js) .art { left: 40%; }
+      html:not(.js) .art::after { opacity: 0; }
+      html:not(.js) .facts { opacity: 1; transform: none; pointer-events: auto; }
+      html:not(.js) .cmeta { opacity: 0; }
+      html:not(.js) .hit { display: none; }
+
+      /* ---------- mobile: the field rotated ---------- */
+      @media (max-width: 760px) {
+        .top {
+          height: 64px;
+          gap: 0.9rem;
+        }
+        .pos { display: none; }
+        .role { display: none; }
+        .nav { margin-left: auto; gap: 1rem; }
+
+        .field { flex-direction: column; min-height: 520px; }
+        .region { flex: 0.0001 1 60px; transition: flex-grow var(--dur) var(--ease); }
+        .js .region.active { flex-grow: 1; }
+        .region + .region { border-left: none; border-top: 1px solid var(--line); }
+
+        .name {
+          top: 30px;
+          left: 18px;
+          font-size: 34px;
+          transform: translateY(-50%) scale(0.62);
+        }
+        .js .region.active .name { top: 16px; transform: translateY(0) scale(1); }
+
+        .cmeta {
+          left: auto; right: calc(34% + 12px); bottom: auto; top: 30px;
+          transform: translateY(-50%);
+          font-size: 11.5px;
+          line-height: 1.35;
+          text-align: right;
+          max-width: 126px;
+        }
+
+        /* collapsed: right-side crop sliver; active: art on the upper part */
+        .art { inset: 0 0 0 66%; transition: inset var(--dur) var(--ease), left var(--dur) var(--ease); }
+        .art::after { display: none; }
+        .js .region.active .art { inset: 62px 0 42% 0; left: 0; }
+        html:not(.js) .art { inset: 70px 0 45% 0; left: 0; }
+
+        .facts {
+          left: 18px;
+          right: 18px;
+          width: auto;
+          bottom: max(16px, env(safe-area-inset-bottom));
+        }
+        .facts .desc { font-size: 15.5px; }
+
+        /* per-project mobile recomposition */
+        .f-home { left: 0; border-left: none; background-position: 50% 14%; }
+        .f-cam { opacity: 0; }
+        .js .region.active .f-cam {
+          opacity: 1;
+          left: auto; right: 4%; width: 26%; top: 8%; bottom: 12%;
+        }
+        .js .region.active .f-home { left: 0; right: 34%; }
+
+        .a-chips { display: none; }
+        .a-link { display: none; }
+        .a-cap { display: none; }
+        .a-surface { left: 4%; right: 4%; top: 8%; height: 74%; }
+        .js .region:not(.active) .a-surface { left: 4%; right: 4%; top: 12%; height: 70%; border: none; background: transparent; }
+        .js .region:not(.active) .a-slabel { display: none; }
+        .js .region:not(.active) .stat-card { left: 0; bottom: auto; top: 0; width: 100%; padding: 8px 12px; }
+        .js .region:not(.active) .stat-card b { font-size: 15px; }
+        .js .region:not(.active) .stat-card span { font-size: 10.5px; }
+
+        .s-lofi { left: 2%; width: 44%; top: 4%; height: 88%; }
+        .s-hifi { left: 50%; width: 48%; top: 4%; height: 88%; }
+        .s-wiz { opacity: 0; }
+        .js .region:not(.active) .s-hifi { left: 0; width: 100%; top: 0; height: 100%; }
+        .js .region:not(.active) .s-lofi { opacity: 0; }
+
+        .p-mark { left: 4%; top: 6%; width: min(52vw, 250px); }
+        .p-band { width: 30%; }
+        .js .region:not(.active) .p-mark { left: 6%; top: -40%; width: 150%; }
+        .js .region:not(.active) .p-band { opacity: 1; width: 34%; }
+      }
+
+      /* short mobile viewports: compress active region content */
+      @media (max-width: 760px) and (max-height: 700px) {
+        .facts .desc { font-size: 14px; line-height: 1.45; }
+        .facts .roles { font-size: 12px; }
+        .js .region.active .art { bottom: 52%; }
+      }
+    </style>
+  </body>
+</html>
