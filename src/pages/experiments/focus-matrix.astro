@@ -1,0 +1,489 @@
+---
+/**
+ * EXPERIMENT · "Focus Matrix" · functional prototype.
+ * Isolated route; nothing here touches production.
+ *
+ * One continuous 2×2 field. Every project owns a fixed corner forever:
+ * Finderly NW, Asteri NE, StartupOS SW, ArtPärdē SE. Initially all four
+ * quadrants are equal; selecting a project enlarges its row and column to
+ * 72/28 by transitioning the grid's fr values. Nothing swaps or moves homes.
+ * Active region reveals role, contribution, and the case-study link.
+ *
+ * Mobile keeps the same mental model: the initial view is the same equal
+ * 2×2; selecting projects a stage above a persistent compact 2×2 selector
+ * whose positions never change. URL ?p= + history; arrow keys move within
+ * the matrix; reduced motion switches instantly; no-JS shows all four
+ * projects with their facts and links.
+ */
+import homeLight from '../../assets/finderly/shots/home-light.webp';
+import unitHifi from '../../assets/experiments/startupos-unit.webp';
+import studiesStrip from '../../assets/experiments/artparde-studies.webp';
+import logoFinal from '../../assets/artparde/logo-final.png';
+
+const projects = [
+  {
+    id: 'finderly',
+    name: 'Finderly',
+    year: '2026',
+    cat: 'AI home repair',
+    roles: 'Product design, UX/UI, and front-end implementation',
+    desc: 'Rebuilt the home around starting a repair, with camera, video, and recent work available from one clear entry point.',
+    href: '/work/finderly/',
+    corner: 'nw',
+  },
+  {
+    id: 'asteri',
+    name: 'Asteri AI',
+    year: '2026',
+    cat: 'AI work platform',
+    roles: 'Product design and design systems',
+    desc: 'Consolidated a fragmented token foundation while preserving the product’s core table and preparing the homepage for migration.',
+    href: '/work/asteri/',
+    corner: 'ne',
+  },
+  {
+    id: 'startupos',
+    name: 'StartupOS',
+    year: '2022',
+    cat: 'Founder education',
+    roles: 'Product design',
+    desc: 'Designed the reusable template system the team used to ship the MVP in five months.',
+    href: '/work/startup-platform/',
+    corner: 'sw',
+  },
+  {
+    id: 'artparde',
+    name: 'ArtPärdē',
+    year: '2024',
+    cat: 'Performing-arts nonprofit',
+    roles: 'Brand and web design',
+    desc: 'Created the identity and maintainable website the organization continues to run without me.',
+    href: '/work/artparde/',
+    corner: 'se',
+  },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Focus Matrix · functional prototype — Joel Ryerson</title>
+    <link rel="preload" href="/fonts/x/satoshi.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+
+  <body>
+    <p class="ribbon" role="note">Experiment · “Focus Matrix” · functional prototype · not production</p>
+
+    <div class="page">
+      <header class="top">
+        <span class="who">Joel Ryerson</span>
+        <span class="role">Product Designer &amp; Design Engineer</span>
+        <nav class="links" aria-label="Site">
+          <a href="#" aria-disabled="true">About</a>
+          <a href="mailto:joelryerson@gmail.com">Contact</a>
+        </nav>
+      </header>
+
+      <!-- mobile stage: projections of the active project (hidden on desktop) -->
+      <section class="mstage" aria-live="polite">
+        {projects.map((p) => (
+          <div class={`ms ms-${p.id}`}>
+            <div class="ms-visual">
+              {p.id === 'finderly' && <div class="crop full" style={`background-image:url(${homeLight.src}); background-position: 50% 12%;`}></div>}
+              {p.id === 'asteri' && (
+                <div class="ast-wrap">
+                  <div class="card"><span>Active studies</span><b>128</b><i>before · inline styles</i></div>
+                  <div class="card"><span>Active studies</span><b>128</b><i>after · semantic tokens</i></div>
+                </div>
+              )}
+              {p.id === 'startupos' && <div class="crop full" style={`background-image:url(${unitHifi.src}); background-size: 110% auto; background-position: 20% 0;`}></div>}
+              {p.id === 'artparde' && (
+                <div class="ap-wrap">
+                  <div class="crop ap-mark" style={`background-image:url(${logoFinal.src})`}></div>
+                  <div class="crop ap-band" style={`background-image:url(${studiesStrip.src})`}></div>
+                </div>
+              )}
+            </div>
+            <div class="ms-info">
+              <p class="i-name"><b>{p.name}</b> <span>{p.year} · {p.cat}</span></p>
+              <p class="i-roles">{p.roles}</p>
+              <p class="i-desc">{p.desc}</p>
+              <a class="case" href={p.href}>Read case study<span aria-hidden="true"> →</span></a>
+            </div>
+          </div>
+        ))}
+      </section>
+
+      <!-- the matrix: fixed corners, animated proportions -->
+      <main class="matrix" id="matrix" aria-label="Selected work">
+        {projects.map((p) => (
+          <section class={`q q-${p.corner} qp-${p.id}`} data-p={p.id} aria-label={p.name}>
+            <p class="label"><b>{p.name}</b><span>{p.year} · {p.cat}</span><i aria-hidden="true">→</i></p>
+
+            <div class="vis">
+              {p.id === 'finderly' && <div class="crop full" style={`background-image:url(${homeLight.src}); background-position: 50% 12%;`}></div>}
+              {p.id === 'asteri' && (
+                <div class="ast-band">
+                  <div class="card"><span>Active studies</span><b>128</b><i>before · inline styles, restated per file</i></div>
+                  <div class="card xtra"><span>Active studies</span><b>128</b><i>after · semantic tokens</i></div>
+                  <div class="card xtra"><span>Active studies</span><b>128</b><i>after · semantic tokens</i></div>
+                </div>
+              )}
+              {p.id === 'startupos' && <div class="crop full" style={`background-image:url(${unitHifi.src}); background-size: cover; background-position: 15% 0;`}></div>}
+              {p.id === 'artparde' && (
+                <div class="ap-lay">
+                  <div class="crop ap-mark" style={`background-image:url(${logoFinal.src})`}></div>
+                  <div class="crop ap-band xtra-ap" style={`background-image:url(${studiesStrip.src})`}></div>
+                </div>
+              )}
+            </div>
+
+            <div class="info">
+              <p class="i-roles">{p.roles}</p>
+              <p class="i-desc">{p.desc}</p>
+              <a class="case" href={p.href}>Read case study<span aria-hidden="true"> →</span></a>
+            </div>
+
+            <button
+              class="hit"
+              type="button"
+              data-select={p.id}
+              aria-pressed="false"
+              aria-label={`Focus ${p.name} (${p.year}, ${p.cat})`}
+            ></button>
+          </section>
+        ))}
+      </main>
+    </div>
+
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        root.classList.add('js');
+        const matrix = document.getElementById('matrix');
+        const page = document.querySelector('.page');
+        const hits = [...matrix.querySelectorAll('[data-select]')];
+        const IDS = ['finderly', 'asteri', 'startupos', 'artparde'];
+
+        const apply = (id) => {
+          const active = IDS.includes(id) ? id : '';
+          matrix.dataset.active = active;
+          page.dataset.active = active;
+          hits.forEach((h) => h.setAttribute('aria-pressed', String(h.dataset.select === active)));
+        };
+
+        const select = (id, push = true) => {
+          if (matrix.dataset.active === id) return;
+          apply(id);
+          if (push) history.pushState({ p: id }, '', id ? '?p=' + id : location.pathname);
+        };
+
+        matrix.addEventListener('click', (e) => {
+          const btn = e.target.closest('[data-select]');
+          if (btn) select(btn.dataset.select);
+        });
+
+        // arrow keys move focus within the fixed 2×2
+        const POS = { finderly: [0, 0], asteri: [0, 1], startupos: [1, 0], artparde: [1, 1] };
+        matrix.addEventListener('keydown', (e) => {
+          const btn = e.target.closest('[data-select]');
+          if (!btn) return;
+          let [r, c] = POS[btn.dataset.select];
+          if (e.key === 'ArrowRight') c = 1;
+          else if (e.key === 'ArrowLeft') c = 0;
+          else if (e.key === 'ArrowDown') r = 1;
+          else if (e.key === 'ArrowUp') r = 0;
+          else return;
+          e.preventDefault();
+          const target = Object.keys(POS).find((k) => POS[k][0] === r && POS[k][1] === c);
+          hits.find((h) => h.dataset.select === target)?.focus();
+        });
+
+        window.addEventListener('popstate', (e) => {
+          apply(e.state?.p ?? new URLSearchParams(location.search).get('p') ?? '');
+        });
+
+        const wanted = new URLSearchParams(location.search).get('p') || '';
+        apply(wanted);
+        history.replaceState({ p: matrix.dataset.active }, '', location.href);
+      })();
+    </script>
+
+    <style>
+      @font-face {
+        font-family: 'Satoshi X';
+        src: url('/fonts/x/satoshi.woff2') format('woff2');
+        font-weight: 300 900;
+        font-display: swap;
+      }
+
+      :root {
+        --shell: #f2f0eb;
+        --ink: #141311;
+        --mute: #6e6a60;
+        --line: #cdcabf;
+        --signal: #e94a10;
+        --dur: 600ms;
+        --ease: cubic-bezier(0.32, 0.72, 0.05, 1);
+        color-scheme: light;
+      }
+      * { box-sizing: border-box; }
+
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        background: var(--shell);
+        color: var(--ink);
+        font-family: 'Satoshi X', system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      .ribbon {
+        margin: 0;
+        padding: 0.4rem 1.2rem;
+        background: var(--ink);
+        color: var(--shell);
+        font-size: max(0.8rem, 13px);
+        font-weight: 500;
+        text-align: center;
+      }
+      .page { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+      .page * { margin: 0; }
+
+      /* ---------- header ---------- */
+      .top {
+        height: 64px;
+        flex: none;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 0 clamp(16px, 2.5vw, 32px);
+        border-bottom: 1px solid var(--line);
+      }
+      .who { font-size: 16px; font-weight: 800; letter-spacing: -0.01em; white-space: nowrap; }
+      .role { font-size: 13.5px; font-weight: 500; color: var(--mute); }
+      .links { margin-left: auto; display: flex; gap: 18px; }
+      .links a { font-size: 14px; font-weight: 650; color: var(--ink); text-decoration: none; padding: 8px 0; }
+      .links a:hover { color: var(--signal); }
+      .links a:last-child { border-bottom: 2px solid var(--signal); padding-bottom: 2px; }
+      .links a:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+      /* ---------- the matrix ---------- */
+      .matrix {
+        flex: 1;
+        min-height: 420px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        transition: grid-template-columns var(--dur) var(--ease), grid-template-rows var(--dur) var(--ease);
+      }
+      .matrix[data-active='finderly'] { grid-template-columns: 72fr 28fr; grid-template-rows: 72fr 28fr; }
+      .matrix[data-active='asteri'] { grid-template-columns: 28fr 72fr; grid-template-rows: 72fr 28fr; }
+      .matrix[data-active='startupos'] { grid-template-columns: 72fr 28fr; grid-template-rows: 28fr 72fr; }
+      .matrix[data-active='artparde'] { grid-template-columns: 28fr 72fr; grid-template-rows: 28fr 72fr; }
+
+      .q {
+        position: relative;
+        overflow: hidden;
+        min-width: 0;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        padding: 14px 16px 16px;
+      }
+      .q-nw { grid-area: 1 / 1; }
+      .q-ne { grid-area: 1 / 2; border-left: 1px solid var(--line); }
+      .q-sw { grid-area: 2 / 1; border-top: 1px solid var(--line); }
+      .q-se { grid-area: 2 / 2; border-left: 1px solid var(--line); border-top: 1px solid var(--line); }
+
+      .label { display: flex; align-items: baseline; gap: 8px; flex: none; z-index: 2; }
+      .label b { font-size: 15px; font-weight: 750; white-space: nowrap; }
+      .label span { font-size: 12px; color: var(--mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .label i { margin-left: auto; font-style: normal; font-weight: 800; color: var(--mute); }
+      .q:hover .label i { color: var(--signal); }
+
+      .vis { flex: 1 1 0; min-height: 0; margin-top: 10px; position: relative; }
+      .crop { background-repeat: no-repeat; background-size: cover; }
+      .crop.full { position: absolute; inset: 0; border: 1px solid var(--line); }
+
+      /* asteri: one card small, three when the region is large */
+      .ast-band {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(14px, 2vw, 32px);
+        padding: 4%;
+      }
+      .card {
+        background: #f7f8fa;
+        border: 1px solid #e2e4e9;
+        border-radius: 10px;
+        padding: clamp(12px, 1.3vw, 20px);
+        flex: 0 1 240px;
+        min-width: 0;
+      }
+      .card span { display: block; font-size: clamp(11px, 0.9vw, 13.5px); color: #6b7280; }
+      .card b { display: block; font-size: clamp(17px, 1.9vw, 28px); font-weight: 650; color: #111827; margin-top: 2px; }
+      .card i { display: block; font-style: normal; font-size: clamp(10px, 0.8vw, 12px); color: var(--mute); margin-top: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .card.xtra { display: none; }
+      .matrix[data-active='asteri'] .qp-asteri .card.xtra { display: block; }
+
+      /* artparde: complete mark always; studies band joins when large */
+      .ap-lay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(14px, 2vw, 32px);
+      }
+      .ap-mark {
+        height: min(86%, 300px);
+        aspect-ratio: 1;
+        flex: none;
+        background-position: 50% 50%;
+      }
+      .ap-band {
+        display: none;
+        width: min(32%, 300px);
+        height: 86%;
+        background-size: 100% auto;
+        background-repeat: repeat-y;
+        background-color: #141414;
+      }
+      .matrix[data-active='artparde'] .qp-artparde .ap-band { display: block; }
+
+      /* active info */
+      .info {
+        flex: none;
+        max-width: 62ch;
+        padding-top: 12px;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 240ms ease, visibility 0s 240ms;
+        z-index: 3;
+        height: 0;
+        overflow: hidden;
+      }
+      .matrix[data-active='finderly'] .qp-finderly .info,
+      .matrix[data-active='asteri'] .qp-asteri .info,
+      .matrix[data-active='startupos'] .qp-startupos .info,
+      .matrix[data-active='artparde'] .qp-artparde .info {
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 300ms ease 180ms, visibility 0s;
+        height: auto;
+        overflow: visible;
+      }
+      .i-roles { font-size: 12.5px; color: var(--mute); }
+      .i-desc { font-size: 14.5px; line-height: 1.45; margin-top: 4px; }
+      .case {
+        display: inline-block;
+        margin-top: 10px;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--ink);
+        text-decoration: none;
+        border-bottom: 2px solid var(--signal);
+        padding-bottom: 2px;
+        position: relative;
+        z-index: 4;
+      }
+      .case:hover { color: var(--signal); }
+      .case:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+      /* select control: covers the region, sits under the info links */
+      .hit {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+      }
+      .hit[aria-pressed='true'] { cursor: default; }
+      .hit:focus-visible { outline: 3px solid var(--signal); outline-offset: -3px; }
+      .q:has(.hit[aria-pressed='false']):hover { background: #eceae3; }
+
+      /* ---------- mobile stage (desktop: hidden) ---------- */
+      .mstage { display: none; }
+
+      /* ---------- reduced motion ---------- */
+      @media (prefers-reduced-motion: reduce) {
+        .matrix, .info { transition: none !important; }
+      }
+
+      /* ---------- no-JS: everything readable ---------- */
+      html:not(.js) .info { opacity: 1; visibility: visible; height: auto; overflow: visible; }
+      html:not(.js) .hit { display: none; }
+      html:not(.js) .label i { display: none; }
+
+      /* ---------- mobile ---------- */
+      @media (max-width: 760px) {
+        .role { display: none; }
+        .top { height: 56px; }
+
+        /* stage appears once a project is active */
+        .mstage { display: none; flex: 1; min-height: 0; position: relative; }
+        .page[data-active]:not([data-active='']) .mstage { display: block; }
+        .ms { position: absolute; inset: 0; display: none; flex-direction: column; }
+        .page[data-active='finderly'] .ms-finderly,
+        .page[data-active='asteri'] .ms-asteri,
+        .page[data-active='startupos'] .ms-startupos,
+        .page[data-active='artparde'] .ms-artparde { display: flex; }
+        .ms-visual { flex: 1 1 0; min-height: 0; position: relative; margin: 12px 16px 0; }
+        .ms-visual .crop.full { position: absolute; inset: 0; border: 1px solid var(--line); }
+        .ast-wrap { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; gap: 14px; padding: 0 8%; }
+        .ap-wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 12px; }
+        .ap-wrap .ap-mark { height: min(60vw, 240px); aspect-ratio: 1; background-size: cover; background-position: 50% 50%; }
+        .ap-wrap .ap-band { display: block; width: 30%; height: 82%; background-size: 100% auto; background-repeat: repeat-y; background-color: #141414; }
+        .ms-info { flex: none; padding: 12px 16px 14px; }
+        .i-name b { font-size: 18px; font-weight: 800; }
+        .i-name span { font-size: 12px; color: var(--mute); margin-left: 6px; }
+        .ms-info .i-roles { margin-top: 2px; font-size: 11.5px; }
+        .ms-info .i-desc { font-size: 13.5px; margin-top: 6px; }
+
+        /* the matrix compresses into the persistent selector */
+        .matrix { flex: none; min-height: 0; transition: none; }
+        .page[data-active]:not([data-active='']) .matrix {
+          grid-template-columns: 1fr 1fr !important;
+          grid-template-rows: 92px 92px !important;
+          border-top: 1px solid var(--line);
+        }
+        .page[data-active=''] .matrix, html:not(.js) .matrix { flex: 1; }
+        .q { padding: 10px 12px 12px; }
+        .page[data-active]:not([data-active='']) .q .vis { display: none; }
+        .page[data-active]:not([data-active='']) .q .info { display: none; }
+        .page[data-active]:not([data-active='']) .q .label { flex-wrap: wrap; row-gap: 2px; }
+        .page[data-active]:not([data-active='']) .q .label span { white-space: normal; width: 100%; }
+        /* selected quadrant cue */
+        .q:has(.hit[aria-pressed='true']) { background: #e9e6de; box-shadow: inset 0 -3px 0 var(--signal); }
+
+        .label b { font-size: 14px; }
+        .label span { font-size: 11px; }
+        .card { flex: 0 1 auto; }
+        .card i { white-space: normal; }
+        .ast-band { flex-direction: column; padding: 8%; }
+        .ast-band .card.xtra { display: none !important; }
+        .ap-lay .ap-mark { height: min(70%, 160px); }
+
+        html:not(.js) .matrix { display: block; }
+        html:not(.js) .q { min-height: 380px; border: none; border-top: 1px solid var(--line); }
+        html:not(.js) .q .vis { min-height: 220px; }
+      }
+      @media (max-width: 760px) and (max-height: 700px) {
+        .page[data-active]:not([data-active='']) .matrix {
+          grid-template-rows: 78px 78px !important;
+        }
+        .ms-info .i-desc { font-size: 12.5px; }
+      }
+    </style>
+  </body>
+</html>
