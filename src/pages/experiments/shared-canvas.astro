@@ -1,0 +1,394 @@
+---
+/**
+ * EXPERIMENT · "Shared Canvas" · Option B composition study. Static only.
+ * Three px-exact frames: desktop Finderly-active, desktop Asteri-active,
+ * mobile Finderly-active. No JavaScript, no interaction, no animation.
+ *
+ * Hidden spatial logic: one continuous canvas; each project owns a compass
+ * anchor (Finderly NW, Asteri NE, StartupOS SE, ArtPärdē S) and the copy
+ * block owns SW. The active project's aperture grows from its own anchor
+ * toward the canvas center; inactive apertures hold their corners at
+ * meaningful size. Names always sit at the top-left of their apertures.
+ * Isolated route; nothing here touches production.
+ */
+import homeLight from '../../assets/finderly/shots/home-light.webp';
+import captureShot from '../../assets/finderly/shots/capture.webp';
+import unitHifi from '../../assets/experiments/startupos-unit.webp';
+import logoFinal from '../../assets/artparde/logo-final.png';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Shared Canvas · composition study — Joel Ryerson</title>
+    <link rel="preload" href="/fonts/x/satoshi.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+
+  <body>
+    <p class="ribbon" role="note">Experiment · “Shared Canvas” · Option B composition study · static frames · not production</p>
+
+    <main class="deck">
+      <header class="deck-head">
+        <h1>Shared canvas</h1>
+        <p>
+          One continuous field; four persistent apertures into real work. Each project owns a
+          compass anchor and the active aperture grows from its own anchor; the copy block holds
+          the south-west. Three static frames; no interaction in this phase.
+        </p>
+      </header>
+
+      <!-- ============ FRAME 1 · DESKTOP · FINDERLY ACTIVE ============ -->
+      <section class="frame">
+        <p class="frame-label">Frame 1 · Desktop 1440×850 · Finderly active</p>
+        <div class="fit-desktop"><div class="scale">
+          <div class="canvas" role="img" aria-label="Desktop composition, Finderly active">
+            <header class="strip">
+              <span class="who">Joel Ryerson</span>
+              <span class="role">Product Designer &amp; Design Engineer</span>
+              <span class="links">About&ensp;·&ensp;Contact</span>
+            </header>
+
+            <!-- Finderly · active aperture group (NW) -->
+            <div class="ap f-cap" style={`background-image:url(${captureShot.src})`}></div>
+            <div class="ap f-home" style={`background-image:url(${homeLight.src})`}></div>
+
+            <!-- Asteri · NE -->
+            <p class="tag" style="left:950px; top:106px;"><b>Asteri AI</b> 2026</p>
+            <div class="ap a-box" style="left:950px; top:132px; width:380px; height:188px;">
+              <div class="card" style="left:28px; top:30px; width:200px;">
+                <span>Active studies</span><b>128</b>
+                <i>after · semantic tokens</i>
+              </div>
+              <div class="card" style="left:262px; top:30px; width:200px;">
+                <span>Active studies</span><b>128</b>
+              </div>
+            </div>
+
+            <!-- StartupOS · SE -->
+            <p class="tag" style="left:950px; top:366px;"><b>StartupOS</b> 2022</p>
+            <div class="ap crop" style={`left:950px; top:392px; width:490px; height:212px; border-right:none; background-image:url(${unitHifi.src}); background-size:100% auto; background-position:0 0;`}></div>
+
+            <!-- ArtPärdē · S -->
+            <p class="tag" style="left:530px; top:676px;"><b>ArtPärdē</b> 2024</p>
+            <div class="ap crop" style={`left:530px; top:702px; width:236px; height:148px; border-bottom:none; background-image:url(${logoFinal.src}); background-size:150%; background-position:50% 26%;`}></div>
+
+            <!-- copy · SW -->
+            <div class="copy" style="left:36px; top:660px;">
+              <h2>Finderly</h2>
+              <p class="spec"><b>2026</b> · AI-guided home repair</p>
+              <p class="statement">
+                Rebuilt the home around starting a repair, with camera, video, and recent work
+                available from one clear entry point.
+              </p>
+              <p class="roles">Product design, UX/UI, and front-end implementation</p>
+              <span class="case">Read case study <b>→</b></span>
+            </div>
+          </div>
+        </div></div>
+      </section>
+
+      <!-- ============ FRAME 2 · DESKTOP · ASTERI ACTIVE ============ -->
+      <section class="frame">
+        <p class="frame-label">Frame 2 · Desktop 1440×850 · Asteri active · same system, redistributed</p>
+        <div class="fit-desktop"><div class="scale">
+          <div class="canvas" role="img" aria-label="Desktop composition, Asteri active">
+            <header class="strip">
+              <span class="who">Joel Ryerson</span>
+              <span class="role">Product Designer &amp; Design Engineer</span>
+              <span class="links">About&ensp;·&ensp;Contact</span>
+            </header>
+
+            <!-- Asteri · active aperture (NE, grown) -->
+            <div class="ap a-box big" style="left:470px; top:64px; width:970px; height:496px; border-right:none; border-top:none;">
+              <p class="tok">--surface-raised</p>
+              <span class="leader"></span>
+              <div class="card lg" style="left:64px; top:186px; width:280px;">
+                <span>Active studies</span><b>128</b>
+                <i>before · inline styles, restated per file</i>
+              </div>
+              <div class="card lg" style="left:404px; top:186px; width:280px;">
+                <span>Active studies</span><b>128</b>
+                <i>after · semantic tokens</i>
+              </div>
+              <div class="card lg" style="left:744px; top:186px; width:280px;">
+                <span>Active studies</span><b>128</b>
+                <i>after · semantic tokens</i>
+              </div>
+            </div>
+
+            <!-- Finderly · NW, contracted -->
+            <p class="tag" style="left:36px; top:96px;"><b>Finderly</b> 2026</p>
+            <div class="ap crop" style={`left:0; top:122px; width:340px; height:338px; border-left:none; background-image:url(${homeLight.src}); background-size:cover; background-position:50% 12%;`}></div>
+
+            <!-- StartupOS · SE -->
+            <p class="tag" style="left:920px; top:602px;"><b>StartupOS</b> 2022</p>
+            <div class="ap crop" style={`left:920px; top:628px; width:520px; height:222px; border-right:none; border-bottom:none; background-image:url(${unitHifi.src}); background-size:100% auto; background-position:0 0;`}></div>
+
+            <!-- ArtPärdē · S -->
+            <p class="tag" style="left:530px; top:634px;"><b>ArtPärdē</b> 2024</p>
+            <div class="ap crop" style={`left:530px; top:660px; width:236px; height:150px; background-image:url(${logoFinal.src}); background-size:150%; background-position:50% 26%;`}></div>
+
+            <!-- copy · SW -->
+            <div class="copy" style="left:36px; top:530px;">
+              <h2>Asteri AI</h2>
+              <p class="spec"><b>2026</b> · AI work platform</p>
+              <p class="statement">
+                Consolidated a fragmented token foundation while preserving the product’s core
+                table and preparing the homepage for migration.
+              </p>
+              <p class="roles">Product design and design systems</p>
+              <span class="case">Read case study <b>→</b></span>
+            </div>
+          </div>
+        </div></div>
+      </section>
+
+      <!-- ============ FRAME 3 · MOBILE · FINDERLY ACTIVE ============ -->
+      <section class="frame">
+        <p class="frame-label">Frame 3 · Mobile 390×844 · Finderly active · same canvas, recomposed</p>
+        <div class="fit-mobile"><div class="scale-m">
+          <div class="canvas m" role="img" aria-label="Mobile composition, Finderly active">
+            <header class="strip m">
+              <span class="who">Joel Ryerson<em>Product Designer &amp; Design Engineer</em></span>
+              <span class="links">About&ensp;·&ensp;Contact</span>
+            </header>
+
+            <!-- Finderly · dominant aperture group -->
+            <div class="ap m-cap" style={`background-image:url(${captureShot.src})`}></div>
+            <div class="ap m-home" style={`background-image:url(${homeLight.src})`}></div>
+
+            <!-- copy -->
+            <div class="copy m" style="left:20px; top:492px;">
+              <h2>Finderly</h2>
+              <p class="spec"><b>2026</b> · AI-guided home repair</p>
+              <p class="statement">
+                Rebuilt the home around starting a repair, with camera, video, and recent work
+                available from one clear entry point.
+              </p>
+              <p class="roles">Product design, UX/UI, and front-end implementation</p>
+              <span class="case">Read case study <b>→</b></span>
+            </div>
+
+            <!-- inactive cluster: staggered apertures on the same canvas -->
+            <p class="tag m" style="left:20px; top:684px;"><b>Asteri AI</b> 2026</p>
+            <div class="ap a-box" style="left:20px; top:702px; width:150px; height:104px;">
+              <div class="card sm" style="left:14px; top:16px; width:112px;">
+                <span>Active studies</span><b>128</b>
+              </div>
+            </div>
+
+            <p class="tag m" style="left:186px; top:660px;"><b>StartupOS</b> 2022</p>
+            <div class="ap crop" style={`left:186px; top:678px; width:114px; height:148px; background-image:url(${unitHifi.src}); background-size:220% auto; background-position:10% 0;`}></div>
+
+            <p class="tag m" style="left:316px; top:698px;"><b>ArtPärdē</b> 2024</p>
+            <div class="ap crop" style={`left:316px; top:716px; width:74px; height:96px; border-right:none; background-image:url(${logoFinal.src}); background-size:300%; background-position:38% 28%;`}></div>
+          </div>
+        </div></div>
+        <p class="frame-note">
+          The inactive apertures form a staggered cluster on the same canvas: different sizes and
+          baselines, names attached, one bleeding the right edge. Selecting one would grow it into
+          the dominant position, as on desktop.
+        </p>
+      </section>
+    </main>
+
+    <style is:global>
+      @font-face {
+        font-family: 'Satoshi X';
+        src: url('/fonts/x/satoshi.woff2') format('woff2');
+        font-weight: 300 900;
+        font-display: swap;
+      }
+    </style>
+
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: #e3e1da;
+        color: #141311;
+        font-family: 'Satoshi X', system-ui, sans-serif;
+      }
+      .ribbon {
+        margin: 0;
+        padding: 0.55rem 1.2rem;
+        background: #141311;
+        color: #f2f0eb;
+        font-size: max(0.8rem, 13px);
+        font-weight: 500;
+        text-align: center;
+      }
+      .deck { max-width: 1480px; margin-inline: auto; padding: 2.5rem clamp(1rem, 3vw, 2.5rem) 5rem; }
+      .deck-head { max-width: 46rem; margin-bottom: 3rem; }
+      .deck-head h1 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; letter-spacing: -0.02em; margin: 0 0 0.7rem; }
+      .deck-head p { font-size: max(0.95rem, 15px); line-height: 1.6; color: #55524a; margin: 0; }
+      .frame { margin-bottom: 3.5rem; }
+      .frame-label {
+        font-size: max(0.82rem, 13px);
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #55524a;
+        margin: 0 0 0.8rem;
+      }
+      .frame-note { max-width: 44rem; font-size: max(0.9rem, 14px); line-height: 1.6; color: #55524a; margin: 1rem 0 0; }
+      .fit-desktop {
+        container-type: inline-size;
+        width: 100%;
+        aspect-ratio: 1440 / 850;
+        border: 1px solid #b9b6ab;
+        overflow: hidden;
+        box-shadow: 0 18px 50px rgba(17, 17, 16, 0.12);
+      }
+      .fit-desktop .scale { transform-origin: top left; transform: scale(calc(100cqw / 1440)); }
+      .fit-mobile {
+        container-type: inline-size;
+        width: min(100%, 390px);
+        aspect-ratio: 390 / 844;
+        border: 1px solid #b9b6ab;
+        overflow: hidden;
+        box-shadow: 0 14px 40px rgba(17, 17, 16, 0.12);
+      }
+      .fit-mobile .scale-m { transform-origin: top left; transform: scale(calc(100cqw / 390)); }
+
+      /* ================= the canvas ================= */
+      .canvas {
+        position: relative;
+        width: 1440px;
+        height: 850px;
+        background: #f2f0eb;
+        color: #141311;
+        overflow: hidden;
+        --mute: #6e6a60;
+        --line: #cdcabf;
+        --signal: #e94a10;
+      }
+      .canvas * { margin: 0; }
+      .canvas.m { width: 390px; height: 844px; }
+
+      .strip {
+        position: absolute;
+        top: 0; left: 36px; right: 36px;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        z-index: 4;
+      }
+      .strip .who { font-size: 16px; font-weight: 800; letter-spacing: -0.01em; }
+      .strip .role { font-size: 13.5px; font-weight: 500; color: var(--mute); }
+      .strip .links { margin-left: auto; font-size: 13.5px; font-weight: 650; }
+      .strip.m { left: 20px; right: 20px; height: 56px; }
+      .strip.m .who { font-size: 14.5px; display: grid; line-height: 1.25; }
+      .strip.m .who em { font-style: normal; font-weight: 500; font-size: 10.5px; color: var(--mute); }
+      .strip.m .links { font-size: 12.5px; }
+
+      /* apertures */
+      .ap { position: absolute; overflow: hidden; border: 1px solid var(--line); }
+      .ap.crop { background-repeat: no-repeat; }
+      .a-box { background: #fafaf8; }
+
+      .tag { position: absolute; font-size: 12.5px; color: var(--mute); z-index: 3; }
+      .tag b { color: #141311; font-weight: 750; font-size: 14px; margin-right: 6px; }
+      .tag.m { font-size: 11px; }
+      .tag.m b { font-size: 12px; margin-right: 4px; }
+
+      /* the real stat-card artifact */
+      .card {
+        position: absolute;
+        background: #f7f8fa;
+        border: 1px solid #e2e4e9;
+        border-radius: 10px;
+        padding: 16px;
+      }
+      .card span { display: block; font-size: 12.5px; color: #6b7280; }
+      .card b { display: block; font-size: 24px; font-weight: 650; color: #111827; margin-top: 2px; }
+      .card i { display: block; font-style: normal; font-size: 11px; color: var(--mute); margin-top: 10px; }
+      .card.lg { padding: 22px; }
+      .card.lg span { font-size: 14px; }
+      .card.lg b { font-size: 30px; }
+      .card.lg i { font-size: 12.5px; margin-top: 14px; }
+      .card.sm { padding: 10px 12px; }
+      .card.sm span { font-size: 10px; }
+      .card.sm b { font-size: 17px; }
+
+      /* asteri active: one restrained technical layer */
+      .tok {
+        position: absolute;
+        left: 64px; top: 74px;
+        font-size: 13.5px;
+        font-weight: 600;
+        color: #141311;
+      }
+      .leader {
+        position: absolute;
+        left: 96px; top: 96px;
+        width: 1px; height: 86px;
+        background: var(--line);
+      }
+      .leader::after {
+        content: '';
+        position: absolute;
+        left: -2.5px; bottom: -2px;
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        background: var(--signal);
+      }
+
+      /* Finderly desktop active group */
+      .f-cap {
+        left: 0; top: 104px;
+        width: 196px; height: 452px;
+        border-left: none;
+        background-size: cover;
+        background-position: 50% 30%;
+      }
+      .f-home {
+        left: 210px; top: 64px;
+        width: 600px; height: 596px;
+        background-size: 600px auto;
+        background-position: 0 -128px;
+      }
+
+      /* Finderly mobile active group */
+      .m-cap {
+        left: 0; top: 96px;
+        width: 96px; height: 300px;
+        border-left: none;
+        background-size: cover;
+        background-position: 50% 30%;
+      }
+      .m-home {
+        left: 110px; top: 56px;
+        width: 280px; height: 414px;
+        border-right: none;
+        background-size: 280px auto;
+        background-position: 0 -46px;
+      }
+
+      /* copy block */
+      .copy { position: absolute; width: 430px; z-index: 3; }
+      .copy h2 { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
+      .copy .spec { font-size: 13.5px; color: var(--mute); margin-top: 8px; }
+      .copy .spec b { color: #141311; font-weight: 750; }
+      .copy .statement { font-size: 16.5px; line-height: 1.5; letter-spacing: -0.004em; margin-top: 12px; }
+      .copy .roles { font-size: 12.5px; color: var(--mute); margin-top: 8px; }
+      .copy .case {
+        display: inline-block;
+        margin-top: 12px;
+        font-size: 14px;
+        font-weight: 700;
+        border-bottom: 2px solid var(--signal);
+        padding-bottom: 2px;
+      }
+      .copy .case b { color: var(--signal); }
+      .copy.m { width: 350px; }
+      .copy.m h2 { font-size: 24px; }
+      .copy.m .statement { font-size: 14.5px; margin-top: 10px; }
+      .copy.m .roles { font-size: 11.5px; margin-top: 6px; }
+      .copy.m .case { font-size: 13px; margin-top: 10px; }
+    </style>
+  </body>
+</html>
