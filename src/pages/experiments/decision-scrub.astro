@@ -1,0 +1,578 @@
+---
+/**
+ * EXPERIMENT · "Decision Scrub" · functional prototype.
+ * Isolated route; nothing here touches production.
+ *
+ * One stable stage, two permanent controls: a fixed four-project selector
+ * (tabs) and a labeled three-position evidence control (Context → Decision →
+ * Result) with tap, arrow-key, and scrub interaction (a native range drives
+ * the scrub). Selecting a project replaces the stage; changing the evidence
+ * position reveals the transformation inside the same stage. Nothing moves
+ * or reorders. URL carries both axes (?p=&view=), history works, reduced
+ * motion switches instantly, no-JS renders every project and all three
+ * evidence states linearly. All material verified; the one representative
+ * illustration (Asteri context variance) is labeled as such.
+ */
+import formerHome from '../../assets/experiments/finderly-former-home.webp';
+import captureShot from '../../assets/finderly/shots/capture.webp';
+import homeLight from '../../assets/finderly/shots/home-light.webp';
+import wizardShot from '../../assets/experiments/startupos-wizard.webp';
+import unitLofi from '../../assets/experiments/startupos-unit-lofi.webp';
+import unitHifi from '../../assets/experiments/startupos-unit.webp';
+import studiesStrip from '../../assets/experiments/artparde-studies.webp';
+import logoFinal from '../../assets/artparde/logo-final.png';
+import siteShot from '../../assets/experiments/artparde-site.webp';
+
+const projects = [
+  { id: 'finderly', name: 'Finderly', year: '2026', cat: 'AI home repair', roles: 'Product design, UX/UI, and front-end implementation', href: '/work/finderly/' },
+  { id: 'asteri', name: 'Asteri AI', year: '2026', cat: 'AI work platform', roles: 'Product design and design systems', href: '/work/asteri/' },
+  { id: 'startupos', name: 'StartupOS', year: '2022', cat: 'Founder education', roles: 'Product design', href: '/work/startup-platform/' },
+  { id: 'artparde', name: 'ArtPärdē', year: '2024', cat: 'Performing-arts nonprofit', roles: 'Brand and web design', href: '/work/artparde/' },
+];
+
+const captions = {
+  finderly: {
+    context: 'The former home opened on a chat-style prompt with promo cards.',
+    decision: 'Rebuild the entry around starting a repair: camera, video, and recent work from one clear entry point.',
+    result: 'The shipped home leads with capture; recents carry real project state.',
+  },
+  asteri: {
+    context: 'The audit found systemic inconsistency: styling restated inline, per file, screen to screen.',
+    decision: 'Primitives aliased into semantic tokens: one source of truth for both styling systems.',
+    result: 'The pilot migration shipped with zero visual change, on purpose; the rollout continued after the engagement.',
+  },
+  startupos: {
+    context: 'Each topic brought its own needs: Problem-Solution Fit runs a real validation experiment.',
+    decision: 'One reusable learning-unit template, five iterations against user feedback.',
+    result: 'The shipped implementation; every unit inherited the template and the MVP made the five-month clock.',
+  },
+  artparde: {
+    context: 'The wordmark went through a full study before anything was drawn final.',
+    decision: 'The selected rules: hand-drawn letterforms, every letter its own shape, borrowed diacritics.',
+    result: 'The final identity and a maintainable site, still promoting the next show two years on.',
+  },
+};
+const VIEWS = ['context', 'decision', 'result'];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Decision Scrub · functional prototype — Joel Ryerson</title>
+    <link rel="preload" href="/fonts/x/satoshi.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+
+  <body>
+    <p class="ribbon" role="note">Experiment · “Decision Scrub” · functional prototype · not production</p>
+
+    <div class="page" data-p="finderly" data-view="context">
+      <header class="top">
+        <span class="who">Joel Ryerson</span>
+        <span class="role">Product Designer &amp; Design Engineer</span>
+        <nav class="links" aria-label="Site">
+          <a href="#" aria-disabled="true">About</a>
+          <a href="mailto:joelryerson@gmail.com">Contact</a>
+        </nav>
+      </header>
+
+      <!-- permanent controls -->
+      <div class="bar">
+        <div class="tabs" role="tablist" aria-label="Projects">
+          {projects.map((p, i) => (
+            <button class="tab" role="tab" data-tab={p.id} aria-selected={i === 0 ? 'true' : 'false'} type="button">
+              <b>{p.name}</b><span>{p.year}</span>
+            </button>
+          ))}
+        </div>
+
+        <div class="evidence" role="group" aria-label="Evidence view: Context, Decision, Result">
+          <div class="ev-labels">
+            <button class="ev" data-view="context" aria-pressed="true" type="button">Context</button>
+            <button class="ev" data-view="decision" aria-pressed="false" type="button">Decision</button>
+            <button class="ev" data-view="result" aria-pressed="false" type="button">Result</button>
+          </div>
+          <input
+            class="ev-range"
+            type="range"
+            min="0"
+            max="2"
+            step="1"
+            value="0"
+            aria-label="Scrub evidence: Context, Decision, Result"
+            aria-valuetext="Context"
+          />
+        </div>
+      </div>
+
+      <!-- the stage -->
+      <main class="stage" aria-live="polite">
+        <!-- FINDERLY -->
+        <section class="panel pn-finderly" aria-label="Finderly evidence">
+          <div class="layer l-context">
+            <h2 class="nojs-h">Finderly · Context</h2>
+            <div class="phone crop" style={`background-image:url(${formerHome.src})`}></div>
+            <p class="tag">Former home · from a screen recording of the earlier app</p>
+          </div>
+          <div class="layer l-decision">
+            <h2 class="nojs-h">Finderly · Decision</h2>
+            <div class="phone crop" style={`background-image:url(${captureShot.src})`}></div>
+            <p class="tag">The new entry’s core: ordered multi-capture, camera one tap away</p>
+          </div>
+          <div class="layer l-result">
+            <h2 class="nojs-h">Finderly · Result</h2>
+            <div class="phone crop" style={`background-image:url(${homeLight.src})`}></div>
+            <p class="tag">Shipped home · demo data</p>
+          </div>
+        </section>
+
+        <!-- ASTERI -->
+        <section class="panel pn-asteri" aria-label="Asteri evidence">
+          <div class="layer l-context">
+            <h2 class="nojs-h">Asteri · Context</h2>
+            <div class="cards">
+              <div class="card vary-a"><span>Active studies</span><b>128</b><i>inline styles, file A</i></div>
+              <div class="card vary-b"><span>Active studies</span><b>128</b><i>inline styles, file B</i></div>
+              <div class="card vary-c"><span>Active studies</span><b>128</b><i>inline styles, file C</i></div>
+            </div>
+            <p class="tag">Representative, neutralized: colors, spacing, and radii varied screen to screen</p>
+          </div>
+          <div class="layer l-decision">
+            <h2 class="nojs-h">Asteri · Decision</h2>
+            <div class="chainwrap">
+              <div class="chain">
+                <span class="swatch"></span>
+                <span class="wire"></span>
+                <span class="tok">--surface-raised</span>
+                <span class="wire"></span>
+                <span class="applied">card background</span>
+              </div>
+              <div class="card"><span>Active studies</span><b>128</b><i>after · semantic tokens</i></div>
+            </div>
+            <p class="tag">Primitives → semantic roles; CSS Modules and the component library consume the same tokens</p>
+          </div>
+          <div class="layer l-result">
+            <h2 class="nojs-h">Asteri · Result</h2>
+            <div class="cards">
+              <div class="card"><span>Active studies</span><b>128</b><i>after · semantic tokens</i></div>
+              <div class="card"><span>Active studies</span><b>128</b><i>after · semantic tokens</i></div>
+              <div class="card"><span>Active studies</span><b>128</b><i>after · semantic tokens</i></div>
+            </div>
+            <p class="tag">Identical on purpose · pilot surfaces; rollout continued after the engagement</p>
+          </div>
+        </section>
+
+        <!-- STARTUPOS -->
+        <section class="panel pn-startupos" aria-label="StartupOS evidence">
+          <div class="layer l-context">
+            <h2 class="nojs-h">StartupOS · Context</h2>
+            <div class="wide crop" style={`background-image:url(${wizardShot.src})`}></div>
+            <p class="tag">Problem-Solution Fit: one of the topics the platform had to teach</p>
+          </div>
+          <div class="layer l-decision">
+            <h2 class="nojs-h">StartupOS · Decision</h2>
+            <div class="wide crop" style={`background-image:url(${unitLofi.src})`}></div>
+            <p class="tag">The reusable unit template · wireframe</p>
+          </div>
+          <div class="layer l-result">
+            <h2 class="nojs-h">StartupOS · Result</h2>
+            <div class="wide crop" style={`background-image:url(${unitHifi.src})`}></div>
+            <p class="tag">Fifth iteration · shipped</p>
+          </div>
+        </section>
+
+        <!-- ARTPARDE -->
+        <section class="panel pn-artparde" aria-label="ArtPärdē evidence">
+          <div class="layer l-context">
+            <h2 class="nojs-h">ArtPärdē · Context</h2>
+            <div class="tallcrop crop" style={`background-image:url(${studiesStrip.src})`}></div>
+            <p class="tag">Shortlisted wordmark studies</p>
+          </div>
+          <div class="layer l-decision">
+            <h2 class="nojs-h">ArtPärdē · Decision</h2>
+            <div class="mark crop" style={`background-image:url(${logoFinal.src})`}></div>
+            <p class="tag">The final mark, vectorized letter by letter</p>
+          </div>
+          <div class="layer l-result">
+            <h2 class="nojs-h">ArtPärdē · Result</h2>
+            <div class="site crop" style={`background-image:url(${siteShot.src})`}></div>
+            <p class="tag">artparde.com · live, promoting the next show</p>
+          </div>
+        </section>
+      </main>
+
+      <!-- foot: caption + info + case link -->
+      <footer class="foot">
+        <p class="caption" id="caption">{captions.finderly.context}</p>
+        <p class="meta"><span id="froles">{projects[0].roles}</span></p>
+        <a class="case" id="fcase" href="/work/finderly/">Read case study<span aria-hidden="true"> →</span></a>
+      </footer>
+    </div>
+
+    <script type="application/json" id="caps" set:html={JSON.stringify(captions)}></script>
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        root.classList.add('js');
+        const page = document.querySelector('.page');
+        const tabs = [...document.querySelectorAll('[data-tab]')];
+        const evBtns = [...document.querySelectorAll('.ev')];
+        const range = document.querySelector('.ev-range');
+        const caption = document.getElementById('caption');
+        const froles = document.getElementById('froles');
+        const fcase = document.getElementById('fcase');
+        const VIEWS = ['context', 'decision', 'result'];
+        const DATA = {
+          finderly: { roles: 'Product design, UX/UI, and front-end implementation', href: '/work/finderly/' },
+          asteri: { roles: 'Product design and design systems', href: '/work/asteri/' },
+          startupos: { roles: 'Product design', href: '/work/startup-platform/' },
+          artparde: { roles: 'Brand and web design', href: '/work/artparde/' },
+        };
+        const CAPS = JSON.parse(document.getElementById('caps').textContent);
+
+        const render = () => {
+          const { p, view } = page.dataset;
+          tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.tab === p)));
+          evBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === view)));
+          range.value = String(VIEWS.indexOf(view));
+          range.setAttribute('aria-valuetext', view[0].toUpperCase() + view.slice(1));
+          caption.textContent = CAPS[p][view];
+          froles.textContent = DATA[p].roles;
+          fcase.setAttribute('href', DATA[p].href);
+        };
+
+        const setState = (p, view, push = true) => {
+          if (page.dataset.p === p && page.dataset.view === view) return;
+          page.dataset.p = p;
+          page.dataset.view = view;
+          render();
+          if (push) history.pushState({ p, view }, '', `?p=${p}&view=${view}`);
+        };
+
+        tabs.forEach((t) => t.addEventListener('click', () => setState(t.dataset.tab, page.dataset.view)));
+        evBtns.forEach((b) => b.addEventListener('click', () => setState(page.dataset.p, b.dataset.view)));
+        range.addEventListener('input', () => setState(page.dataset.p, VIEWS[Number(range.value)]));
+
+        document.addEventListener('keydown', (e) => {
+          if (e.target === range || /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+          const i = VIEWS.indexOf(page.dataset.view);
+          if (e.key === 'ArrowRight' && i < 2) { e.preventDefault(); setState(page.dataset.p, VIEWS[i + 1]); }
+          if (e.key === 'ArrowLeft' && i > 0) { e.preventDefault(); setState(page.dataset.p, VIEWS[i - 1]); }
+        });
+
+        window.addEventListener('popstate', (e) => {
+          const q = new URLSearchParams(location.search);
+          const p = e.state?.p || q.get('p') || 'finderly';
+          const view = e.state?.view || q.get('view') || 'context';
+          page.dataset.p = DATA[p] ? p : 'finderly';
+          page.dataset.view = VIEWS.includes(view) ? view : 'context';
+          render();
+        });
+
+        const q = new URLSearchParams(location.search);
+        page.dataset.p = DATA[q.get('p')] ? q.get('p') : 'finderly';
+        page.dataset.view = VIEWS.includes(q.get('view')) ? q.get('view') : 'context';
+        render();
+        history.replaceState({ p: page.dataset.p, view: page.dataset.view }, '', location.href);
+      })();
+    </script>
+
+    <style>
+      @font-face {
+        font-family: 'Satoshi X';
+        src: url('/fonts/x/satoshi.woff2') format('woff2');
+        font-weight: 300 900;
+        font-display: swap;
+      }
+      :root {
+        --shell: #f2f0eb;
+        --ink: #141311;
+        --mute: #6e6a60;
+        --line: #cdcabf;
+        --signal: #e94a10;
+        --ease: cubic-bezier(0.32, 0.72, 0.05, 1);
+        color-scheme: light;
+      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        background: var(--shell);
+        color: var(--ink);
+        font-family: 'Satoshi X', system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      .ribbon {
+        margin: 0;
+        padding: 0.4rem 1.2rem;
+        background: var(--ink);
+        color: var(--shell);
+        font-size: max(0.8rem, 13px);
+        font-weight: 500;
+        text-align: center;
+      }
+      .page { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+      .page * { margin: 0; }
+
+      .top {
+        height: 64px;
+        flex: none;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 0 clamp(16px, 2.5vw, 32px);
+        border-bottom: 1px solid var(--line);
+      }
+      .who { font-size: 16px; font-weight: 800; letter-spacing: -0.01em; white-space: nowrap; }
+      .role { font-size: 13.5px; font-weight: 500; color: var(--mute); }
+      .links { margin-left: auto; display: flex; gap: 18px; }
+      .links a { font-size: 14px; font-weight: 650; color: var(--ink); text-decoration: none; padding: 8px 0; }
+      .links a:hover { color: var(--signal); }
+      .links a:last-child { border-bottom: 2px solid var(--signal); padding-bottom: 2px; }
+      .links a:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+      /* ---------- permanent controls ---------- */
+      .bar {
+        flex: none;
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        padding: 10px clamp(16px, 2.5vw, 32px);
+        border-bottom: 1px solid var(--line);
+      }
+      .tabs { display: flex; gap: 4px; }
+      .tab {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+        min-height: 44px;
+        padding: 0 14px;
+        background: none;
+        border: none;
+        border-bottom: 3px solid transparent;
+        cursor: pointer;
+        font-family: inherit;
+        color: var(--mute);
+      }
+      .tab b { font-size: 15px; font-weight: 700; color: inherit; }
+      .tab span { font-size: 11.5px; }
+      .tab[aria-selected='true'] { color: var(--ink); border-bottom-color: var(--signal); }
+      .tab:hover { color: var(--ink); }
+      .tab:focus-visible { outline: 2px solid var(--signal); outline-offset: -2px; }
+
+      .evidence { margin-left: auto; width: min(340px, 34%); }
+      .ev-labels { display: flex; justify-content: space-between; }
+      .ev {
+        background: none;
+        border: none;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 650;
+        color: var(--mute);
+        cursor: pointer;
+        padding: 6px 2px;
+        min-height: 32px;
+      }
+      .ev[aria-pressed='true'] { color: var(--signal); }
+      .ev:hover { color: var(--ink); }
+      .ev:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+      .ev-range {
+        display: block;
+        width: 100%;
+        margin: 0;
+        accent-color: var(--signal);
+        height: 22px;
+      }
+      .ev-range:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+      /* ---------- stage ---------- */
+      .stage { flex: 1; min-height: 320px; position: relative; overflow: hidden; }
+      .panel { position: absolute; inset: 0; visibility: hidden; }
+      .page[data-p='finderly'] .pn-finderly,
+      .page[data-p='asteri'] .pn-asteri,
+      .page[data-p='startupos'] .pn-startupos,
+      .page[data-p='artparde'] .pn-artparde { visibility: visible; }
+
+      .layer {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        padding: clamp(16px, 3vh, 30px) clamp(16px, 3vw, 40px);
+        opacity: 0;
+        transform: translateX(14px);
+        visibility: hidden;
+        transition: opacity 280ms ease, transform 340ms var(--ease), visibility 0s 340ms;
+      }
+      .page[data-view='context'] .panel .l-context,
+      .page[data-view='decision'] .panel .l-decision,
+      .page[data-view='result'] .panel .l-result {
+        opacity: 1;
+        transform: none;
+        visibility: inherit;
+        transition: opacity 280ms ease 60ms, transform 340ms var(--ease) 60ms, visibility 0s;
+      }
+      .nojs-h { display: none; }
+
+      .crop { background-repeat: no-repeat; background-size: cover; }
+      .phone {
+        height: min(88%, 560px);
+        aspect-ratio: 1180 / 2376;
+        max-width: 82vw;
+        background-position: 50% 0;
+        border: 1px solid var(--line);
+      }
+      .wide {
+        height: min(82%, 520px);
+        aspect-ratio: 1268 / 1200;
+        max-width: 86%;
+        background-position: 50% 0;
+        border: 1px solid var(--line);
+      }
+      .tallcrop {
+        height: min(84%, 540px);
+        aspect-ratio: 940 / 493;
+        max-width: 86%;
+        background-size: contain;
+        background-position: 50% 50%;
+        background-color: #141414;
+      }
+      .mark { height: min(76%, 460px); aspect-ratio: 1; background-position: 50% 50%; }
+      .site {
+        height: min(82%, 520px);
+        aspect-ratio: 1440 / 1000;
+        max-width: 90%;
+        background-size: cover;
+        background-position: 50% 0;
+        border: 1px solid var(--line);
+      }
+
+      .cards, .chainwrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(18px, 3vw, 44px);
+        width: 100%;
+        flex: 0 1 auto;
+      }
+      .card {
+        background: #f7f8fa;
+        border: 1px solid #e2e4e9;
+        border-radius: 10px;
+        padding: 22px;
+        width: min(260px, 26%);
+      }
+      .card span { display: block; font-size: 13.5px; color: #6b7280; }
+      .card b { display: block; font-size: 28px; font-weight: 650; color: #111827; margin-top: 2px; }
+      .card i { display: block; font-style: normal; font-size: 12px; color: var(--mute); margin-top: 12px; }
+      /* the documented variance, illustrated on the neutralized artifact */
+      .card.vary-a { border-radius: 2px; padding: 14px 22px 26px; }
+      .card.vary-a span { font-size: 12px; color: #9ca3af; }
+      .card.vary-b { border-radius: 18px; padding: 26px 18px 14px; background: #f2f4f8; }
+      .card.vary-b b { font-size: 24px; font-weight: 750; }
+      .card.vary-c { border-radius: 10px 2px 10px 2px; padding: 20px; border-color: #cdd3dd; }
+      .card.vary-c span { letter-spacing: 0.06em; text-transform: uppercase; font-size: 11px; }
+
+      .chain { display: flex; align-items: center; gap: 12px; font-size: 13.5px; font-weight: 600; }
+      .swatch { width: 22px; height: 22px; border-radius: 5px; background: #f7f8fa; border: 1px solid #d6d9df; }
+      .wire { width: clamp(24px, 3vw, 52px); height: 1px; background: var(--line); position: relative; }
+      .wire::after { content: ''; position: absolute; right: -2px; top: -2.5px; width: 6px; height: 6px; border-radius: 50%; background: var(--signal); }
+      .applied { color: var(--mute); font-weight: 500; }
+
+      .tag { font-size: 12.5px; font-weight: 600; color: var(--mute); text-align: center; flex: none; }
+
+      /* ---------- foot ---------- */
+      .foot {
+        flex: none;
+        display: flex;
+        align-items: baseline;
+        gap: 20px;
+        padding: 12px clamp(16px, 2.5vw, 32px) 16px;
+        border-top: 1px solid var(--line);
+      }
+      .caption { font-size: 15px; font-weight: 550; max-width: 62ch; }
+      .meta { font-size: 12px; color: var(--mute); margin-left: auto; white-space: nowrap; }
+      .case {
+        flex: none;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--ink);
+        text-decoration: none;
+        border-bottom: 2px solid var(--signal);
+        padding-bottom: 2px;
+        white-space: nowrap;
+      }
+      .case:hover { color: var(--signal); }
+      .case:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+      /* ---------- reduced motion ---------- */
+      @media (prefers-reduced-motion: reduce) {
+        .layer { transition: none !important; transform: none !important; }
+      }
+
+      /* ---------- no-JS: linear, everything visible ---------- */
+      html:not(.js) .bar { display: none; }
+      html:not(.js) .stage { overflow: visible; }
+      html:not(.js) .panel { position: relative; visibility: visible; border-top: 1px solid var(--line); }
+      html:not(.js) .layer {
+        position: relative;
+        inset: auto;
+        opacity: 1;
+        transform: none;
+        visibility: visible;
+        min-height: 420px;
+        padding: 24px 16px;
+      }
+      html:not(.js) .nojs-h { display: block; font-size: 16px; font-weight: 750; }
+      html:not(.js) .foot .caption { display: none; }
+
+      /* ---------- mobile ---------- */
+      @media (max-width: 760px) {
+        .role { display: none; }
+        .top { height: 56px; }
+
+        .bar { flex-direction: column; align-items: stretch; gap: 0; padding: 0; border-bottom: none; }
+        .tabs { justify-content: space-between; border-bottom: 1px solid var(--line); padding: 0 8px; }
+        .tab { padding: 0 8px; gap: 4px; }
+        .tab b { font-size: 12.5px; }
+        .tab span { display: none; }
+
+        /* evidence control moves to the bottom, above the foot */
+        .evidence { order: 3; width: auto; margin: 0; padding: 8px 16px 4px; border-top: 1px solid var(--line); }
+        .page { display: flex; }
+        .bar { display: contents; }
+        .tabs { order: 1; }
+        .stage { order: 2; }
+        .evidence { order: 3; }
+        .foot { order: 4; }
+
+        .layer { padding: 14px 14px 10px; gap: 10px; }
+        .phone { height: min(92%, 460px); }
+        .cards { flex-direction: column; gap: 12px; }
+        .card { width: min(78%, 250px); padding: 14px 16px; }
+        .card b { font-size: 22px; }
+        .chainwrap { flex-direction: column; gap: 16px; }
+        .tag { font-size: 11px; }
+
+        .foot { flex-wrap: wrap; row-gap: 4px; padding: 8px 16px calc(10px + env(safe-area-inset-bottom)); }
+        .caption { font-size: 12.5px; width: 100%; max-width: none; }
+        .meta { display: none; }
+        .case { margin-left: auto; font-size: 13px; }
+        .ev { font-size: 12px; min-height: 44px; }
+        .ev-range { height: 28px; }
+      }
+      @media (max-width: 760px) and (max-height: 700px) {
+        .phone { height: 96%; }
+        .layer { gap: 6px; }
+        .caption { font-size: 11.5px; }
+      }
+    </style>
+  </body>
+</html>
