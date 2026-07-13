@@ -1,0 +1,434 @@
+---
+/**
+ * Art-direction study · shared DESKTOP canvas (static, 1360×850, px-exact).
+ * One system, five states. Persistent geometry: top strip, the datum line at
+ * y=560, four stations riding the line, the title slot whose baseline sits on
+ * the datum, and the three-part fact grid below. The active project occupies
+ * the field above the datum with edge-cropped real assets.
+ * Scoped to /experiments/resolve-art-direction. Not production.
+ */
+import homeLight from '../../assets/finderly/shots/home-light.webp';
+import captureShot from '../../assets/finderly/shots/capture.webp';
+import unitHifi from '../../assets/experiments/startupos-unit.webp';
+import unitLofi from '../../assets/experiments/startupos-unit-lofi.webp';
+import logoFinal from '../../assets/artparde/logo-final.png';
+import studiesStrip from '../../assets/experiments/artparde-studies.webp';
+
+interface Props {
+  state: 'finderly' | 'asteri' | 'startupos' | 'artparde' | 'overview';
+}
+const { state } = Astro.props;
+
+const projects = [
+  {
+    id: 'finderly',
+    no: '01',
+    name: 'Finderly',
+    what: 'AI home-repair app by AI Vision Technologies.',
+    role: 'Design Engineer · June–July 2026 · iOS, Android, web',
+    decision:
+      'Rebuilt the home screen around camera capture instead of a chat box; shipped a product-wide overhaul across 303 files in one month.',
+    href: '/work/finderly/',
+  },
+  {
+    id: 'asteri',
+    no: '02',
+    name: 'Asteri AI',
+    what: 'Work-intelligence platform for Fortune 500 life-sciences teams.',
+    role: 'Design Engineer · six-week engagement · 2026',
+    decision:
+      'Built token infrastructure before restyling anything; the pilot migration shipped with zero visual change, on purpose.',
+    href: '/work/asteri/',
+  },
+  {
+    id: 'startupos',
+    no: '03',
+    name: 'StartupOS',
+    what: 'Founder-education platform.',
+    role: 'Product Designer · 2022',
+    decision:
+      'Designed one reusable learning-unit template instead of bespoke units; the MVP shipped in five months.',
+    href: '/work/startup-platform/',
+  },
+  {
+    id: 'artparde',
+    no: '04',
+    name: 'ArtPärdē',
+    what: 'Performing-arts non-profit in San Francisco.',
+    role: 'Brand & web · 2024, ongoing',
+    decision:
+      'Chose managed tooling a volunteer can run and spent the craft on the brand; the site is still their home two years on.',
+    href: '/work/artparde/',
+  },
+];
+
+const active = projects.find((p) => p.id === state);
+const idx = projects.findIndex((p) => p.id === state);
+---
+
+<div class={`art s-${state}`} role="img" aria-label={`Desktop art-direction frame: ${state}`}>
+  <!-- persistent: top strip -->
+  <header class="strip">
+    <span class="who">Joel Ryerson</span>
+    <span class="what-role">Product Designer &amp; Design Engineer</span>
+    <span class="contact">Contact</span>
+  </header>
+  <p class="section-label">Selected work</p>
+
+  <!-- ============ FIELD ============ -->
+  {state === 'finderly' && (
+    <div class="field">
+      <div class="fin-primary" style={`background-image:url(${homeLight.src})`}></div>
+      <div class="fin-capture" style={`background-image:url(${captureShot.src})`}></div>
+      <div class="fin-dock" style={`background-image:url(${homeLight.src})`}></div>
+    </div>
+  )}
+
+  {state === 'asteri' && (
+    <div class="field">
+      <div class="tok">
+        <p class="tok-label" style="top:160px">--surface-raised</p>
+        <p class="tok-label" style="top:214px">--radius-card</p>
+        <p class="tok-label" style="top:268px">--space-inset</p>
+        <span class="leader" style="top:169px; left:704px; width:256px"></span>
+        <span class="leader" style="top:223px; left:678px; width:282px"></span>
+        <span class="leader" style="top:277px; left:672px; width:288px"></span>
+      </div>
+      <div class="ast-card after">
+        <span>Active studies</span><b>128</b>
+        <i class="cap">after · semantic tokens</i>
+      </div>
+      <div class="ast-card before">
+        <span>Active studies</span><b>128</b>
+        <i class="cap">before · inline styles, restated per file</i>
+      </div>
+      <pre class="ast-css">.statCard &#123;
+  background: var(--surface-raised);
+  border-radius: var(--radius-card);
+  padding: var(--space-inset);
+&#125;</pre>
+    </div>
+  )}
+
+  {state === 'startupos' && (
+    <div class="field">
+      <figure class="sos-layer lofi" style={`background-image:url(${unitLofi.src})`}>
+        <figcaption>iteration one · wireframe</figcaption>
+      </figure>
+      <figure class="sos-layer hifi" style={`background-image:url(${unitHifi.src})`}>
+        <figcaption>iteration five · shipped</figcaption>
+      </figure>
+    </div>
+  )}
+
+  {state === 'artparde' && (
+    <div class="field">
+      <div class="ap-mark" style={`background-image:url(${logoFinal.src})`}></div>
+      <div class="ap-band" style={`background-image:url(${studiesStrip.src})`}></div>
+    </div>
+  )}
+
+  {state === 'overview' && (
+    <div class="field">
+      {projects.map((p, i) => (
+        <div class={`mini mini-${p.id}`} style={`left:${228 + i * 286}px`}>
+          {p.id === 'finderly' && <div class="mini-img" style={`background-image:url(${homeLight.src}); background-size: 165% auto; background-position: 50% 16%;`}></div>}
+          {p.id === 'asteri' && (
+            <div class="mini-img mini-ast">
+              <div class="ast-card small"><span>Active studies</span><b>128</b></div>
+            </div>
+          )}
+          {p.id === 'startupos' && <div class="mini-img" style={`background-image:url(${unitHifi.src}); background-size: 135% auto; background-position: 20% 4%;`}></div>}
+          {p.id === 'artparde' && <div class="mini-img" style={`background-image:url(${logoFinal.src}); background-size: 128%; background-position: 50% 50%; background-color:#131313;`}></div>}
+          <p class="mini-no">{p.no}</p>
+        </div>
+      ))}
+    </div>
+  )}
+
+  <!-- persistent: title slot, baseline on the datum -->
+  <h2 class={`title ${state === 'overview' ? 'title-sm' : ''}`}>
+    {state === 'overview' ? 'Index' : active!.name}
+  </h2>
+
+  <!-- persistent: the datum + stations -->
+  <div class="datum"></div>
+  <nav class="stations" aria-label="Projects">
+    {projects.map((p, i) => (
+      <span class={`station ${p.id === state ? 'on' : ''}`} style={`left:${48 + i * 328}px`}>
+        <i class="tick"></i>
+        <span class="s-no">{p.no}</span>
+        <span class="s-name">{p.name}</span>
+      </span>
+    ))}
+  </nav>
+
+  <!-- persistent: fact grid -->
+  {state !== 'overview' ? (
+    <div class="facts">
+      <div class="f-what">
+        <p class="w">{active!.what}</p>
+        <p class="r">{active!.role}</p>
+      </div>
+      <p class="f-decision">{active!.decision}</p>
+      <div class="f-go">
+        <span class="case">Case study <b>→</b></span>
+        <span class="count">{active!.no} / 04</span>
+      </div>
+    </div>
+  ) : (
+    <div class="facts overview-facts">
+      {projects.map((p, i) => (
+        <div class="ov-col" style={`left:${48 + i * 328}px`}>
+          <p class="w">{p.name}</p>
+          <p class="r">{p.what}</p>
+          <span class="case sm">Case study <b>→</b></span>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
+<style>
+  .art {
+    position: relative;
+    width: 1360px;
+    height: 850px;
+    background: #f1f0ec;
+    color: #111110;
+    font-family: 'Schibsted X', system-ui, sans-serif;
+    overflow: hidden;
+    --line: #c9c6bb;
+    --mute: #6f6c62;
+    --signal: #e94a10;
+    --mono: ui-monospace, 'SF Mono', Menlo, monospace;
+  }
+  .art * { margin: 0; box-sizing: border-box; }
+
+  /* ---------- persistent chrome ---------- */
+  .strip {
+    position: absolute;
+    top: 0; left: 48px; right: 48px;
+    height: 62px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .who { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+  .what-role { font-size: 14px; color: var(--mute); font-weight: 500; }
+  .contact {
+    margin-left: auto;
+    font-size: 14px;
+    font-weight: 650;
+    border-bottom: 2px solid var(--signal);
+    padding-bottom: 1px;
+  }
+  .section-label {
+    position: absolute;
+    top: 92px; left: 48px;
+    font-size: 12px;
+    font-weight: 650;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mute);
+  }
+
+  .field { position: absolute; inset: 62px 0 290px 0; }
+
+  .title {
+    position: absolute;
+    left: 46px;
+    bottom: 296px;
+    font-size: 86px;
+    line-height: 0.94;
+    font-weight: 780;
+    letter-spacing: -0.035em;
+  }
+  .title-sm { font-size: 56px; bottom: 302px; }
+
+  .datum {
+    position: absolute;
+    left: 0; right: 0;
+    top: 560px;
+    height: 1.5px;
+    background: #111110;
+  }
+  .stations { position: absolute; top: 560px; left: 0; right: 0; height: 44px; }
+  .station { position: absolute; top: 12px; display: flex; align-items: baseline; gap: 8px; }
+  .station .tick {
+    position: absolute;
+    left: 0; top: -34px;
+    width: 3px; height: 22px;
+    background: transparent;
+  }
+  .station.on .tick { background: var(--signal); }
+  .station .s-no { font-size: 12px; font-weight: 700; color: var(--mute); }
+  .station .s-name { font-size: 15px; font-weight: 600; color: var(--mute); }
+  .station.on .s-no { color: var(--signal); }
+  .station.on .s-name { color: #111110; font-weight: 750; }
+
+  /* ---------- fact grid ---------- */
+  .facts { position: absolute; left: 48px; right: 48px; top: 636px; }
+  .f-what { position: absolute; left: 0; width: 300px; }
+  .f-what .w { font-size: 16px; font-weight: 600; line-height: 1.45; }
+  .f-what .r { font-size: 13.5px; color: var(--mute); margin-top: 8px; line-height: 1.5; }
+  .f-decision {
+    position: absolute;
+    left: 452px;
+    width: 520px;
+    font-size: 20px;
+    line-height: 1.5;
+    font-weight: 460;
+    letter-spacing: -0.005em;
+  }
+  .f-go { position: absolute; right: 0; top: 2px; text-align: right; }
+  .case { font-size: 15px; font-weight: 700; }
+  .case b { color: var(--signal); font-weight: 800; }
+  .count { display: block; margin-top: 10px; font-size: 12.5px; color: var(--mute); font-weight: 600; letter-spacing: 0.06em; }
+
+  /* ---------- FINDERLY field ---------- */
+  .fin-primary {
+    position: absolute;
+    right: 0; top: 0;
+    width: 540px; height: 498px;
+    background-size: 540px auto;
+    background-position: 0 -128px;
+    border-left: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .fin-capture {
+    position: absolute;
+    right: 556px; top: 76px;
+    width: 152px; height: 392px;
+    background-size: 210px auto;
+    background-position: 50% 28%;
+    border: 1px solid var(--line);
+  }
+  .fin-dock {
+    position: absolute;
+    right: 296px; top: 404px;
+    width: 400px; height: 62px;
+    background-size: 420px auto;
+    background-position: 50% 99.5%;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 10px 28px rgba(17, 17, 16, 0.12);
+    background-color: #f6f0fb;
+  }
+
+  /* ---------- ASTERI field ---------- */
+  .tok-label {
+    position: absolute;
+    left: 520px;
+    font: 500 14px/1 var(--mono);
+    color: #111110;
+  }
+  .leader { position: absolute; height: 1px; background: var(--line); }
+  .leader::after {
+    content: '';
+    position: absolute;
+    right: -2px; top: -2.5px;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--signal);
+  }
+  .ast-card {
+    position: absolute;
+    background: #f7f8fa;
+    border: 1px solid #e2e4e9;
+    border-radius: 10px;
+    padding: 22px;
+    box-shadow: 0 14px 34px rgba(17, 17, 16, 0.09);
+  }
+  .ast-card span { display: block; font-size: 14px; color: #6b7280; }
+  .ast-card b { display: block; font-size: 30px; font-weight: 650; color: #111827; margin-top: 2px; letter-spacing: -0.01em; }
+  .ast-card .cap {
+    display: block;
+    font-style: normal;
+    font-size: 12px;
+    color: var(--mute);
+    margin-top: 14px;
+    font-family: 'Schibsted X', sans-serif;
+  }
+  .ast-card.after { left: 960px; top: 118px; width: 320px; }
+  .ast-card.before { left: 830px; top: 336px; width: 280px; opacity: 0.9; }
+  .ast-css {
+    position: absolute;
+    left: 496px; top: 352px;
+    font: 400 12.5px/1.7 var(--mono);
+    color: var(--mute);
+    white-space: pre;
+  }
+
+  /* ---------- STARTUPOS field ---------- */
+  .sos-layer {
+    position: absolute;
+    background-size: 100% auto;
+    background-position: 0 0;
+    border: 1px solid var(--line);
+  }
+  .sos-layer.lofi {
+    left: 620px; top: 42px;
+    width: 400px; height: 380px;
+  }
+  .sos-layer.hifi {
+    right: 0; top: 118px;
+    width: 460px; height: 380px;
+    border-right: none;
+    box-shadow: 0 16px 40px rgba(17, 17, 16, 0.13);
+  }
+  .sos-layer figcaption {
+    position: absolute;
+    left: 0; bottom: -26px;
+  }
+  .sos-layer.hifi figcaption {
+    bottom: auto; top: -26px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--mute);
+  }
+
+  /* ---------- ARTPARDE field ---------- */
+  .ap-mark {
+    position: absolute;
+    left: 560px; top: 58px;
+    width: 384px; height: 384px;
+    border-radius: 50%;
+    background-size: 114%;
+    background-position: 50% 50%;
+    box-shadow: 0 18px 44px rgba(17, 17, 16, 0.18);
+  }
+  .ap-band {
+    position: absolute;
+    right: 0; top: 0;
+    width: 300px; height: 498px;
+    background-color: #131313;
+    background-size: 190% auto;
+    background-position: 32% 50%;
+    border-bottom: 1px solid #111110;
+  }
+
+  /* ---------- OVERVIEW field ---------- */
+  .mini { position: absolute; bottom: 0; width: 220px; height: 262px; }
+  .mini-img {
+    position: absolute;
+    inset: 0 0 0 0;
+    background-color: #fff;
+    border: 1px solid var(--line);
+    border-bottom: none;
+  }
+  .mini-ast { display: grid; place-items: center; background: #f1f0ec; }
+  .ast-card.small { position: static; width: 168px; padding: 16px; }
+  .ast-card.small b { font-size: 24px; }
+  .mini-no {
+    position: absolute;
+    top: -30px; left: 0;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--mute);
+  }
+  .overview-facts .ov-col { position: absolute; width: 280px; }
+  .ov-col .w { font-size: 17px; font-weight: 700; }
+  .ov-col .r { font-size: 13.5px; color: var(--mute); line-height: 1.5; margin-top: 6px; min-height: 42px; }
+  .ov-col .case.sm { display: inline-block; margin-top: 10px; font-size: 13.5px; }
+</style>

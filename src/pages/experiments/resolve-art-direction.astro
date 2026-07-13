@@ -1,0 +1,136 @@
+---
+/**
+ * EXPERIMENT · Resolve art-direction study · static frames only.
+ * Same architecture as /experiments/resolve (four projects always
+ * discoverable, one active, compact previews, direct case access);
+ * entirely new visual system: one shared canvas structured by a datum
+ * line, stations riding the line, edge-cropped work above, facts below.
+ * No JavaScript, no transitions. Not production.
+ */
+import AdCanvas from '../../components/experiments/AdCanvas.astro';
+import AdMobile from '../../components/experiments/AdMobile.astro';
+
+const desktopFrames = [
+  { state: 'finderly', label: 'Frame 1 · Desktop · initial state, Finderly active' },
+  { state: 'asteri', label: 'Frame 2 · Desktop · Asteri active' },
+  { state: 'startupos', label: 'Frame 3 · Desktop · StartupOS active' },
+  { state: 'artparde', label: 'Frame 4 · Desktop · ArtPärdē active' },
+  { state: 'overview', label: 'Frame 5 · Desktop · overview: all four projects on the datum' },
+] as const;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Resolve · art-direction study — Joel Ryerson</title>
+    <link rel="preload" href="/fonts/x/schibsted.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+
+  <body>
+    <p class="ribbon" role="note">Experiment · Resolve art-direction study · static frames · not production</p>
+
+    <main class="deck">
+      <header class="deck-head">
+        <h1>“One canvas, one datum”</h1>
+        <p>
+          Same architecture as Resolve; rejected execution replaced. A single neutral canvas is
+          structured by one datum line. The four projects ride the line as stations; the active
+          project occupies the field above it with edge-cropped real work; its facts hold a strict
+          grid below. Eight static frames; no interaction in this phase.
+        </p>
+      </header>
+
+      {desktopFrames.map((f) => (
+        <section class="frame">
+          <p class="frame-label">{f.label}</p>
+          <div class="fit-desktop">
+            <div class="scale">
+              <AdCanvas state={f.state} />
+            </div>
+          </div>
+        </section>
+      ))}
+
+      <section class="frame">
+        <p class="frame-label">Frames 6–8 · Mobile · initial (Finderly) · switched (Asteri) · station bar with the work (ArtPärdē)</p>
+        <div class="mobile-row">
+          <div class="fit-mobile"><div class="scale-m"><AdMobile state="finderly" /></div></div>
+          <div class="fit-mobile"><div class="scale-m"><AdMobile state="asteri" /></div></div>
+          <div class="fit-mobile"><div class="scale-m"><AdMobile state="artparde" /></div></div>
+        </div>
+        <p class="frame-note">
+          The station bar is persistent at the bottom of the viewport: the active work stays
+          primary, all four projects stay one tap away, and switching never requires scrolling
+          back to a menu. Imagery is re-authored per viewport, not scaled down.
+        </p>
+      </section>
+    </main>
+
+    <style is:global>
+      @font-face {
+        font-family: 'Schibsted X';
+        src: url('/fonts/x/schibsted.woff2') format('woff2');
+        font-weight: 400 900;
+        font-display: swap;
+      }
+    </style>
+
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: #e3e1da;
+        color: #111110;
+        font-family: 'Schibsted X', system-ui, sans-serif;
+      }
+      .ribbon {
+        margin: 0;
+        padding: 0.55rem 1.2rem;
+        background: #111110;
+        color: #f1f0ec;
+        font-size: max(0.8rem, 13px);
+        font-weight: 500;
+        text-align: center;
+      }
+      .deck { max-width: 1440px; margin-inline: auto; padding: 2.5rem clamp(1rem, 3vw, 2.5rem) 5rem; }
+      .deck-head { max-width: 46rem; margin-bottom: 3rem; }
+      .deck-head h1 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 780; letter-spacing: -0.02em; margin: 0 0 0.7rem; }
+      .deck-head p { font-size: max(0.95rem, 15px); line-height: 1.6; color: #55524a; margin: 0; }
+
+      .frame { margin-bottom: 3.5rem; }
+      .frame-label {
+        font-size: max(0.82rem, 13px);
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #55524a;
+        margin: 0 0 0.8rem;
+      }
+      .frame-note { max-width: 44rem; font-size: max(0.9rem, 14px); line-height: 1.6; color: #55524a; margin: 1rem 0 0; }
+
+      .fit-desktop {
+        container-type: inline-size;
+        width: 100%;
+        aspect-ratio: 1360 / 850;
+        border: 1px solid #b9b6ab;
+        overflow: hidden;
+        box-shadow: 0 18px 50px rgba(17, 17, 16, 0.12);
+      }
+      .fit-desktop .scale { transform-origin: top left; transform: scale(calc(100cqw / 1360)); }
+
+      .mobile-row { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+      .fit-mobile {
+        container-type: inline-size;
+        flex: 1 1 260px;
+        max-width: 390px;
+        aspect-ratio: 390 / 844;
+        border: 1px solid #b9b6ab;
+        overflow: hidden;
+        box-shadow: 0 14px 40px rgba(17, 17, 16, 0.12);
+      }
+      .fit-mobile .scale-m { transform-origin: top left; transform: scale(calc(100cqw / 390)); }
+    </style>
+  </body>
+</html>
