@@ -1,0 +1,475 @@
+---
+/**
+ * EXPERIMENT · "Project Chapters" · functional prototype.
+ * Isolated route; nothing here touches production.
+ *
+ * One vertically scrolling document with four project chapters and a
+ * permanent project map. Each chapter shows name/year/category/role, one
+ * factual decision, and one before→after evidence pair; scrolling through
+ * the chapter shifts emphasis from the before state to the after state via
+ * CSS scroll-driven animation (view timeline). Native scrolling only: no
+ * pinning, no snap, no wheel interception. Both states are always visible
+ * and labeled, so nothing depends on motion; reduced motion and browsers
+ * without view timelines get the final composed state. The map is real
+ * anchor navigation; IntersectionObserver only updates its current state.
+ */
+import formerHome from '../../assets/experiments/finderly-former-home.webp';
+import homeLight from '../../assets/finderly/shots/home-light.webp';
+import captureShot from '../../assets/finderly/shots/capture.webp';
+import unitLofi from '../../assets/experiments/startupos-unit-lofi.webp';
+import unitHifi from '../../assets/experiments/startupos-unit.webp';
+import studiesStrip from '../../assets/experiments/artparde-studies.webp';
+import logoFinal from '../../assets/artparde/logo-final.png';
+import siteShot from '../../assets/experiments/artparde-site.webp';
+
+const chapters = [
+  {
+    id: 'finderly',
+    no: '01',
+    name: 'Finderly',
+    spec: '2026 · AI-guided home repair',
+    roles: 'Product design, UX/UI, and front-end implementation',
+    decision: 'Rebuilt the home around starting a repair: camera, video, and recent work from one clear entry point.',
+    href: '/work/finderly/',
+    beforeCap: 'Former home · chat-style prompt, from a screen recording',
+    afterCap: 'Shipped home · capture leads, recents carry real state',
+  },
+  {
+    id: 'asteri',
+    no: '02',
+    name: 'Asteri AI',
+    spec: '2026 · AI work platform',
+    roles: 'Product design and design systems',
+    decision: 'Consolidated a fragmented token foundation while preserving the product’s core table and preparing the homepage for migration.',
+    href: '/work/asteri/',
+    beforeCap: 'Representative, neutralized: styling restated inline, per file',
+    afterCap: 'Semantic tokens · identical on purpose · pilot surfaces',
+  },
+  {
+    id: 'startupos',
+    no: '03',
+    name: 'StartupOS',
+    spec: '2022 · Founder education platform',
+    roles: 'Product design',
+    decision: 'Designed the reusable template system the team used to ship the MVP in five months.',
+    href: '/work/startup-platform/',
+    beforeCap: 'The unit template · wireframe',
+    afterCap: 'Fifth iteration · shipped',
+  },
+  {
+    id: 'artparde',
+    no: '04',
+    name: 'ArtPärdē',
+    spec: '2024 · Performing-arts nonprofit',
+    roles: 'Brand and web design',
+    decision: 'Created the identity and maintainable website the organization continues to run without me.',
+    href: '/work/artparde/',
+    beforeCap: 'Shortlisted wordmark studies',
+    afterCap: 'The final mark and the live site, two years on',
+  },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Project Chapters · functional prototype — Joel Ryerson</title>
+    <link rel="preload" href="/fonts/x/satoshi.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+
+  <body>
+    <a class="skip" href="#finderly">Skip to the work</a>
+    <p class="ribbon" role="note">Experiment · “Project Chapters” · functional prototype · not production</p>
+
+    <header class="top">
+      <span class="who">Joel Ryerson</span>
+      <span class="role">Product Designer &amp; Design Engineer</span>
+      <nav class="links" aria-label="Site">
+        <a href="#" aria-disabled="true">About</a>
+        <a href="mailto:joelryerson@gmail.com">Contact</a>
+      </nav>
+    </header>
+
+    <!-- persistent project map -->
+    <nav class="map" aria-label="Projects">
+      {chapters.map((c, i) => (
+        <a href={`#${c.id}`} data-map={c.id} aria-current={i === 0 ? 'true' : undefined}>
+          <i class="tick" aria-hidden="true"></i>
+          <span class="m-no">{c.no}</span>
+          <span class="m-name">{c.name}</span>
+        </a>
+      ))}
+    </nav>
+
+    <main>
+      {chapters.map((c) => (
+        <section class={`chapter ch-${c.id}`} id={c.id} aria-labelledby={`h-${c.id}`}>
+          <header class="ch-head">
+            <h2 id={`h-${c.id}`}>{c.name}</h2>
+            <p class="spec"><b>{c.spec}</b> · {c.roles}</p>
+            <p class="decision">{c.decision}</p>
+            <a class="case" href={c.href}>Read case study<span aria-hidden="true"> →</span></a>
+          </header>
+
+          <figure class="pair">
+            <div class="side before">
+              <p class="cap">{c.beforeCap}</p>
+              <div class="art">
+                {c.id === 'finderly' && <div class="crop phone" style={`background-image:url(${formerHome.src})`}></div>}
+                {c.id === 'asteri' && (
+                  <div class="cardcol">
+                    <div class="card vary-a"><span>Active studies</span><b>128</b><i>inline styles, file A</i></div>
+                    <div class="card vary-b"><span>Active studies</span><b>128</b><i>inline styles, file B</i></div>
+                    <div class="card vary-c"><span>Active studies</span><b>128</b><i>inline styles, file C</i></div>
+                  </div>
+                )}
+                {c.id === 'startupos' && <div class="crop shot" style={`background-image:url(${unitLofi.src})`}></div>}
+                {c.id === 'artparde' && <div class="crop sheet" style={`background-image:url(${studiesStrip.src})`}></div>}
+              </div>
+            </div>
+
+            <div class="side after">
+              <p class="cap">{c.afterCap}</p>
+              <div class="art">
+                {c.id === 'finderly' && (
+                  <div class="finwrap">
+                    <div class="crop phone" style={`background-image:url(${homeLight.src})`}></div>
+                    <div class="crop camchip" style={`background-image:url(${captureShot.src})`}></div>
+                  </div>
+                )}
+                {c.id === 'asteri' && (
+                  <div class="cardcol">
+                    <div class="card"><span>Active studies</span><b>128</b><i>after · semantic tokens</i></div>
+                    <div class="card"><span>Active studies</span><b>128</b><i>after · semantic tokens</i></div>
+                    <div class="chain">
+                      <span class="swatch"></span>
+                      <span class="wire"></span>
+                      <span class="tok">--surface-raised</span>
+                      <span class="wire"></span>
+                      <span class="applied">card background</span>
+                    </div>
+                  </div>
+                )}
+                {c.id === 'startupos' && <div class="crop shot" style={`background-image:url(${unitHifi.src})`}></div>}
+                {c.id === 'artparde' && (
+                  <div class="apwrap">
+                    <div class="crop mark" style={`background-image:url(${logoFinal.src})`}></div>
+                    <div class="crop site" style={`background-image:url(${siteShot.src})`}></div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </figure>
+        </section>
+      ))}
+    </main>
+
+    <footer class="end">
+      <a class="mail" href="mailto:joelryerson@gmail.com">joelryerson@gmail.com</a>
+      <span>Full-time or contract · July 2026 · East Bay, CA</span>
+    </footer>
+
+    <script is:inline>
+      // scrollspy only: navigation itself is native anchors
+      (() => {
+        document.documentElement.classList.add('js');
+        const links = [...document.querySelectorAll('[data-map]')];
+        const spy = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (!e.isIntersecting) return;
+              links.forEach((l) => {
+                if (l.dataset.map === e.target.id) l.setAttribute('aria-current', 'true');
+                else l.removeAttribute('aria-current');
+              });
+            });
+          },
+          { rootMargin: '-45% 0px -50% 0px' }
+        );
+        document.querySelectorAll('.chapter').forEach((s) => spy.observe(s));
+      })();
+    </script>
+
+    <style>
+      @font-face {
+        font-family: 'Satoshi X';
+        src: url('/fonts/x/satoshi.woff2') format('woff2');
+        font-weight: 300 900;
+        font-display: swap;
+      }
+      :root {
+        --shell: #f2f0eb;
+        --ink: #141311;
+        --mute: #6e6a60;
+        --line: #cdcabf;
+        --signal: #e94a10;
+        color-scheme: light;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--shell);
+        color: var(--ink);
+        font-family: 'Satoshi X', system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      body * { margin: 0; }
+
+      .skip {
+        position: absolute;
+        left: 16px; top: -48px;
+        z-index: 30;
+        background: var(--ink);
+        color: var(--shell);
+        padding: 10px 16px;
+        font-size: 14px;
+        font-weight: 650;
+        text-decoration: none;
+        transition: top 0.15s;
+      }
+      .skip:focus-visible { top: 8px; outline: 2px solid var(--signal); }
+
+      .ribbon {
+        padding: 0.4rem 1.2rem;
+        background: var(--ink);
+        color: var(--shell);
+        font-size: max(0.8rem, 13px);
+        font-weight: 500;
+        text-align: center;
+      }
+
+      .top {
+        height: 64px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 0 clamp(16px, 2.5vw, 32px);
+        border-bottom: 1px solid var(--line);
+      }
+      .who { font-size: 16px; font-weight: 800; letter-spacing: -0.01em; white-space: nowrap; }
+      .role { font-size: 13.5px; font-weight: 500; color: var(--mute); }
+      .links { margin-left: auto; display: flex; gap: 18px; }
+      .links a { font-size: 14px; font-weight: 650; color: var(--ink); text-decoration: none; padding: 8px 0; }
+      .links a:hover { color: var(--signal); }
+      .links a:last-child { border-bottom: 2px solid var(--signal); padding-bottom: 2px; }
+      .links a:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+      /* ---------- project map ---------- */
+      .map {
+        position: fixed;
+        right: clamp(12px, 2vw, 28px);
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 20;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        background: color-mix(in srgb, var(--shell) 88%, transparent);
+        backdrop-filter: blur(6px);
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+      }
+      .map a {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        padding: 8px 6px;
+        min-height: 40px;
+        text-decoration: none;
+        color: var(--mute);
+        position: relative;
+      }
+      .map .tick { position: absolute; left: -12px; top: 8px; bottom: 8px; width: 3px; background: transparent; }
+      .map a[aria-current='true'] { color: var(--ink); }
+      .map a[aria-current='true'] .tick { background: var(--signal); }
+      .map .m-no { font-size: 11px; font-weight: 700; }
+      .map a[aria-current='true'] .m-no { color: var(--signal); }
+      .map .m-name { font-size: 13.5px; font-weight: 650; }
+      .map a:hover { color: var(--ink); }
+      .map a:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+
+      /* ---------- chapters ---------- */
+      main { max-width: 1180px; margin-inline: auto; padding: 0 clamp(16px, 3vw, 40px); }
+      .chapter {
+        min-height: 120vh;
+        padding: clamp(40px, 8vh, 84px) 0 clamp(30px, 6vh, 60px);
+        border-bottom: 1px solid var(--line);
+        scroll-margin-top: 12px;
+      }
+      .chapter:last-of-type { border-bottom: none; }
+
+      .ch-head { max-width: 720px; }
+      .ch-head h2 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.02em; }
+      .spec { font-size: 13.5px; color: var(--mute); margin-top: 8px; }
+      .spec b { color: var(--ink); font-weight: 700; }
+      .decision { font-size: clamp(16px, 1.5vw, 19px); line-height: 1.5; margin-top: 14px; letter-spacing: -0.005em; }
+      .case {
+        display: inline-block;
+        margin-top: 12px;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--ink);
+        text-decoration: none;
+        border-bottom: 2px solid var(--signal);
+        padding-bottom: 2px;
+      }
+      .case:hover { color: var(--signal); }
+      .case:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+      /* ---------- the evidence pair ---------- */
+      .pair {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+        gap: clamp(24px, 4vw, 64px);
+        align-items: start;
+        margin-top: clamp(28px, 5vh, 56px);
+      }
+      .side .cap {
+        font-size: 12.5px;
+        font-weight: 650;
+        color: var(--mute);
+        margin-bottom: 12px;
+      }
+      .art { position: relative; }
+
+      /* final composed emphasis (also the reduced-motion / no-support state) */
+      .side.before { opacity: 0.45; }
+      .side.after { opacity: 1; }
+
+      /* scroll-driven emphasis shift, confined to each chapter's pair */
+      @supports (animation-timeline: view()) {
+        @media (prefers-reduced-motion: no-preference) {
+          .side.before {
+            animation: dim linear both;
+            animation-timeline: view();
+            animation-range: cover 18% cover 55%;
+          }
+          .side.after {
+            animation: rise linear both;
+            animation-timeline: view();
+            animation-range: cover 18% cover 55%;
+          }
+        }
+      }
+      @keyframes dim { from { opacity: 1; } to { opacity: 0.45; } }
+      @keyframes rise {
+        from { opacity: 0.4; transform: translateY(26px); }
+        to { opacity: 1; transform: none; }
+      }
+
+      .crop { background-repeat: no-repeat; background-size: cover; border: 1px solid var(--line); }
+      .phone { aspect-ratio: 1180 / 2376; width: min(100%, 340px); background-position: 50% 0; margin-inline: auto; }
+      .shot { aspect-ratio: 1268 / 1300; width: min(100%, 560px); background-position: 50% 0; margin-inline: auto; }
+      .sheet { aspect-ratio: 940 / 493; width: min(100%, 520px); background-size: contain; background-color: #141414; background-position: 50% 50%; margin-inline: auto; border: none; }
+
+      .finwrap { display: flex; gap: 16px; justify-content: center; align-items: flex-start; }
+      .finwrap .phone { width: min(62%, 340px); margin: 0; }
+      .camchip { aspect-ratio: 1179 / 2556; width: min(26%, 150px); background-position: 50% 30%; margin-top: 12%; }
+
+      .apwrap { display: flex; gap: 18px; align-items: flex-start; justify-content: center; }
+      .apwrap .mark { aspect-ratio: 1; width: min(38%, 240px); background-position: 50% 50%; border: none; }
+      .apwrap .site { aspect-ratio: 1440 / 1000; width: min(60%, 420px); background-position: 50% 0; }
+
+      .cardcol { display: grid; gap: 16px; justify-items: center; }
+      .card {
+        background: #f7f8fa;
+        border: 1px solid #e2e4e9;
+        border-radius: 10px;
+        padding: 18px 20px;
+        width: min(280px, 88%);
+      }
+      .card span { display: block; font-size: 13px; color: #6b7280; }
+      .card b { display: block; font-size: 26px; font-weight: 650; color: #111827; margin-top: 2px; }
+      .card i { display: block; font-style: normal; font-size: 11.5px; color: var(--mute); margin-top: 10px; }
+      .card.vary-a { border-radius: 2px; padding: 12px 20px 24px; }
+      .card.vary-a span { font-size: 11.5px; color: #9ca3af; }
+      .card.vary-b { border-radius: 18px; padding: 24px 16px 12px; background: #f2f4f8; }
+      .card.vary-b b { font-size: 22px; font-weight: 750; }
+      .card.vary-c { border-radius: 10px 2px 10px 2px; border-color: #cdd3dd; }
+      .card.vary-c span { letter-spacing: 0.06em; text-transform: uppercase; font-size: 10.5px; }
+
+      .chain { display: flex; align-items: center; gap: 10px; font-size: 12.5px; font-weight: 600; }
+      .swatch { width: 20px; height: 20px; border-radius: 5px; background: #f7f8fa; border: 1px solid #d6d9df; }
+      .wire { width: 34px; height: 1px; background: var(--line); position: relative; }
+      .wire::after { content: ''; position: absolute; right: -2px; top: -2.5px; width: 6px; height: 6px; border-radius: 50%; background: var(--signal); }
+      .applied { color: var(--mute); font-weight: 500; }
+
+      /* ---------- footer ---------- */
+      .end {
+        display: flex;
+        align-items: baseline;
+        gap: 18px;
+        flex-wrap: wrap;
+        max-width: 1180px;
+        margin-inline: auto;
+        padding: 28px clamp(16px, 3vw, 40px) 44px;
+        color: var(--mute);
+        font-size: 14px;
+      }
+      .mail {
+        font-size: 16px;
+        font-weight: 750;
+        color: var(--ink);
+        text-decoration: none;
+        border-bottom: 2px solid var(--signal);
+        padding-bottom: 2px;
+      }
+      .mail:hover { color: var(--signal); }
+
+      /* ---------- reduced motion ---------- */
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        .side.before, .side.after { animation: none !important; }
+      }
+
+      /* ---------- responsive ---------- */
+      @media (max-width: 1240px) {
+        main { max-width: none; margin-right: 150px; }
+      }
+      @media (max-width: 760px) {
+        .role { display: none; }
+        .top { height: 56px; }
+        main { margin-right: 0; padding: 0 16px; }
+
+        /* map becomes a sticky horizontal bar */
+        .map {
+          position: sticky;
+          top: 0;
+          right: auto;
+          transform: none;
+          flex-direction: row;
+          gap: 0;
+          justify-content: space-between;
+          padding: 0 10px;
+          border: none;
+          border-bottom: 1px solid var(--line);
+          background: color-mix(in srgb, var(--shell) 94%, transparent);
+        }
+        .map a { min-height: 46px; align-items: center; padding: 0 6px; }
+        .map .tick { left: 6px; right: 6px; top: auto; bottom: 0; width: auto; height: 3px; }
+        .map .m-no { display: none; }
+        .map .m-name { font-size: 12.5px; }
+
+        .chapter { min-height: 0; padding: 28px 0 34px; }
+        .ch-head h2 { font-size: 26px; }
+        .decision { font-size: 15px; }
+        .pair { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 12px; margin-top: 20px; }
+        .side .cap { font-size: 10.5px; margin-bottom: 8px; }
+        .phone { width: 100%; }
+        .finwrap { flex-direction: column; align-items: center; gap: 10px; }
+        .finwrap .phone { width: 100%; }
+        .camchip { width: 54%; margin-top: 0; }
+        .apwrap { flex-direction: column; align-items: center; }
+        .apwrap .mark { width: 56%; }
+        .apwrap .site { width: 100%; }
+        .card { padding: 12px 14px; width: 100%; }
+        .card b { font-size: 19px; }
+        .cardcol { gap: 10px; }
+        .chain { flex-wrap: wrap; font-size: 10.5px; }
+      }
+    </style>
+  </body>
+</html>
