@@ -1,0 +1,675 @@
+---
+/**
+ * EXPERIMENT · "Shared Canvas — Interactive" · functional prototype.
+ * Isolated route; nothing here touches production.
+ *
+ * The structured L-layout made real: four persistent project elements occupy
+ * four named slots (stage, rail-top, rail-bottom, bottom). Selecting a
+ * preview swaps ONLY the selected project and the active one: the incoming
+ * project animates from its slot into the stage while the outgoing project
+ * animates into the exact slot that was vacated. The other two never move.
+ *
+ * Implementation: a CSS-grid skeleton provides slot geometry; each project is
+ * an absolutely positioned box whose top/left/width/height are set from its
+ * slot's rect and transitioned (interruptible layout interpolation, FLIP-
+ * equivalent without transform distortion). Content layers crossfade between
+ * preview and active compositions mid-flight. URL (?p=) + history state track
+ * the full arrangement; reduced motion swaps instantly; no-JS renders a
+ * linear all-projects layout.
+ */
+import homeLight from '../../assets/finderly/shots/home-light.webp';
+import captureShot from '../../assets/finderly/shots/capture.webp';
+import unitHifi from '../../assets/experiments/startupos-unit.webp';
+import unitLofi from '../../assets/experiments/startupos-unit-lofi.webp';
+import studiesStrip from '../../assets/experiments/artparde-studies.webp';
+import logoFinal from '../../assets/artparde/logo-final.png';
+
+const projects = [
+  {
+    id: 'finderly',
+    name: 'Finderly',
+    year: '2026',
+    cat: 'AI home repair',
+    spec: '2026 · AI-guided home repair',
+    roles: 'Product design, UX/UI, and front-end implementation',
+    desc: 'Rebuilt the home around starting a repair, with camera, video, and recent work available from one clear entry point.',
+    href: '/work/finderly/',
+  },
+  {
+    id: 'asteri',
+    name: 'Asteri AI',
+    year: '2026',
+    cat: 'AI work platform',
+    spec: '2026 · AI work platform',
+    roles: 'Product design and design systems',
+    desc: 'Consolidated a fragmented token foundation while preserving the product’s core table and preparing the homepage for migration.',
+    href: '/work/asteri/',
+  },
+  {
+    id: 'startupos',
+    name: 'StartupOS',
+    year: '2022',
+    cat: 'Founder education',
+    spec: '2022 · Founder education platform',
+    roles: 'Product design',
+    desc: 'Designed the reusable template system the team used to ship the MVP in five months.',
+    href: '/work/startup-platform/',
+  },
+  {
+    id: 'artparde',
+    name: 'ArtPärdē',
+    year: '2024',
+    cat: 'Performing-arts nonprofit',
+    spec: '2024 · Performing-arts nonprofit',
+    roles: 'Brand and web design',
+    desc: 'Created the identity and maintainable website the organization continues to run without me.',
+    href: '/work/artparde/',
+  },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Shared Canvas · interactive prototype — Joel Ryerson</title>
+    <link rel="preload" href="/fonts/x/satoshi.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+
+  <body>
+    <p class="ribbon" role="note">Experiment · “Shared Canvas — Interactive” · functional prototype · not production</p>
+
+    <div class="page">
+      <header class="top">
+        <span class="who">Joel Ryerson</span>
+        <span class="role">Product Designer &amp; Design Engineer</span>
+        <nav class="links" aria-label="Site">
+          <a href="#" aria-disabled="true">About</a>
+          <a href="mailto:joelryerson@gmail.com">Contact</a>
+        </nav>
+      </header>
+
+      <section class="strip" aria-live="polite">
+        <h1 class="s-name">Finderly</h1>
+        <div class="s-meta">
+          <p class="s-spec">2026 · AI-guided home repair</p>
+          <p class="s-roles">Product design, UX/UI, and front-end implementation</p>
+        </div>
+        <p class="s-desc">Rebuilt the home around starting a repair, with camera, video, and recent work available from one clear entry point.</p>
+        <a class="s-case" href="/work/finderly/">Read case study<span aria-hidden="true"> →</span></a>
+      </section>
+
+      <main class="canvas" id="canvas" aria-label="Selected work">
+        <!-- geometry skeleton: static hairlines live here -->
+        <div class="slot sk-stage" data-slot="stage" aria-hidden="true"></div>
+        <div class="slot sk-railtop" data-slot="railtop" aria-hidden="true"></div>
+        <div class="slot sk-railbottom" data-slot="railbottom" aria-hidden="true"></div>
+        <div class="slot sk-bottom" data-slot="bottom" aria-hidden="true"></div>
+
+        {projects.map((p, i) => (
+          <article class={`proj p-${p.id}`} data-p={p.id} aria-label={p.name} aria-current={i === 0 ? 'true' : undefined}>
+            <!-- preview layer -->
+            <div class="pv">
+              <p class="pv-label"><b>{p.name}</b><span>{p.year} · {p.cat}</span><i aria-hidden="true">→</i></p>
+              <div class="pv-visual">
+                {p.id === 'finderly' && <div class="crop v-fin" style={`background-image:url(${homeLight.src})`}></div>}
+                {p.id === 'asteri' && <div class="v-ast"><div class="card sm"><span>Active studies</span><b>128</b></div></div>}
+                {p.id === 'startupos' && <div class="crop v-sos" style={`background-image:url(${unitHifi.src})`}></div>}
+                {p.id === 'artparde' && (
+                  <div class="v-ap">
+                    <div class="crop v-ap-band" style={`background-image:url(${studiesStrip.src})`}></div>
+                    <div class="crop v-ap-mark" style={`background-image:url(${logoFinal.src})`}></div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <!-- active layer -->
+            <div class="act">
+              {p.id === 'finderly' && (
+                <div class="stage-fin">
+                  <div class="crop home" style={`background-image:url(${homeLight.src})`}></div>
+                  <div class="crop cam" style={`background-image:url(${captureShot.src})`}></div>
+                </div>
+              )}
+              {p.id === 'asteri' && (
+                <div class="stage-ast">
+                  <div class="ast-band">
+                    <div class="card"><span>Active studies</span><b>128</b><i>before · inline styles, restated per file</i></div>
+                    <div class="card"><span>Active studies</span><b>128</b><i>after · semantic tokens</i></div>
+                    <div class="card"><span>Active studies</span><b>128</b><i>after · semantic tokens</i></div>
+                  </div>
+                  <div class="ast-chain">
+                    <span class="swatch"></span>
+                    <span class="wire"></span>
+                    <span class="tok">--surface-raised</span>
+                    <span class="wire"></span>
+                    <span class="applied">card background</span>
+                  </div>
+                </div>
+              )}
+              {p.id === 'startupos' && (
+                <div class="stage-sos">
+                  <figure class="crop lofi" style={`background-image:url(${unitLofi.src})`}>
+                    <figcaption>iteration one · wireframe</figcaption>
+                  </figure>
+                  <figure class="crop hifi" style={`background-image:url(${unitHifi.src})`}>
+                    <figcaption>iteration five · shipped</figcaption>
+                  </figure>
+                </div>
+              )}
+              {p.id === 'artparde' && (
+                <div class="stage-ap">
+                  <div class="crop ap-mark" style={`background-image:url(${logoFinal.src})`}></div>
+                  <div class="crop ap-band" style={`background-image:url(${studiesStrip.src})`}></div>
+                </div>
+              )}
+              <!-- no-JS: give each project its facts and link -->
+              <div class="nojs-facts">
+                <p class="nf-spec"><b>{p.year}</b> · {p.cat} · {p.roles}</p>
+                <p class="nf-desc">{p.desc}</p>
+                <a class="s-case" href={p.href}>Read case study<span aria-hidden="true"> →</span></a>
+              </div>
+            </div>
+
+            <button class="hit" type="button" data-select={p.id} aria-label={`View ${p.name} (${p.year}, ${p.cat})`}></button>
+          </article>
+        ))}
+      </main>
+    </div>
+
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        root.classList.add('js');
+
+        const DATA = {
+          finderly: { name: 'Finderly', spec: '2026 · AI-guided home repair', roles: 'Product design, UX/UI, and front-end implementation', desc: 'Rebuilt the home around starting a repair, with camera, video, and recent work available from one clear entry point.', href: '/work/finderly/' },
+          asteri: { name: 'Asteri AI', spec: '2026 · AI work platform', roles: 'Product design and design systems', desc: 'Consolidated a fragmented token foundation while preserving the product’s core table and preparing the homepage for migration.', href: '/work/asteri/' },
+          startupos: { name: 'StartupOS', spec: '2022 · Founder education platform', roles: 'Product design', desc: 'Designed the reusable template system the team used to ship the MVP in five months.', href: '/work/startup-platform/' },
+          artparde: { name: 'ArtPärdē', spec: '2024 · Performing-arts nonprofit', roles: 'Brand and web design', desc: 'Created the identity and maintainable website the organization continues to run without me.', href: '/work/artparde/' },
+        };
+        const SLOTS = ['stage', 'railtop', 'railbottom', 'bottom'];
+        const INITIAL = { stage: 'finderly', railtop: 'asteri', railbottom: 'startupos', bottom: 'artparde' };
+
+        const canvas = document.getElementById('canvas');
+        const slotEls = Object.fromEntries(SLOTS.map((s) => [s, canvas.querySelector(`[data-slot="${s}"]`)]));
+        const projEls = Object.fromEntries([...canvas.querySelectorAll('.proj')].map((el) => [el.dataset.p, el]));
+        const strip = document.querySelector('.strip');
+        const motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // assignment: slot -> project id
+        let assign = { ...INITIAL };
+
+        const arrangementFor = (activeId) => {
+          const a = { ...INITIAL };
+          if (a.stage !== activeId) {
+            const slot = SLOTS.find((s) => a[s] === activeId);
+            a[slot] = a.stage;
+            a.stage = activeId;
+          }
+          return a;
+        };
+
+        const place = (animate) => {
+          const cRect = canvas.getBoundingClientRect();
+          for (const slot of SLOTS) {
+            const id = assign[slot];
+            const el = projEls[id];
+            const r = slotEls[slot].getBoundingClientRect();
+            if (!animate) el.classList.add('no-anim');
+            el.style.top = r.top - cRect.top + 'px';
+            el.style.left = r.left - cRect.left + 'px';
+            el.style.width = r.width + 'px';
+            el.style.height = r.height + 'px';
+            el.classList.toggle('is-stage', slot === 'stage');
+            el.classList.toggle('in-bottom', slot === 'bottom');
+            el.setAttribute('data-slot-now', slot);
+            if (slot === 'stage') el.setAttribute('aria-current', 'true');
+            else el.removeAttribute('aria-current');
+            if (!animate) {
+              void el.offsetWidth;
+              el.classList.remove('no-anim');
+            }
+          }
+        };
+
+        const renderStrip = (id) => {
+          const d = DATA[id];
+          strip.classList.add('swap');
+          setTimeout(() => {
+            strip.querySelector('.s-name').textContent = d.name;
+            strip.querySelector('.s-spec').textContent = d.spec;
+            strip.querySelector('.s-roles').textContent = d.roles;
+            strip.querySelector('.s-desc').textContent = d.desc;
+            strip.querySelector('.s-case').setAttribute('href', d.href);
+            strip.classList.remove('swap');
+          }, motionOK ? 140 : 0);
+        };
+
+        // flying projects sit above resting ones
+        const elevate = (ids) => {
+          Object.values(projEls).forEach((el) => (el.style.zIndex = 2));
+          ids.forEach((id) => (projEls[id].style.zIndex = 4));
+        };
+
+        const applyArrangement = (next, { animate = true, focusSlot = null } = {}) => {
+          const movers = SLOTS.filter((s) => assign[s] !== next[s]).map((s) => next[s]);
+          elevate(movers);
+          assign = { ...next };
+          place(animate && motionOK);
+          renderStrip(assign.stage);
+          if (focusSlot) {
+            const el = projEls[assign[focusSlot]];
+            el.querySelector('.hit').focus({ preventScroll: true });
+          }
+        };
+
+        const select = (id) => {
+          if (assign.stage === id) return;
+          const fromSlot = SLOTS.find((s) => assign[s] === id);
+          const next = { ...assign, stage: id, [fromSlot]: assign.stage };
+          applyArrangement(next, { animate: true, focusSlot: fromSlot });
+          history.pushState({ assign: next }, '', '?p=' + id);
+        };
+
+        canvas.addEventListener('click', (e) => {
+          const btn = e.target.closest('[data-select]');
+          if (btn) select(btn.dataset.select);
+        });
+
+        window.addEventListener('popstate', (e) => {
+          const next = e.state?.assign || arrangementFor(new URLSearchParams(location.search).get('p') || 'finderly');
+          applyArrangement(next, { animate: true });
+        });
+
+        let raf = 0;
+        window.addEventListener('resize', () => {
+          cancelAnimationFrame(raf);
+          raf = requestAnimationFrame(() => place(false));
+        });
+
+        // init: derive arrangement from ?p, position without animation
+        const wanted = new URLSearchParams(location.search).get('p');
+        assign = arrangementFor(DATA[wanted] ? wanted : 'finderly');
+        place(false);
+        if (assign.stage !== 'finderly') renderStrip(assign.stage);
+        history.replaceState({ assign }, '', assign.stage === 'finderly' ? location.pathname : '?p=' + assign.stage);
+      })();
+    </script>
+
+    <style>
+      @font-face {
+        font-family: 'Satoshi X';
+        src: url('/fonts/x/satoshi.woff2') format('woff2');
+        font-weight: 300 900;
+        font-display: swap;
+      }
+
+      :root {
+        --shell: #f2f0eb;
+        --ink: #141311;
+        --mute: #6e6a60;
+        --line: #cdcabf;
+        --signal: #e94a10;
+        --dur: 650ms;
+        --ease: cubic-bezier(0.32, 0.72, 0.05, 1);
+        color-scheme: light;
+      }
+      * { box-sizing: border-box; }
+
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        background: var(--shell);
+        color: var(--ink);
+        font-family: 'Satoshi X', system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      .ribbon {
+        margin: 0;
+        padding: 0.4rem 1.2rem;
+        background: var(--ink);
+        color: var(--shell);
+        font-size: max(0.8rem, 13px);
+        font-weight: 500;
+        text-align: center;
+      }
+      .page { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+      .page * { margin: 0; }
+
+      /* ---------- header ---------- */
+      .top {
+        height: 68px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 0 clamp(16px, 2.5vw, 32px);
+        border-bottom: 1px solid var(--line);
+        flex: none;
+      }
+      .who { font-size: 16px; font-weight: 800; letter-spacing: -0.01em; white-space: nowrap; }
+      .role { font-size: 13.5px; font-weight: 500; color: var(--mute); }
+      .links { margin-left: auto; display: flex; gap: 18px; }
+      .links a { font-size: 14px; font-weight: 650; color: var(--ink); text-decoration: none; padding: 8px 0; }
+      .links a:hover { color: var(--signal); }
+      .links a:last-child { border-bottom: 2px solid var(--signal); padding-bottom: 2px; }
+      .links a:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+      /* ---------- info strip ---------- */
+      .strip {
+        min-height: 96px;
+        display: flex;
+        align-items: center;
+        gap: clamp(18px, 2.5vw, 40px);
+        padding: 14px clamp(16px, 2.5vw, 32px);
+        border-bottom: 1px solid var(--line);
+        flex: none;
+        transition: opacity 140ms ease;
+      }
+      .strip.swap { opacity: 0; }
+      .s-name { font-size: clamp(24px, 2.2vw, 30px); font-weight: 800; letter-spacing: -0.02em; white-space: nowrap; }
+      .s-spec { font-size: 13px; font-weight: 650; }
+      .s-roles { font-size: 12.5px; color: var(--mute); margin-top: 2px; }
+      .s-desc { flex: 1 1 0; min-width: 0; font-size: 14.5px; line-height: 1.45; max-width: 52ch; }
+      .s-case {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--ink);
+        text-decoration: none;
+        border-bottom: 2px solid var(--signal);
+        padding-bottom: 2px;
+        white-space: nowrap;
+      }
+      .s-case:hover { color: var(--signal); }
+      .s-case:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+      /* ---------- canvas + slot skeleton ---------- */
+      .canvas {
+        flex: 1;
+        min-height: 440px;
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr clamp(220px, 19.5%, 300px);
+        grid-template-rows: 5fr 3fr 2fr;
+        grid-template-areas:
+          'stage railtop'
+          'stage railbottom'
+          'bottom railbottom';
+      }
+      .slot { min-height: 0; min-width: 0; }
+      .sk-stage { grid-area: stage; }
+      .sk-railtop { grid-area: railtop; border-left: 1px solid var(--line); }
+      .sk-railbottom { grid-area: railbottom; border-left: 1px solid var(--line); border-top: 1px solid var(--line); }
+      .sk-bottom { grid-area: bottom; border-top: 1px solid var(--line); }
+
+      /* ---------- project boxes ---------- */
+      .js .proj {
+        position: absolute;
+        overflow: hidden;
+        background: var(--shell);
+        z-index: 2;
+        transition:
+          top var(--dur) var(--ease),
+          left var(--dur) var(--ease),
+          width var(--dur) var(--ease),
+          height var(--dur) var(--ease);
+      }
+      .js .proj.no-anim { transition: none !important; }
+
+      /* content layers crossfade between roles */
+      .proj .pv, .proj .act { position: absolute; inset: 0; transition: opacity 260ms ease; }
+      .js .proj .act { opacity: 0; pointer-events: none; }
+      .js .proj.is-stage .act { opacity: 1; pointer-events: auto; }
+      .js .proj.is-stage .pv { opacity: 0; pointer-events: none; }
+
+      .hit {
+        position: absolute;
+        inset: 0;
+        z-index: 5;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+      }
+      .js .proj.is-stage .hit { display: none; }
+      .hit:focus-visible { outline: 3px solid var(--signal); outline-offset: -3px; }
+      .js .proj:not(.is-stage):hover { background: #eceae3; }
+
+      /* ---------- preview layer ---------- */
+      .pv { display: flex; flex-direction: column; padding: 14px 16px 16px; }
+      .pv-label { display: flex; align-items: baseline; gap: 8px; flex: none; }
+      .pv-label b { font-size: 15px; font-weight: 750; white-space: nowrap; }
+      .pv-label span { font-size: 12px; color: var(--mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .pv-label i { margin-left: auto; font-style: normal; font-weight: 800; color: var(--mute); }
+      .proj:hover .pv-label i { color: var(--signal); }
+      .pv-visual { flex: 1; min-height: 0; margin-top: 10px; position: relative; }
+
+      .crop { background-repeat: no-repeat; }
+      .v-fin { position: absolute; inset: 0; background-size: cover; background-position: 50% 13%; border: 1px solid var(--line); }
+      .v-ast { position: absolute; inset: 0; display: grid; place-items: center; }
+      .v-ast .card.sm { width: min(70%, 200px); }
+      .v-sos { position: absolute; inset: 0; background-size: 130% auto; background-position: 15% 0; border: 1px solid var(--line); }
+      .v-ap { position: absolute; inset: 0; display: flex; gap: 12px; }
+      .v-ap-band { flex: 1 1 0; background-size: auto 290%; background-position: 10% 16%; background-color: #141414; }
+      .v-ap-mark { flex: none; aspect-ratio: 1; height: 100%; background-size: cover; background-position: 50% 50%; }
+
+      /* wide bottom slot: recompose previews */
+      .proj.in-bottom .pv { flex-direction: row; align-items: center; gap: 18px; }
+      .proj.in-bottom .pv-label { flex-direction: column; align-items: flex-start; gap: 2px; min-width: 170px; }
+      .proj.in-bottom .pv-label i { margin-left: 0; }
+      .proj.in-bottom .pv-visual { margin-top: 0; height: 100%; }
+      .proj.in-bottom .v-fin { background-position: 50% 26.5%; }
+      .proj.in-bottom .v-sos { background-size: 60% auto; background-position: 15% 22%; }
+      .proj.in-bottom .v-ast { justify-items: start; }
+      .proj.in-bottom .v-ast .card.sm { width: min(46%, 220px); margin-left: 4%; }
+
+      /* ---------- the stat-card artifact ---------- */
+      .card {
+        background: #f7f8fa;
+        border: 1px solid #e2e4e9;
+        border-radius: 10px;
+        padding: clamp(12px, 1.4vw, 22px);
+      }
+      .card span { display: block; font-size: clamp(11px, 0.95vw, 14px); color: #6b7280; }
+      .card b { display: block; font-size: clamp(18px, 2vw, 30px); font-weight: 650; color: #111827; margin-top: 2px; }
+      .card i { display: block; font-style: normal; font-size: clamp(10px, 0.85vw, 12.5px); color: var(--mute); margin-top: 12px; }
+      .card.sm { padding: 12px 14px; }
+      .card.sm span { font-size: 11px; }
+      .card.sm b { font-size: 20px; }
+
+      /* ---------- active compositions ---------- */
+      .act { padding: 0; }
+      .nojs-facts { display: none; }
+
+      .stage-fin {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        gap: clamp(14px, 1.6vw, 24px);
+        padding: clamp(20px, 3vh, 36px) clamp(20px, 3vw, 48px) 0;
+      }
+      .stage-fin .home {
+        width: clamp(300px, 42%, 560px);
+        height: 96%;
+        background-size: 100% auto;
+        background-position: 0 0;
+        border: 1px solid var(--line);
+        border-bottom: none;
+      }
+      .stage-fin .cam {
+        width: clamp(130px, 17%, 230px);
+        height: 66%;
+        background-size: cover;
+        background-position: 50% 30%;
+        border: 1px solid var(--line);
+        border-bottom: none;
+      }
+
+      .stage-ast {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: clamp(22px, 4vh, 40px);
+        padding: clamp(20px, 3vh, 36px) clamp(20px, 3.5vw, 56px);
+        background: linear-gradient(to bottom, transparent 24%, #faf9f6 24%, #faf9f6 76%, transparent 76%);
+      }
+      .ast-band { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2.2vw, 36px); align-items: start; }
+      .ast-chain { display: flex; align-items: center; gap: 12px; font-size: clamp(12px, 1vw, 13.5px); font-weight: 600; }
+      .swatch { width: 22px; height: 22px; border-radius: 5px; background: #f7f8fa; border: 1px solid #d6d9df; }
+      .wire { width: clamp(24px, 3vw, 52px); height: 1px; background: var(--line); position: relative; }
+      .wire::after { content: ''; position: absolute; right: -2px; top: -2.5px; width: 6px; height: 6px; border-radius: 50%; background: var(--signal); }
+      .applied { color: var(--mute); font-weight: 500; }
+
+      .stage-sos {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        gap: clamp(20px, 3vw, 44px);
+        padding: clamp(24px, 4vh, 44px) clamp(20px, 3vw, 48px) 0;
+      }
+      .stage-sos figure { position: relative; height: 74%; margin: 0; border: 1px solid var(--line); }
+      .stage-sos .lofi { width: 32%; background-size: 100% auto; background-position: 0 0; }
+      .stage-sos .hifi { width: 42%; background-size: 100% auto; background-position: 0 0; }
+      .stage-sos figcaption { position: absolute; left: 0; bottom: -26px; font-size: 12.5px; font-weight: 600; color: var(--mute); }
+
+      .stage-ap {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(20px, 3vw, 44px);
+        padding: clamp(20px, 3vh, 40px) clamp(20px, 3vw, 48px);
+      }
+      .stage-ap .ap-mark {
+        width: min(38%, 380px);
+        aspect-ratio: 1;
+        background-size: cover;
+        background-position: 50% 50%;
+      }
+      .stage-ap .ap-band {
+        width: min(34%, 340px);
+        height: 82%;
+        background-size: 100% auto;
+        background-repeat: repeat-y;
+        background-position: 0 0;
+        background-color: #141414;
+      }
+
+      /* ---------- reduced motion ---------- */
+      @media (prefers-reduced-motion: reduce) {
+        .js .proj, .proj .pv, .proj .act, .strip { transition: none !important; }
+      }
+
+      /* ---------- no-JS: linear layout ---------- */
+      html:not(.js) .canvas { display: block; }
+      html:not(.js) .slot { display: none; }
+      html:not(.js) .proj { position: relative; border-top: 1px solid var(--line); }
+      html:not(.js) .pv { padding-bottom: 0; }
+      html:not(.js) .pv-visual { display: none; }
+      html:not(.js) .pv-label i { display: none; }
+      html:not(.js) .act { position: relative; inset: auto; min-height: 480px; }
+      html:not(.js) .stage-fin, html:not(.js) .stage-ast, html:not(.js) .stage-sos, html:not(.js) .stage-ap {
+        position: relative;
+        inset: auto;
+        height: 440px;
+      }
+      html:not(.js) .nojs-facts { display: block; padding: 16px clamp(16px, 2.5vw, 32px) 28px; }
+      html:not(.js) .nf-spec { font-size: 13px; color: var(--mute); }
+      html:not(.js) .nf-spec b { color: var(--ink); }
+      html:not(.js) .nf-desc { font-size: 15px; max-width: 60ch; margin: 8px 0 12px; }
+      html:not(.js) .hit { display: none; }
+      html:not(.js) .strip .s-desc, html:not(.js) .strip .s-meta, html:not(.js) .strip .s-case { display: none; }
+      html:not(.js) .strip .s-name::after { content: ' · all projects'; color: var(--mute); font-weight: 500; }
+
+      /* ---------- mobile ---------- */
+      @media (max-width: 760px) {
+        .top { height: 58px; }
+        .role { display: none; }
+
+        .strip {
+          min-height: 0;
+          display: grid;
+          grid-template-columns: 1fr auto;
+          grid-template-areas: 'name case' 'meta case' 'desc desc';
+          row-gap: 4px;
+          padding: 12px 16px 14px;
+        }
+        .s-name { grid-area: name; font-size: 22px; }
+        .s-meta { grid-area: meta; }
+        .s-spec, .s-roles { display: inline; font-size: 11.5px; }
+        .s-roles::before { content: '· '; }
+        .s-desc { grid-area: desc; font-size: 13.5px; max-width: none; margin-top: 4px; }
+        .s-case { grid-area: case; align-self: start; font-size: 13px; }
+
+        .canvas {
+          min-height: 0;
+          grid-template-columns: 1fr 1fr 1fr;
+          grid-template-rows: 1fr 116px;
+          grid-template-areas:
+            'stage stage stage'
+            'railtop railbottom bottom';
+        }
+        .sk-railtop { border-left: none; border-top: 1px solid var(--line); }
+        .sk-railbottom { border-top: 1px solid var(--line); }
+        .sk-bottom { border-left: 1px solid var(--line); }
+
+        .pv { padding: 10px 12px 12px; }
+        .pv-label { flex-wrap: wrap; row-gap: 2px; }
+        .pv-label b { font-size: 13px; }
+        .pv-label span { font-size: 10.5px; width: 100%; order: 3; white-space: normal; }
+        .pv-label i { position: absolute; right: 10px; top: 10px; }
+        .pv-visual { margin-top: 6px; }
+        .v-ast .card.sm { width: min(88%, 150px); }
+        .card.sm { padding: 8px 10px; }
+        .card.sm span { font-size: 9.5px; }
+        .card.sm b { font-size: 15px; }
+        .v-ap { gap: 0; }
+        .v-ap-band { display: none; }
+        .v-ap-mark { flex: 1 1 0; aspect-ratio: auto; height: auto; background-size: 130%; background-position: 50% 40%; }
+        /* bottom-slot recomposition doesn't apply on mobile: all three share one row */
+        .proj.in-bottom .pv { flex-direction: column; align-items: stretch; gap: 0; }
+        .proj.in-bottom .pv-label { flex-direction: row; min-width: 0; }
+        .proj.in-bottom .pv-visual { height: auto; margin-top: 6px; }
+        .proj.in-bottom .v-sos { background-size: 130% auto; background-position: 15% 0; }
+        .proj.in-bottom .v-ast { place-items: center; }
+        .proj.in-bottom .v-ast .card.sm { width: min(88%, 150px); margin-left: 0; }
+
+        .stage-fin { padding: 16px 16px 0; gap: 12px; }
+        .stage-fin .home { width: min(58%, 300px); height: 97%; }
+        .stage-fin .cam { width: min(24%, 120px); height: 60%; }
+
+        .stage-ast { padding: 18px 16px; gap: 18px; }
+        .ast-band { grid-template-columns: 1fr 1fr; }
+        .ast-band .card:last-child { display: none; }
+        .ast-chain { flex-wrap: wrap; }
+
+        .stage-sos { padding: 18px 16px 0; gap: 14px; }
+        .stage-sos figure { height: 66%; }
+        .stage-sos .lofi { width: 42%; }
+        .stage-sos .hifi { width: 48%; }
+        .stage-sos figcaption { font-size: 10.5px; bottom: -20px; }
+
+        .stage-ap { flex-direction: row; gap: 14px; padding: 16px; }
+        .stage-ap .ap-mark { width: min(52%, 260px); }
+        .stage-ap .ap-band { width: 34%; height: 70%; }
+      }
+      @media (max-width: 760px) and (max-height: 700px) {
+        .canvas { grid-template-rows: 1fr 104px; }
+        .s-desc { font-size: 12.5px; }
+        .stage-fin .home { width: min(52%, 250px); }
+      }
+    </style>
+  </body>
+</html>
