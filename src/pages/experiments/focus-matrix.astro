@@ -16,6 +16,7 @@
  * projects with their facts and links.
  */
 import homeLight from '../../assets/finderly/shots/home-light.webp';
+import captureShot from '../../assets/finderly/shots/capture.webp';
 import unitHifi from '../../assets/experiments/startupos-unit.webp';
 import studiesStrip from '../../assets/experiments/artparde-studies.webp';
 import logoFinal from '../../assets/artparde/logo-final.png';
@@ -123,7 +124,12 @@ const projects = [
             <p class="label"><b>{p.name}</b><span>{p.year} · {p.cat}</span><i aria-hidden="true">→</i></p>
 
             <div class="vis">
-              {p.id === 'finderly' && <div class="crop full" style={`background-image:url(${homeLight.src}); background-position: 50% 12%;`}></div>}
+              {p.id === 'finderly' && (
+                <div class="fin-lay">
+                  <div class="crop f-home" style={`background-image:url(${homeLight.src})`}></div>
+                  <div class="crop f-cam xtra-f" style={`background-image:url(${captureShot.src})`}></div>
+                </div>
+              )}
               {p.id === 'asteri' && (
                 <div class="ast-band">
                   <div class="card"><span>Active studies</span><b>128</b><i>before · inline styles, restated per file</i></div>
@@ -309,6 +315,13 @@ const projects = [
       .vis { flex: 1 1 0; min-height: 0; margin-top: 10px; position: relative; }
       .crop { background-repeat: no-repeat; background-size: cover; }
       .crop.full { position: absolute; inset: 0; border: 1px solid var(--line); }
+
+      /* finderly: home fills; camera column joins when the region is large */
+      .fin-lay { position: absolute; inset: 0; display: flex; justify-content: center; gap: clamp(12px, 1.4vw, 20px); }
+      .f-home { flex: 1 1 auto; background-size: cover; background-position: 50% 12%; border: 1px solid var(--line); }
+      .f-cam { display: none; flex: 0 0 24%; background-size: cover; background-position: 50% 30%; border: 1px solid var(--line); }
+      .matrix[data-active='finderly'] .qp-finderly .f-home { flex: 0 0 42%; background-position: 50% 8%; }
+      .matrix[data-active='finderly'] .qp-finderly .f-cam { display: block; }
 
       /* asteri: one card small, three when the region is large */
       .ast-band {
