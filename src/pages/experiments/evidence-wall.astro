@@ -1,0 +1,512 @@
+---
+/**
+ * EXPERIMENT · "Evidence Wall" · functional prototype.
+ * Isolated route; nothing here touches production.
+ *
+ * One authored wall, four project boards at permanent pinned positions with
+ * deliberate overlap and shared baselines. Selecting a board pulls it
+ * forward by scaling FROM ITS OWN PIN (the anchor corner stays fixed and a
+ * dashed outline marks its home footprint), and one evidence flap unfolds
+ * from its bottom edge: the decision, one supporting artifact, and the
+ * case-study link — three layers, never a mini case study. The other three
+ * boards never move. A quiet viewed-state system punches a corner on boards
+ * you've opened and counts "n of 4 viewed" (sessionStorage only).
+ *
+ * Mobile condenses the wall into staggered overlapping sheets whose headers
+ * are always exposed; the active sheet grows in place. ?p= deep links,
+ * history, interruption-safe, reduced motion instant, no-JS linear.
+ */
+import homeLight from '../../assets/finderly/shots/home-light.webp';
+import captureShot from '../../assets/finderly/shots/capture.webp';
+import unitHifi from '../../assets/experiments/startupos-unit.webp';
+import unitLofi from '../../assets/experiments/startupos-unit-lofi.webp';
+import studiesStrip from '../../assets/experiments/artparde-studies.webp';
+import logoFinal from '../../assets/artparde/logo-final.png';
+import siteShot from '../../assets/experiments/artparde-site.webp';
+
+const projects = [
+  {
+    id: 'finderly',
+    no: '01',
+    name: 'Finderly',
+    year: '2026',
+    cat: 'AI home repair',
+    roles: 'Product design, UX/UI, and front-end implementation',
+    decision: 'Rebuilt the home around starting a repair: camera, video, and recent work from one clear entry point.',
+    href: '/work/finderly/',
+    flapCap: 'The entry’s core: ordered multi-capture',
+  },
+  {
+    id: 'asteri',
+    no: '02',
+    name: 'Asteri AI',
+    year: '2026',
+    cat: 'AI work platform',
+    roles: 'Product design and design systems',
+    decision: 'Consolidated a fragmented token foundation while preserving the product’s core table and preparing the homepage for migration.',
+    href: '/work/asteri/',
+    flapCap: 'One source of truth for both styling systems',
+  },
+  {
+    id: 'startupos',
+    no: '03',
+    name: 'StartupOS',
+    year: '2022',
+    cat: 'Founder education',
+    roles: 'Product design',
+    decision: 'Designed the reusable template system the team used to ship the MVP in five months.',
+    href: '/work/startup-platform/',
+    flapCap: 'The template at iteration one · wireframe',
+  },
+  {
+    id: 'artparde',
+    no: '04',
+    name: 'ArtPärdē',
+    year: '2024',
+    cat: 'Performing-arts nonprofit',
+    roles: 'Brand and web design',
+    decision: 'Created the identity and maintainable website the organization continues to run without me.',
+    href: '/work/artparde/',
+    flapCap: 'artparde.com · live, promoting the next show',
+  },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Evidence Wall · functional prototype — Joel Ryerson</title>
+    <link rel="preload" href="/fonts/x/satoshi.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+
+  <body>
+    <p class="ribbon" role="note">Experiment · “Evidence Wall” · functional prototype · not production</p>
+
+    <div class="page">
+      <header class="top">
+        <span class="who">Joel Ryerson</span>
+        <span class="role">Product Designer &amp; Design Engineer</span>
+        <nav class="links" aria-label="Site">
+          <a href="#" aria-disabled="true">About</a>
+          <a href="mailto:joelryerson@gmail.com">Contact</a>
+        </nav>
+      </header>
+
+      <main class="wall" id="wall" data-active="" aria-label="Selected work">
+        <p class="tally" id="tally" aria-live="polite">0 of 4 viewed</p>
+
+        {projects.map((p) => (
+          <div class={`plot plot-${p.id}`}>
+            <span class="home-outline" aria-hidden="true"></span>
+            <section class={`board b-${p.id}`} data-p={p.id} aria-label={p.name}>
+              <span class="pin" aria-hidden="true"></span>
+              <span class="punch" aria-hidden="true"></span>
+
+              <header class="bh">
+                <span class="bno">{p.no}</span>
+                <h2>{p.name}</h2>
+                <p class="bmeta"><b>{p.year}</b> · {p.cat}</p>
+                <i class="aff" aria-hidden="true">→</i>
+              </header>
+
+              <div class="bvis">
+                {p.id === 'finderly' && <div class="crop v-fin" style={`background-image:url(${homeLight.src})`}></div>}
+                {p.id === 'asteri' && (
+                  <div class="v-ast">
+                    <div class="card"><span>Active studies</span><b>128</b><i>before · inline styles</i></div>
+                    <div class="card"><span>Active studies</span><b>128</b><i>after · semantic tokens</i></div>
+                  </div>
+                )}
+                {p.id === 'startupos' && <div class="crop v-sos" style={`background-image:url(${unitHifi.src})`}></div>}
+                {p.id === 'artparde' && (
+                  <div class="v-ap">
+                    <div class="crop v-mark" style={`background-image:url(${logoFinal.src})`}></div>
+                    <div class="crop v-band" style={`background-image:url(${studiesStrip.src})`}></div>
+                  </div>
+                )}
+              </div>
+
+              <!-- evidence flap: decision + one artifact + case access -->
+              <div class="flap">
+                <p class="f-decision">{p.decision}</p>
+                <div class="f-row">
+                  {p.id === 'finderly' && <div class="crop f-art" style={`background-image:url(${captureShot.src}); background-position: 50% 30%;`}></div>}
+                  {p.id === 'asteri' && (
+                    <div class="chain">
+                      <span class="swatch"></span>
+                      <span class="wire"></span>
+                      <span class="tok">--surface-raised</span>
+                      <span class="wire"></span>
+                      <span class="applied">card background</span>
+                    </div>
+                  )}
+                  {p.id === 'startupos' && <div class="crop f-art wide" style={`background-image:url(${unitLofi.src}); background-position: 50% 0;`}></div>}
+                  {p.id === 'artparde' && <div class="crop f-art wide" style={`background-image:url(${siteShot.src}); background-position: 50% 0;`}></div>}
+                  <div class="f-side">
+                    <p class="f-cap">{p.flapCap}</p>
+                    <p class="f-roles">{p.roles}</p>
+                    <a class="case" href={p.href}>Read case study<span aria-hidden="true"> →</span></a>
+                  </div>
+                </div>
+              </div>
+
+              <button class="hit" type="button" data-select={p.id} aria-pressed="false" aria-label={`Open ${p.name} (${p.year}, ${p.cat})`}></button>
+            </section>
+          </div>
+        ))}
+      </main>
+    </div>
+
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        root.classList.add('js');
+        const wall = document.getElementById('wall');
+        const tally = document.getElementById('tally');
+        const boards = [...document.querySelectorAll('.board')];
+        const hits = [...document.querySelectorAll('[data-select]')];
+        const IDS = ['finderly', 'asteri', 'startupos', 'artparde'];
+
+        let viewed = new Set();
+        try { viewed = new Set(JSON.parse(sessionStorage.getItem('ew-viewed') || '[]')); } catch {}
+
+        const renderViewed = () => {
+          boards.forEach((b) => b.classList.toggle('viewed', viewed.has(b.dataset.p)));
+          tally.textContent = viewed.size + ' of 4 viewed';
+        };
+
+        const apply = (id) => {
+          const active = IDS.includes(id) ? id : '';
+          wall.dataset.active = active;
+          boards.forEach((b) => {
+            if (b.dataset.p === active) b.setAttribute('aria-current', 'true');
+            else b.removeAttribute('aria-current');
+          });
+          hits.forEach((h) => h.setAttribute('aria-pressed', String(h.dataset.select === active)));
+          if (active) {
+            viewed.add(active);
+            try { sessionStorage.setItem('ew-viewed', JSON.stringify([...viewed])); } catch {}
+          }
+          renderViewed();
+        };
+
+        const select = (id) => {
+          if (wall.dataset.active === id) return;
+          apply(id);
+          history.pushState({ p: id }, '', id ? '?p=' + id : location.pathname);
+        };
+
+        wall.addEventListener('click', (e) => {
+          const t = e.target.closest('[data-select]');
+          if (t) select(t.dataset.select);
+        });
+
+        window.addEventListener('popstate', (e) => {
+          apply(e.state?.p ?? new URLSearchParams(location.search).get('p') ?? '');
+        });
+
+        apply(new URLSearchParams(location.search).get('p') || '');
+        history.replaceState({ p: wall.dataset.active }, '', location.href);
+      })();
+    </script>
+
+    <style>
+      @font-face {
+        font-family: 'Satoshi X';
+        src: url('/fonts/x/satoshi.woff2') format('woff2');
+        font-weight: 300 900;
+        font-display: swap;
+      }
+      :root {
+        --wallbg: #e6e1d4;
+        --ink: #171410;
+        --mute: #6e6a60;
+        --signal: #e94a10;
+        --f-col: #c0128f;
+        --a-col: #2b4fc7;
+        --s-col: #5b3ec4;
+        --dur: 620ms;
+        --ease: cubic-bezier(0.33, 0.72, 0.05, 1);
+        color-scheme: light;
+      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        background: var(--wallbg);
+        color: var(--ink);
+        font-family: 'Satoshi X', system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      .ribbon {
+        margin: 0;
+        padding: 0.4rem 1.2rem;
+        background: var(--ink);
+        color: var(--wallbg);
+        font-size: max(0.8rem, 13px);
+        font-weight: 500;
+        text-align: center;
+      }
+      .page { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+      .page * { margin: 0; }
+
+      .top {
+        height: 64px;
+        flex: none;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 0 clamp(16px, 2.5vw, 32px);
+        border-bottom: 2px solid var(--ink);
+      }
+      .who { font-size: 16px; font-weight: 800; letter-spacing: -0.01em; white-space: nowrap; }
+      .role { font-size: 13.5px; font-weight: 500; color: var(--mute); }
+      .links { margin-left: auto; display: flex; gap: 18px; }
+      .links a { font-size: 14px; font-weight: 650; color: var(--ink); text-decoration: none; padding: 8px 0; }
+      .links a:hover { color: var(--signal); }
+      .links a:last-child { border-bottom: 2px solid var(--signal); padding-bottom: 2px; }
+      .links a:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+      /* ---------- the wall ---------- */
+      .wall { flex: 1; min-height: 480px; position: relative; overflow: hidden; }
+      .tally {
+        position: absolute;
+        right: clamp(14px, 2vw, 28px);
+        top: 12px;
+        z-index: 20;
+        font-size: 11.5px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--mute);
+        border: 1px solid var(--mute);
+        padding: 5px 9px;
+      }
+
+      /* plots: permanent homes */
+      .plot { position: absolute; }
+      .plot-finderly { left: 3.5%; top: 6%; width: 38%; height: 76%; z-index: 3; }
+      .plot-asteri { left: 38.5%; top: 13%; width: 27%; height: 46%; z-index: 2; }
+      .plot-startupos { left: 62%; top: 5%; width: 34.5%; height: 50%; z-index: 1; }
+      .plot-artparde { left: 55%; top: 50%; width: 40%; height: 44%; z-index: 4; }
+      .js .plot:has(.board[aria-current='true']) { z-index: 9; }
+
+      .home-outline {
+        position: absolute;
+        inset: 0;
+        border: 2px dashed color-mix(in srgb, var(--ink) 45%, transparent);
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+      }
+      .js .plot:has(.board[aria-current='true']) .home-outline { opacity: 1; }
+
+      /* boards */
+      .board {
+        position: absolute;
+        inset: 0;
+        border: 2px solid var(--ink);
+        box-shadow: 5px 5px 0 rgba(23, 20, 16, 0.22);
+        display: flex;
+        flex-direction: column;
+        padding: clamp(10px, 1.4vw, 18px);
+        transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+      }
+      .b-finderly { background: #f3e6f2; transform-origin: top left; }
+      .b-asteri { background: #e7ecf4; transform-origin: top left; padding-left: max(3.4vw, 46px); }
+      @media (max-width: 760px) { .b-asteri { padding-left: 12px; } }
+      .b-startupos { background: #ebe7f7; transform-origin: top right; }
+      .b-artparde { background: #161513; color: #f2ede2; transform-origin: bottom right; }
+
+      .js .board[aria-current='true'] { box-shadow: 10px 12px 0 rgba(23, 20, 16, 0.28); }
+      .js .b-finderly[aria-current='true'] { transform: scale(1.12) translateY(-3%); }
+      .js .b-asteri[aria-current='true'] { transform: scale(1.3) translateY(-7%); }
+      .js .b-startupos[aria-current='true'] { transform: scale(1.32); }
+      .js .b-artparde[aria-current='true'] { transform: scale(1.26) translateY(-9%); }
+
+      /* pins: the anchor corner, always visible */
+      .pin {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--ink);
+        box-shadow: inset -2px -2px 0 rgba(255, 255, 255, 0.35);
+        z-index: 6;
+      }
+      .b-finderly .pin, .b-asteri .pin { left: -6px; top: -6px; }
+      .b-startupos .pin { right: -6px; top: -6px; }
+      .b-artparde .pin { right: -6px; bottom: -6px; }
+
+      /* punched viewed mark */
+      .punch {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: var(--wallbg);
+        border: 2px solid var(--ink);
+        opacity: 0;
+        transition: opacity 0.3s;
+        z-index: 6;
+      }
+      .b-finderly .punch, .b-asteri .punch { right: 10px; bottom: 10px; }
+      .b-startupos .punch { left: 10px; bottom: 10px; }
+      .b-artparde .punch { left: 10px; top: 10px; border-color: #f2ede2; }
+      .board.viewed .punch { opacity: 1; }
+
+      /* board header */
+      .bh { display: flex; align-items: baseline; gap: 8px; flex: none; }
+      .bno { font-size: 10.5px; font-weight: 800; letter-spacing: 0.08em; opacity: 0.6; }
+      .bh h2 { font-size: clamp(19px, 2vw, 30px); font-weight: 800; letter-spacing: -0.02em; }
+      .b-finderly .bh h2 { color: var(--f-col); }
+      .b-asteri .bh h2 { color: var(--a-col); }
+      .b-startupos .bh h2 { color: var(--s-col); }
+      .bmeta { font-size: 11.5px; color: inherit; opacity: 0.65; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .bmeta b { font-weight: 750; }
+      .aff { margin-left: auto; font-style: normal; font-weight: 800; opacity: 0.55; }
+      .board:hover .aff { color: var(--signal); opacity: 1; }
+
+      .bvis { flex: 1 1 0; min-height: 0; margin-top: 8px; position: relative; }
+      .crop { background-repeat: no-repeat; background-size: cover; }
+      .v-fin { position: absolute; left: 12%; right: 12%; top: 0; bottom: 0; background-position: 50% 10%; border: 1px solid rgba(23, 20, 16, 0.35); }
+      .v-ast { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center; }
+      .card {
+        background: #f7f8fa;
+        border: 1px solid #dfe2e8;
+        border-radius: 8px;
+        padding: 10px 14px;
+        width: min(78%, 230px);
+      }
+      .card span { display: block; font-size: 11px; color: #6b7280; }
+      .card b { display: block; font-size: 18px; font-weight: 650; color: #111827; margin-top: 1px; }
+      .card i { display: block; font-style: normal; font-size: 9.5px; color: #8a8577; margin-top: 6px; }
+      .v-sos { position: absolute; inset: 0; background-position: 15% 0; background-size: 120% auto; border: 1px solid rgba(23, 20, 16, 0.35); }
+      .v-ap { position: absolute; inset: 0; display: flex; gap: 10px; align-items: center; justify-content: center; }
+      .v-mark { height: min(84%, 240px); aspect-ratio: 1; background-position: 50% 50%; }
+      .v-band { width: 22%; height: 84%; background-size: 100% auto; background-repeat: repeat-y; background-color: #141414; border: 1px solid rgba(242, 237, 226, 0.3); }
+
+      /* ---------- the evidence flap ---------- */
+      .flap {
+        position: absolute;
+        top: 100%;
+        left: -2px;
+        right: -2px;
+        background: #faf8f1;
+        color: var(--ink);
+        border: 2px solid var(--ink);
+        border-top: 2px dashed var(--ink);
+        padding: 10px 12px 12px;
+        transform: scaleY(0);
+        transform-origin: top;
+        transition: transform calc(var(--dur) * 0.7) var(--ease) 0.1s;
+        box-shadow: 5px 6px 0 rgba(23, 20, 16, 0.22);
+        z-index: 5;
+      }
+      .js .board[aria-current='true'] .flap { transform: scaleY(1); }
+      .b-artparde .flap { top: auto; bottom: 100%; transform-origin: bottom; border-top: 2px solid var(--ink); border-bottom: 2px dashed var(--ink); }
+      .b-finderly .flap {
+        top: -2px;
+        bottom: -2px;
+        left: 100%;
+        right: auto;
+        width: 300px;
+        border-top: 2px solid var(--ink);
+        border-left: 2px dashed var(--ink);
+        transform: scaleX(0);
+        transform-origin: left;
+      }
+      .b-finderly .flap .f-row { flex-direction: column; align-items: flex-start; }
+      .f-decision { font-size: 12.5px; font-weight: 650; line-height: 1.4; max-width: 60ch; }
+      .f-row { display: flex; gap: 12px; align-items: center; margin-top: 8px; }
+      .f-art { flex: none; width: 84px; height: 84px; border: 1px solid rgba(23, 20, 16, 0.35); }
+      .f-art.wide { width: 132px; height: 84px; }
+      .chain { flex: none; display: flex; align-items: center; gap: 7px; font-size: 10.5px; font-weight: 600; }
+      .swatch { width: 14px; height: 14px; border-radius: 3px; background: #f7f8fa; border: 1px solid #d6d9df; }
+      .wire { width: 22px; height: 1px; background: rgba(23, 20, 16, 0.35); position: relative; }
+      .wire::after { content: ''; position: absolute; right: -2px; top: -2px; width: 5px; height: 5px; border-radius: 50%; background: var(--signal); }
+      .applied { opacity: 0.6; font-weight: 500; }
+      .f-side { min-width: 0; }
+      .f-cap { font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.65; }
+      .f-roles { font-size: 10.5px; opacity: 0.6; margin-top: 2px; }
+      .case {
+        display: inline-block;
+        margin-top: 6px;
+        font-size: 13px;
+        font-weight: 750;
+        color: var(--ink);
+        text-decoration: none;
+        border-bottom: 2px solid var(--signal);
+        padding-bottom: 1px;
+      }
+      .case:hover { color: var(--signal); }
+      .case:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+      .hit {
+        position: absolute;
+        inset: 0;
+        z-index: 4;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+      }
+      .js .board[aria-current='true'] .hit { display: none; }
+      .hit:focus-visible { outline: 3px solid var(--signal); outline-offset: -3px; }
+
+      /* ---------- reduced motion ---------- */
+      @media (prefers-reduced-motion: reduce) {
+        .board, .flap, .punch, .home-outline { transition: none !important; }
+      }
+
+      /* ---------- no-JS: linear readable boards ---------- */
+      html:not(.js) .wall { overflow: visible; }
+      html:not(.js) .tally { display: none; }
+      html:not(.js) .plot { position: relative; inset: auto !important; width: auto !important; height: auto !important; margin: 20px; }
+      html:not(.js) .board { position: relative; inset: auto; min-height: 460px; }
+      html:not(.js) .flap { position: relative; top: auto; left: 0; right: 0; transform: none; margin-top: 10px; }
+      html:not(.js) .b-artparde .flap { bottom: auto; }
+      html:not(.js) .hit { display: none; }
+
+      /* ---------- mobile: condensed staggered wall ---------- */
+      @media (max-width: 760px) {
+        .role { display: none; }
+        .top { height: 56px; }
+        .wall { min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 8px 0 16px; }
+        .tally { top: 6px; right: 10px; font-size: 9.5px; padding: 4px 7px; }
+
+        .plot { position: relative; inset: auto !important; height: auto !important; z-index: auto !important; }
+        .plot-finderly { width: 94%; margin: 26px 0 0 2%; z-index: 3 !important; }
+        .plot-asteri { width: 88%; margin: -14px 0 0 10%; z-index: 2 !important; }
+        .plot-startupos { width: 92%; margin: -14px 0 0 3%; z-index: 1 !important; }
+        .plot-artparde { width: 95%; margin: -14px 0 0 4%; z-index: 4 !important; }
+        .js .plot:has(.board[aria-current='true']) { z-index: 9 !important; }
+
+        .board { position: relative; inset: auto; padding: 12px; transition: none; }
+        .js .board[aria-current='true'] { transform: none; }
+        .bvis { display: none; margin-top: 8px; height: 300px; flex: none; }
+        .js .board[aria-current='true'] .bvis { display: block; }
+        html:not(.js) .bvis { display: block; height: 320px; }
+        .bh { min-height: 44px; align-items: center; flex-wrap: wrap; }
+        .bh h2 { font-size: 20px; }
+        .bmeta { font-size: 10.5px; }
+
+        .flap { position: relative; top: auto; bottom: auto !important; left: 0; right: 0; margin-top: 10px; box-shadow: none; display: none; }
+        .b-finderly .flap { left: 0; right: 0; width: auto; border-left: 2px solid var(--ink); border-top: 2px dashed var(--ink); }
+        .b-finderly .flap .f-row { flex-direction: row; align-items: center; }
+        .js .board[aria-current='true'] .flap { display: block; transform: none; }
+        .b-artparde .flap { transform-origin: top; }
+        .f-art { width: 72px; height: 72px; }
+        .f-art.wide { width: 110px; height: 72px; }
+
+        .v-fin { left: 20%; right: 20%; }
+        .v-mark { height: min(80%, 200px); }
+      }
+    </style>
+  </body>
+</html>
