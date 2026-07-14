@@ -1,0 +1,515 @@
+---
+/**
+ * EXPERIMENT · "Four-Wall Room" · functional prototype.
+ * Isolated route; nothing here touches production.
+ *
+ * A shallow gallery room. Every project permanently owns one wall:
+ * Finderly front, Asteri right, StartupOS back, ArtPärdē left. The room is
+ * one 3D object (four inward-facing walls + a floor); selecting a project on
+ * the labeled floor plan rotates the whole room through the shortest path
+ * until that wall faces the viewer, ending perfectly parallel to the screen
+ * so the work is never left angled. A labeled "Room overview" control dollies
+ * back and quarter-turns to reveal the architecture. Twilight environment;
+ * the work carries the light.
+ *
+ * JS owns one number (the room's continuous rotation) plus the overview
+ * flag; everything else is CSS. ?p= deep links (+ &view=overview), history,
+ * interruption-safe retargeting, reduced-motion instant turns, and a no-JS
+ * linear fallback with all four walls flat and readable.
+ */
+import homeLight from '../../assets/finderly/shots/home-light.webp';
+import captureShot from '../../assets/finderly/shots/capture.webp';
+import unitHifi from '../../assets/experiments/startupos-unit.webp';
+import studiesStrip from '../../assets/experiments/artparde-studies.webp';
+import logoFinal from '../../assets/artparde/logo-final.png';
+import siteShot from '../../assets/experiments/artparde-site.webp';
+
+const projects = [
+  {
+    id: 'finderly',
+    wall: 'front',
+    name: 'Finderly',
+    year: '2026',
+    cat: 'AI home repair',
+    roles: 'Product design, UX/UI, and front-end implementation',
+    desc: 'Rebuilt the home around starting a repair, with camera, video, and recent work available from one clear entry point.',
+    href: '/work/finderly/',
+  },
+  {
+    id: 'asteri',
+    wall: 'right',
+    name: 'Asteri AI',
+    year: '2026',
+    cat: 'AI work platform',
+    roles: 'Product design and design systems',
+    desc: 'Consolidated a fragmented token foundation while preserving the product’s core table and preparing the homepage for migration.',
+    href: '/work/asteri/',
+  },
+  {
+    id: 'startupos',
+    wall: 'back',
+    name: 'StartupOS',
+    year: '2022',
+    cat: 'Founder education',
+    roles: 'Product design',
+    desc: 'Designed the reusable template system the team used to ship the MVP in five months.',
+    href: '/work/startup-platform/',
+  },
+  {
+    id: 'artparde',
+    wall: 'left',
+    name: 'ArtPärdē',
+    year: '2024',
+    cat: 'Performing-arts nonprofit',
+    roles: 'Brand and web design',
+    desc: 'Created the identity and maintainable website the organization continues to run without me.',
+    href: '/work/artparde/',
+  },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Four-Wall Room · functional prototype — Joel Ryerson</title>
+    <link rel="preload" href="/fonts/x/satoshi.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+
+  <body>
+    <p class="ribbon" role="note">Experiment · “Four-Wall Room” · functional prototype · not production</p>
+
+    <div class="page">
+      <header class="top">
+        <span class="who">Joel Ryerson</span>
+        <span class="role">Product Designer &amp; Design Engineer</span>
+        <nav class="links" aria-label="Site">
+          <a href="#" aria-disabled="true">About</a>
+          <a href="mailto:joelryerson@gmail.com">Contact</a>
+        </nav>
+      </header>
+
+      <main class="scene" id="scene" data-overview="false" aria-label="Selected work">
+        <div class="camera">
+          <div class="room" id="room">
+            <div class="floor" aria-hidden="true"></div>
+
+            {projects.map((p, i) => (
+              <section class={`wall w-${p.wall}`} data-p={p.id} aria-label={`${p.name} wall`} aria-current={i === 0 ? 'true' : undefined}>
+                <header class="wl">
+                  <h2>{p.name}</h2>
+                  <p class="wmeta"><b>{p.year}</b> · {p.cat}</p>
+                </header>
+
+                <div class="wvis">
+                  {p.id === 'finderly' && (
+                    <div class="finrow">
+                      <div class="crop phone" style={`background-image:url(${homeLight.src})`}></div>
+                      <div class="crop cam" style={`background-image:url(${captureShot.src})`}></div>
+                    </div>
+                  )}
+                  {p.id === 'asteri' && (
+                    <div class="astrow">
+                      <div class="card"><span>Active studies</span><b>128</b><i>before · inline styles, restated per file</i></div>
+                      <div class="card"><span>Active studies</span><b>128</b><i>after · semantic tokens</i></div>
+                    </div>
+                  )}
+                  {p.id === 'startupos' && <div class="crop shot" style={`background-image:url(${unitHifi.src})`}></div>}
+                  {p.id === 'artparde' && (
+                    <div class="aprow">
+                      <div class="crop mark" style={`background-image:url(${logoFinal.src})`}></div>
+                      <div class="crop site" style={`background-image:url(${siteShot.src})`}></div>
+                    </div>
+                  )}
+                </div>
+
+                <footer class="winfo">
+                  <p class="i-roles">{p.roles}</p>
+                  <p class="i-desc">{p.desc}</p>
+                  <a class="case" href={p.href}>Read case study<span aria-hidden="true"> →</span></a>
+                </footer>
+              </section>
+            ))}
+          </div>
+        </div>
+
+        <!-- floor plan: the guaranteed control -->
+        <nav class="plan" aria-label="Floor plan">
+          <span class="plan-cap">Floor plan</span>
+          <div class="plan-grid">
+            <button class="pbtn pb-back" type="button" data-go="startupos" aria-pressed="false">
+              <b>StartupOS</b><span>back wall</span>
+            </button>
+            <button class="pbtn pb-left" type="button" data-go="artparde" aria-pressed="false">
+              <b>ArtPärdē</b><span>left wall</span>
+            </button>
+            <button class="pbtn pb-view" type="button" id="overviewBtn" aria-pressed="false">
+              Room<br />overview
+            </button>
+            <button class="pbtn pb-right" type="button" data-go="asteri" aria-pressed="false">
+              <b>Asteri AI</b><span>right wall</span>
+            </button>
+            <button class="pbtn pb-front" type="button" data-go="finderly" aria-pressed="true">
+              <b>Finderly</b><span>front wall</span>
+            </button>
+          </div>
+          <span class="you" aria-hidden="true">you</span>
+        </nav>
+      </main>
+    </div>
+
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        root.classList.add('js');
+        const scene = document.getElementById('scene');
+        const room = document.getElementById('room');
+        const walls = [...document.querySelectorAll('.wall')];
+        const btns = [...document.querySelectorAll('[data-go]')];
+        const ovBtn = document.getElementById('overviewBtn');
+        const ANGLE = { finderly: 0, asteri: 270, startupos: 180, artparde: 90 };
+        const IDS = Object.keys(ANGLE);
+
+        let current = 'finderly';
+        let rot = 0; // continuous
+        let overview = false;
+
+        const shortest = (from, toAngle) => {
+          const target = -toAngle;
+          const delta = ((target - (from % 360) + 540) % 360) - 180;
+          return from + delta;
+        };
+
+        const render = () => {
+          rot = shortest(rot, ANGLE[current]);
+          room.style.setProperty('--rot', rot + 'deg');
+          scene.dataset.overview = String(overview);
+          walls.forEach((w) => {
+            if (w.dataset.p === current) w.setAttribute('aria-current', 'true');
+            else w.removeAttribute('aria-current');
+          });
+          btns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.go === current)));
+          ovBtn.setAttribute('aria-pressed', String(overview));
+        };
+
+        const url = () => '?p=' + current + (overview ? '&view=overview' : '');
+        const push = () => history.pushState({ p: current, o: overview }, '', url());
+
+        btns.forEach((b) =>
+          b.addEventListener('click', () => {
+            if (current === b.dataset.go && !overview) return;
+            current = b.dataset.go;
+            overview = false;
+            render();
+            push();
+          })
+        );
+        ovBtn.addEventListener('click', () => {
+          overview = !overview;
+          render();
+          push();
+        });
+
+        window.addEventListener('popstate', (e) => {
+          const q = new URLSearchParams(location.search);
+          current = IDS.includes(e.state?.p ?? q.get('p')) ? (e.state?.p ?? q.get('p')) : 'finderly';
+          overview = e.state ? !!e.state.o : q.get('view') === 'overview';
+          render();
+        });
+
+        const q = new URLSearchParams(location.search);
+        current = IDS.includes(q.get('p')) ? q.get('p') : 'finderly';
+        overview = q.get('view') === 'overview';
+        room.classList.add('no-anim');
+        render();
+        void room.offsetWidth;
+        room.classList.remove('no-anim');
+        history.replaceState({ p: current, o: overview }, '', location.href);
+      })();
+    </script>
+
+    <style>
+      @font-face {
+        font-family: 'Satoshi X';
+        src: url('/fonts/x/satoshi.woff2') format('woff2');
+        font-weight: 300 900;
+        font-display: swap;
+      }
+      :root {
+        --night: #17140f;
+        --wallc: #221e17;
+        --ink: #f0ebe0;
+        --mute: #9d968a;
+        --line: #3a3529;
+        --signal: #ff5a1f;
+        --dur: 700ms;
+        --ease: cubic-bezier(0.34, 0.7, 0.06, 1);
+        /* room geometry */
+        --W: min(74vw, 980px);
+        --H: min(62vh, 560px);
+        --R: calc(var(--W) / 2);
+        --dolly: calc(-1 * var(--R) - 90px);
+        color-scheme: dark;
+      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        background: var(--night);
+        color: var(--ink);
+        font-family: 'Satoshi X', system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      .ribbon {
+        margin: 0;
+        padding: 0.4rem 1.2rem;
+        background: #000;
+        color: var(--ink);
+        font-size: max(0.8rem, 13px);
+        font-weight: 500;
+        text-align: center;
+      }
+      .page { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+      .page * { margin: 0; }
+
+      .top {
+        height: 64px;
+        flex: none;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 0 clamp(16px, 2.5vw, 32px);
+        border-bottom: 1px solid var(--line);
+      }
+      .who { font-size: 16px; font-weight: 800; letter-spacing: -0.01em; white-space: nowrap; }
+      .role { font-size: 13.5px; font-weight: 500; color: var(--mute); }
+      .links { margin-left: auto; display: flex; gap: 18px; }
+      .links a { font-size: 14px; font-weight: 650; color: var(--ink); text-decoration: none; padding: 8px 0; }
+      .links a:hover { color: var(--signal); }
+      .links a:last-child { border-bottom: 2px solid var(--signal); padding-bottom: 2px; }
+      .links a:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+      /* ---------- the scene ---------- */
+      .scene {
+        flex: 1;
+        min-height: 480px;
+        position: relative;
+        overflow: hidden;
+        display: grid;
+        place-items: center;
+      }
+      .camera {
+        width: var(--W);
+        height: var(--H);
+        perspective: 1500px;
+        perspective-origin: 50% 46%;
+      }
+      .room {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transform: translateZ(var(--dolly)) rotateY(var(--rot, 0deg));
+        transition: transform var(--dur) var(--ease);
+      }
+      .scene[data-overview='true'] .room {
+        transform: translateZ(calc(var(--dolly) - var(--R) * 1.35)) rotateY(calc(var(--rot, 0deg) - 34deg));
+      }
+      .room.no-anim { transition: none !important; }
+
+      .floor {
+        position: absolute;
+        left: calc(50% - var(--R));
+        top: 100%;
+        width: calc(var(--R) * 2);
+        height: calc(var(--R) * 2);
+        transform-origin: 50% 0;
+        transform: rotateX(90deg);
+        background: radial-gradient(ellipse at 50% 30%, #2a251c 0%, #1b1712 55%, #14110c 100%);
+      }
+
+      .wall {
+        position: absolute;
+        inset: 0;
+        backface-visibility: hidden;
+        background:
+          linear-gradient(to bottom, rgba(255, 244, 220, 0.05), transparent 30%),
+          var(--wallc);
+        border: 1px solid var(--line);
+        display: flex;
+        flex-direction: column;
+        padding: clamp(14px, 2vw, 26px);
+      }
+      .w-front { transform: rotateY(0deg) translateZ(calc(-1 * var(--R))); }
+      .w-right { transform: rotateY(270deg) translateZ(calc(-1 * var(--R))); }
+      .w-back { transform: rotateY(180deg) translateZ(calc(-1 * var(--R))); }
+      .w-left { transform: rotateY(90deg) translateZ(calc(-1 * var(--R))); }
+
+      /* ---------- wall contents ---------- */
+      .wl { display: flex; align-items: baseline; gap: 14px; flex: none; }
+      .wl h2 { font-size: clamp(24px, 2.6vw, 38px); font-weight: 800; letter-spacing: -0.02em; }
+      .wmeta { font-size: 13px; color: var(--mute); }
+      .wmeta b { color: var(--ink); font-weight: 700; }
+
+      .wvis { flex: 1 1 0; min-height: 0; margin-top: 10px; position: relative; }
+      .crop { background-repeat: no-repeat; background-size: cover; }
+
+      .finrow { position: absolute; inset: 0; display: flex; gap: 18px; align-items: flex-start; justify-content: center; }
+      .phone { width: min(30%, 210px); height: 100%; background-position: 50% 0; border: 1px solid var(--line); }
+      .cam { width: min(20%, 140px); height: 68%; background-position: 50% 30%; border: 1px solid var(--line); }
+      .astrow { position: absolute; inset: 0; display: flex; gap: clamp(18px, 2.5vw, 40px); align-items: center; justify-content: center; }
+      .card {
+        background: #f7f8fa;
+        border: 1px solid #e2e4e9;
+        border-radius: 10px;
+        padding: clamp(14px, 1.4vw, 22px);
+        width: min(280px, 38%);
+      }
+      .card span { display: block; font-size: clamp(11px, 0.95vw, 13.5px); color: #6b7280; }
+      .card b { display: block; font-size: clamp(19px, 2vw, 28px); font-weight: 650; color: #111827; margin-top: 2px; }
+      .card i { display: block; font-style: normal; font-size: clamp(10px, 0.85vw, 12px); color: #8a8577; margin-top: 10px; }
+      .shot { position: absolute; left: 50%; transform: translateX(-50%); width: min(78%, 640px); height: 100%; background-position: 50% 0; border: 1px solid var(--line); }
+      .aprow { position: absolute; inset: 0; display: flex; gap: 20px; align-items: center; justify-content: center; }
+      .mark { height: min(78%, 300px); aspect-ratio: 1; background-position: 50% 50%; border: 1px solid var(--line); }
+      .site { width: min(48%, 420px); aspect-ratio: 1440 / 1000; background-position: 50% 0; border: 1px solid var(--line); }
+
+      .winfo { flex: none; padding-top: 10px; display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+      .i-roles { font-size: 12px; color: var(--mute); }
+      .i-desc { font-size: 13.5px; line-height: 1.45; max-width: 52ch; }
+      .case {
+        font-size: 13.5px;
+        font-weight: 700;
+        color: var(--ink);
+        text-decoration: none;
+        border-bottom: 2px solid var(--signal);
+        padding-bottom: 2px;
+        white-space: nowrap;
+      }
+      .case:hover { color: var(--signal); }
+      .case:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+      /* ---------- floor plan ---------- */
+      .plan {
+        position: absolute;
+        right: clamp(12px, 2vw, 28px);
+        bottom: clamp(12px, 2.5vh, 24px);
+        z-index: 10;
+        background: color-mix(in srgb, var(--night) 82%, transparent);
+        border: 1px solid var(--line);
+        padding: 10px 12px 22px;
+        backdrop-filter: blur(6px);
+      }
+      .plan-cap {
+        display: block;
+        font-size: 10.5px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--mute);
+        margin-bottom: 8px;
+      }
+      .plan-grid {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        grid-template-areas:
+          '. back .'
+          'left view right'
+          '. front .';
+        gap: 4px;
+      }
+      .pb-back { grid-area: back; }
+      .pb-left { grid-area: left; }
+      .pb-view { grid-area: view; }
+      .pb-right { grid-area: right; }
+      .pb-front { grid-area: front; }
+      .pbtn {
+        min-height: 44px;
+        min-width: 76px;
+        padding: 6px 10px;
+        background: transparent;
+        border: 1px solid var(--line);
+        color: var(--mute);
+        font-family: inherit;
+        cursor: pointer;
+        text-align: center;
+      }
+      .pbtn b { display: block; font-size: 12px; font-weight: 750; color: inherit; }
+      .pbtn span { display: block; font-size: 9.5px; margin-top: 1px; }
+      .pbtn:hover { color: var(--ink); border-color: var(--mute); }
+      .pbtn[aria-pressed='true'] { color: var(--ink); border-color: var(--signal); box-shadow: inset 0 -3px 0 var(--signal); }
+      .pbtn:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+      .pb-view { font-size: 10.5px; font-weight: 700; line-height: 1.25; }
+      .you {
+        position: absolute;
+        left: 50%;
+        bottom: 4px;
+        transform: translateX(-50%);
+        font-size: 9px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--mute);
+      }
+
+      /* ---------- reduced motion ---------- */
+      @media (prefers-reduced-motion: reduce) {
+        .room { transition: none !important; }
+      }
+
+      /* ---------- no-JS: flat readable walls ---------- */
+      html:not(.js) .scene { overflow: visible; display: block; }
+      html:not(.js) .camera { width: auto; height: auto; perspective: none; }
+      html:not(.js) .room { transform: none; transform-style: flat; }
+      html:not(.js) .wall { position: relative; inset: auto; transform: none; min-height: 520px; margin: 16px; }
+      html:not(.js) .floor { display: none; }
+      html:not(.js) .plan { display: none; }
+
+      /* ---------- mobile: shallow room ---------- */
+      @media (max-width: 760px) {
+        .role { display: none; }
+        .top { height: 56px; }
+        :root {
+          --W: 92vw;
+          --H: 100%;
+          --dolly: calc(-1 * var(--R) - 8px);
+        }
+        .scene { min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+        .camera { flex: 1; min-height: 0; width: 100%; padding: 10px 4vw 0; perspective: 1000px; }
+        .room { --rot: 0deg; }
+        .wall { padding: 12px 14px; }
+        .wl h2 { font-size: 21px; }
+        .wmeta { font-size: 11px; }
+        .finrow { gap: 10px; }
+        .phone { width: min(52%, 210px); }
+        .cam { width: min(26%, 110px); }
+        .astrow { flex-direction: column; gap: 12px; }
+        .card { width: min(84%, 250px); padding: 12px 14px; }
+        .card b { font-size: 18px; }
+        .aprow { flex-direction: column; gap: 10px; }
+        .mark { height: min(38%, 150px); }
+        .site { width: min(88%, 340px); }
+        .shot { width: 94%; }
+        .winfo { padding-top: 8px; gap: 6px; }
+        .i-desc { font-size: 12px; }
+        .i-roles { font-size: 10.5px; }
+        .case { font-size: 12.5px; }
+
+        .plan {
+          position: static;
+          margin: 10px auto calc(10px + env(safe-area-inset-bottom));
+          flex: none;
+          padding: 8px 10px 18px;
+        }
+        .pbtn { min-width: 92px; }
+      }
+      @media (max-width: 760px) and (max-height: 700px) {
+        .pbtn { min-height: 42px; min-width: 84px; }
+        .wl h2 { font-size: 18px; }
+        .i-desc { display: none; }
+      }
+    </style>
+  </body>
+</html>
