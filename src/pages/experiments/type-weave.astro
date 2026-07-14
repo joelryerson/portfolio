@@ -1,0 +1,483 @@
+---
+/**
+ * EXPERIMENT · "Type Weave" · functional prototype.
+ * Isolated route; nothing here touches production.
+ *
+ * The four project names form one interlocking typographic field: four
+ * permanent baselines with staggered alignments, interleaved line rhythm,
+ * and authentic project imagery filling the letterforms (background-clip
+ * masks). Every word is itself the control. Selecting a project makes its
+ * typography open room: the word's tracking widens and its weight relaxes
+ * (variable axis) while its line grows into the evidence field — one
+ * dominant visual, one artifact, facts, case link — anchored to the word's
+ * own baseline rail. The other names stay on their baselines, readable and
+ * clickable, compressed but never hidden. A restrained accessible selector
+ * duplicates the four names in fixed order as the guaranteed path.
+ *
+ * ?p= deep links, history, interruption-safe, reduced-motion instant,
+ * no-JS renders every line open in sequence.
+ */
+import homeLight from '../../assets/finderly/shots/home-light.webp';
+import captureShot from '../../assets/finderly/shots/capture.webp';
+import unitHifi from '../../assets/experiments/startupos-unit.webp';
+import logoFinal from '../../assets/artparde/logo-final.png';
+import markFill from '../../assets/experiments/artparde-mark-fill.webp';
+import diagramBand from '../../assets/experiments/asteri-diagram-band.webp';
+import siteShot from '../../assets/experiments/artparde-site.webp';
+
+const projects = [
+  {
+    id: 'finderly',
+    no: '01',
+    name: 'Finderly',
+    year: '2026',
+    cat: 'AI home repair',
+    roles: 'Product design, UX/UI, and front-end implementation',
+    desc: 'Rebuilt the home around starting a repair, with camera, video, and recent work available from one clear entry point.',
+    href: '/work/finderly/',
+  },
+  {
+    id: 'asteri',
+    no: '02',
+    name: 'Asteri AI',
+    year: '2026',
+    cat: 'AI work platform',
+    roles: 'Product design and design systems',
+    desc: 'Consolidated a fragmented token foundation while preserving the product’s core table and preparing the homepage for migration.',
+    href: '/work/asteri/',
+  },
+  {
+    id: 'startupos',
+    no: '03',
+    name: 'StartupOS',
+    year: '2022',
+    cat: 'Founder education',
+    roles: 'Product design',
+    desc: 'Designed the reusable template system the team used to ship the MVP in five months.',
+    href: '/work/startup-platform/',
+  },
+  {
+    id: 'artparde',
+    no: '04',
+    name: 'ArtPärdē',
+    year: '2024',
+    cat: 'Performing-arts nonprofit',
+    roles: 'Brand and web design',
+    desc: 'Created the identity and maintainable website the organization continues to run without me.',
+    href: '/work/artparde/',
+  },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Type Weave · functional prototype — Joel Ryerson</title>
+    <link rel="preload" href="/fonts/x/satoshi.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+
+  <body>
+    <p class="ribbon" role="note">Experiment · “Type Weave” · functional prototype · not production</p>
+
+    <div class="page">
+      <header class="top">
+        <span class="who">Joel Ryerson</span>
+        <span class="role">Product Designer &amp; Design Engineer</span>
+        <nav class="links" aria-label="Site">
+          <a href="#" aria-disabled="true">About</a>
+          <a href="mailto:joelryerson@gmail.com">Contact</a>
+        </nav>
+      </header>
+
+      <main class="weave" id="weave" data-active="" aria-label="Selected work">
+        {projects.map((p) => (
+          <section class={`line ln-${p.id}`} data-p={p.id} aria-label={p.name}>
+            <button class={`word w-${p.id}`} type="button" data-select={p.id} aria-pressed="false">
+              <sup class="wno">{p.no}</sup>
+              <span class="wtext">{p.name}</span>
+              <span class="wmeta">{p.year} · {p.cat}</span>
+            </button>
+
+            <div class="evidence">
+              <div class="ev-vis">
+                {p.id === 'finderly' && (
+                  <div class="finrow">
+                    <div class="crop phone" style={`background-image:url(${homeLight.src})`}></div>
+                    <div class="crop cam" style={`background-image:url(${captureShot.src})`}></div>
+                  </div>
+                )}
+                {p.id === 'asteri' && (
+                  <div class="astrow">
+                    <div class="card"><span>Active studies</span><b>128</b><i>before · inline styles, restated per file</i></div>
+                    <div class="card"><span>Active studies</span><b>128</b><i>after · semantic tokens</i></div>
+                    <div class="chain">
+                      <span class="swatch"></span>
+                      <span class="wire"></span>
+                      <span class="tok">--surface-raised</span>
+                      <span class="wire"></span>
+                      <span class="applied">card background</span>
+                    </div>
+                  </div>
+                )}
+                {p.id === 'startupos' && <div class="crop shot" style={`background-image:url(${unitHifi.src})`}></div>}
+                {p.id === 'artparde' && (
+                  <div class="aprow">
+                    <div class="crop mark" style={`background-image:url(${logoFinal.src})`}></div>
+                    <div class="crop site" style={`background-image:url(${siteShot.src})`}></div>
+                  </div>
+                )}
+              </div>
+              <div class="ev-info">
+                <p class="i-roles">{p.roles}</p>
+                <p class="i-desc">{p.desc}</p>
+                <a class="case" href={p.href}>Read case study<span aria-hidden="true"> →</span></a>
+              </div>
+            </div>
+          </section>
+        ))}
+      </main>
+
+      <!-- guaranteed access path -->
+      <nav class="selector" aria-label="Projects">
+        {projects.map((p) => (
+          <button class="sel" type="button" data-select={p.id} aria-pressed="false">{p.name}</button>
+        ))}
+      </nav>
+    </div>
+
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        root.classList.add('js');
+        const weave = document.getElementById('weave');
+        const lines = [...document.querySelectorAll('.line')];
+        const controls = [...document.querySelectorAll('[data-select]')];
+        const IDS = ['finderly', 'asteri', 'startupos', 'artparde'];
+
+        const apply = (id) => {
+          const active = IDS.includes(id) ? id : '';
+          weave.dataset.active = active;
+          lines.forEach((l) => {
+            if (l.dataset.p === active) l.setAttribute('aria-current', 'true');
+            else l.removeAttribute('aria-current');
+          });
+          controls.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.select === active)));
+        };
+
+        const select = (id) => {
+          const next = weave.dataset.active === id ? '' : id;
+          apply(next);
+          history.pushState({ p: next }, '', next ? '?p=' + next : location.pathname);
+        };
+
+        document.addEventListener('click', (e) => {
+          const c = e.target.closest('[data-select]');
+          if (c) select(c.dataset.select);
+        });
+
+        window.addEventListener('popstate', (e) => {
+          apply(e.state?.p ?? new URLSearchParams(location.search).get('p') ?? '');
+        });
+
+        apply(new URLSearchParams(location.search).get('p') || '');
+        history.replaceState({ p: weave.dataset.active }, '', location.href);
+      })();
+    </script>
+
+    <style define:vars={{
+      finImg: `url(${homeLight.src})`,
+      astImg: `url(${diagramBand.src})`,
+      sosImg: `url(${unitHifi.src})`,
+      apImg: `url(${markFill.src})`,
+    }}>
+      @font-face {
+        font-family: 'Satoshi X';
+        src: url('/fonts/x/satoshi.woff2') format('woff2');
+        font-weight: 300 900;
+        font-display: swap;
+      }
+      :root {
+        --shell: #131211;
+        --paper: #f3f0e8;
+        --mute: #9d968a;
+        --signal: #ff5a1f;
+        --f-col: #e94fc0;
+        --a-col: #7d96ff;
+        --s-col: #a68bff;
+        --ap-col: #2fd4c2;
+        --dur: 650ms;
+        --ease: cubic-bezier(0.33, 0.72, 0.05, 1);
+        color-scheme: dark;
+      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        background: var(--shell);
+        color: var(--paper);
+        font-family: 'Satoshi X', system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      .ribbon {
+        margin: 0;
+        padding: 0.4rem 1.2rem;
+        background: #000;
+        color: var(--paper);
+        font-size: max(0.8rem, 13px);
+        font-weight: 500;
+        text-align: center;
+      }
+      .page { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+      .page * { margin: 0; }
+
+      .top {
+        height: 60px;
+        flex: none;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 0 clamp(16px, 2.5vw, 32px);
+        border-bottom: 1px solid #35322a;
+      }
+      .who { font-size: 16px; font-weight: 800; letter-spacing: -0.01em; white-space: nowrap; }
+      .role { font-size: 13.5px; font-weight: 500; color: var(--mute); }
+      .links { margin-left: auto; display: flex; gap: 18px; }
+      .links a { font-size: 14px; font-weight: 650; color: var(--paper); text-decoration: none; padding: 8px 0; }
+      .links a:hover { color: var(--signal); }
+      .links a:last-child { border-bottom: 2px solid var(--signal); padding-bottom: 2px; }
+      .links a:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+      /* ---------- the weave ---------- */
+      .weave {
+        flex: 1;
+        min-height: 460px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: clamp(8px, 2vh, 20px) clamp(16px, 3vw, 48px);
+        overflow: hidden;
+      }
+      .line {
+        flex: 1 1 0;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        transition: flex-grow var(--dur) var(--ease);
+      }
+      .line + .line { margin-top: calc(-0.6vh); }
+      .js .weave[data-active]:not([data-active='']) .line { flex-grow: 0.62; }
+      .js .weave[data-active] .line[aria-current='true'] { flex-grow: 4.4; }
+
+      /* staggered permanent anchors */
+      .ln-finderly .word { align-self: flex-start; }
+      .ln-asteri .word { align-self: flex-end; }
+      .ln-startupos .word { align-self: flex-start; margin-left: 11%; }
+      .ln-artparde .word { align-self: flex-end; margin-right: 8%; }
+
+      /* words: the controls, image-filled */
+      .word {
+        position: relative;
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        background: none;
+        border: none;
+        padding: 0 4px 6px;
+        cursor: pointer;
+        font-family: inherit;
+        color: var(--paper);
+        flex: none;
+      }
+      .wtext {
+        font-size: clamp(44px, 7.2vw, 104px);
+        line-height: 0.98;
+        font-weight: 830;
+        letter-spacing: -0.025em;
+        white-space: nowrap;
+        background-size: 190% auto;
+        background-position: 50% 12%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        transition: letter-spacing var(--dur) var(--ease), font-weight var(--dur) var(--ease), font-size var(--dur) var(--ease);
+      }
+      .w-finderly .wtext { background-image: var(--finImg); background-size: 300% auto; background-position: 42% 20%; }
+      .w-asteri .wtext { background-image: var(--astImg); background-size: cover; background-position: 50% 42%; background-color: #f4f4f6; }
+      .w-startupos .wtext { background-image: var(--sosImg); background-position: 50% 10%; }
+      .w-artparde .wtext { background-image: var(--apImg); background-size: 240% auto; background-position: 50% 40%; }
+
+      /* baseline rails tie word to evidence */
+      .word::after {
+        content: '';
+        position: absolute;
+        left: 4px;
+        right: 4px;
+        bottom: 0;
+        height: 4px;
+        transition: height 0.3s;
+      }
+      .w-finderly::after { background: var(--f-col); }
+      .w-asteri::after { background: var(--a-col); }
+      .w-startupos::after { background: var(--s-col); }
+      .w-artparde::after { background: var(--ap-col); }
+
+      .wno { font-size: 12px; font-weight: 700; color: var(--mute); align-self: flex-start; margin-top: 8px; }
+      .wmeta { font-size: 12.5px; font-weight: 600; color: var(--mute); white-space: nowrap; }
+      .word:hover .wmeta { color: var(--paper); }
+      .word:focus-visible { outline: 2px solid var(--signal); outline-offset: 4px; }
+
+      /* the opening: tracking widens, weight relaxes */
+      .js .line[aria-current='true'] .wtext {
+        letter-spacing: 0.055em;
+        font-weight: 640;
+      }
+      .js .weave[data-active]:not([data-active='']) .line:not([aria-current='true']) .wtext {
+        font-size: clamp(30px, 4.2vw, 60px);
+      }
+      .js .weave[data-active]:not([data-active='']) .line:not([aria-current='true']) .word { opacity: 0.88; }
+
+      /* ---------- evidence field ---------- */
+      .evidence {
+        flex: 1 1 0;
+        min-height: 0;
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+        gap: clamp(14px, 2vw, 32px);
+        padding: 12px 4px 4px;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 280ms ease, visibility 0s 280ms;
+      }
+      .js .line[aria-current='true'] .evidence {
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 320ms ease 200ms, visibility 0s;
+      }
+      .js .line:not([aria-current='true']) .evidence { display: none; }
+      .js .line[aria-current='true'] .evidence { display: grid; }
+
+      .ev-vis { position: relative; min-height: 0; }
+      .crop { background-repeat: no-repeat; background-size: cover; }
+      .finrow { position: absolute; inset: 0; display: flex; gap: 14px; }
+      .phone { width: min(46%, 240px); height: 100%; background-position: 50% 0; border: 1px solid #3a3730; }
+      .cam { width: min(28%, 150px); height: 72%; background-position: 50% 30%; border: 1px solid #3a3730; }
+      .astrow { position: absolute; inset: 0; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+      .card {
+        background: #f7f8fa;
+        border: 1px solid #dfe2e8;
+        border-radius: 8px;
+        padding: 14px 16px;
+        width: min(230px, 44%);
+      }
+      .card span { display: block; font-size: 11.5px; color: #6b7280; }
+      .card b { display: block; font-size: 21px; font-weight: 650; color: #111827; margin-top: 2px; }
+      .card i { display: block; font-style: normal; font-size: 10px; color: #8a8577; margin-top: 8px; }
+      .chain { width: 100%; display: flex; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 600; color: var(--paper); }
+      .swatch { width: 16px; height: 16px; border-radius: 4px; background: #f7f8fa; border: 1px solid #d6d9df; }
+      .wire { width: 26px; height: 1px; background: #4a463c; position: relative; }
+      .wire::after { content: ''; position: absolute; right: -2px; top: -2px; width: 5px; height: 5px; border-radius: 50%; background: var(--signal); }
+      .applied { color: var(--mute); font-weight: 500; }
+      .shot { position: absolute; inset: 0; background-position: 15% 0; background-size: 100% auto; border: 1px solid #3a3730; }
+      .aprow { position: absolute; inset: 0; display: flex; gap: 14px; align-items: center; }
+      .mark { height: min(92%, 260px); aspect-ratio: 1; background-position: 50% 50%; flex: none; }
+      .site { flex: 1 1 0; min-width: 0; height: 82%; background-position: 50% 0; border: 1px solid #3a3730; }
+
+      .ev-info { min-width: 0; align-self: end; padding-bottom: 4px; }
+      .i-roles { font-size: 12px; color: var(--mute); }
+      .i-desc { font-size: 14.5px; line-height: 1.5; margin-top: 6px; max-width: 46ch; }
+      .case {
+        display: inline-block;
+        margin-top: 10px;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--paper);
+        text-decoration: none;
+        border-bottom: 2px solid var(--signal);
+        padding-bottom: 2px;
+      }
+      .case:hover { color: var(--signal); }
+      .case:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+      /* ---------- accessible selector ---------- */
+      .selector {
+        flex: none;
+        display: flex;
+        gap: 6px;
+        padding: 8px clamp(16px, 3vw, 48px) calc(10px + env(safe-area-inset-bottom));
+        border-top: 1px solid #35322a;
+      }
+      .sel {
+        min-height: 44px;
+        padding: 0 14px;
+        background: none;
+        border: 1px solid #3a3730;
+        color: var(--mute);
+        font-family: inherit;
+        font-size: 12.5px;
+        font-weight: 650;
+        cursor: pointer;
+      }
+      .sel:hover { color: var(--paper); border-color: var(--mute); }
+      .sel[aria-pressed='true'] { color: var(--paper); border-color: var(--signal); box-shadow: inset 0 -3px 0 var(--signal); }
+      .sel:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+
+      /* ---------- reduced motion ---------- */
+      @media (prefers-reduced-motion: reduce) {
+        .line, .wtext, .evidence, .word::after { transition: none !important; }
+      }
+
+      /* ---------- no-JS: every line open ---------- */
+      html:not(.js) .weave { overflow: visible; display: block; }
+      html:not(.js) .line { min-height: 0; margin: 26px 0 40px; }
+      html:not(.js) .evidence { opacity: 1; visibility: visible; display: grid; min-height: 380px; }
+      html:not(.js) .wmeta { color: var(--paper); }
+
+      /* ---------- mobile: recomposed weave ---------- */
+      @media (max-width: 760px) {
+        .role { display: none; }
+        .top { height: 54px; }
+        .weave { padding: 6px 14px 8px; }
+        .line + .line { margin-top: 0; }
+        .wtext { font-size: clamp(34px, 10.5vw, 46px); }
+        .js .weave[data-active]:not([data-active='']) .line:not([aria-current='true']) .wtext {
+          font-size: clamp(24px, 7vw, 32px);
+        }
+        .ln-startupos .word { margin-left: 6%; }
+        .ln-artparde .word { margin-right: 2%; }
+        .wno { display: none; }
+        .wmeta { font-size: 10px; }
+        .word { gap: 8px; padding-bottom: 4px; min-height: 44px; }
+
+        .js .weave[data-active]:not([data-active='']) .line { flex-grow: 0.45; }
+        .js .weave[data-active] .line[aria-current='true'] { flex-grow: 3.4; }
+
+        .evidence { grid-template-columns: 1fr; gap: 8px; padding-top: 8px; }
+        .ev-vis { min-height: 0; }
+        .finrow { gap: 8px; }
+        .phone { width: min(56%, 220px); }
+        .cam { width: min(30%, 120px); }
+        .card { width: min(46%, 200px); padding: 10px 12px; }
+        .card b { font-size: 16px; }
+        .chain { font-size: 9.5px; }
+        .mark { height: min(80%, 150px); }
+        .ev-info { align-self: start; }
+        .i-desc { font-size: 12.5px; }
+        .i-roles { font-size: 10.5px; }
+        .case { font-size: 13px; }
+
+        .selector { gap: 4px; padding-left: 10px; padding-right: 10px; }
+        .sel { flex: 1 1 0; min-width: 0; padding: 0 4px; font-size: 10.5px; }
+      }
+      @media (max-width: 760px) and (max-height: 700px) {
+        .wtext { font-size: clamp(28px, 9vw, 38px); }
+        .i-desc { display: none; }
+      }
+    </style>
+  </body>
+</html>
