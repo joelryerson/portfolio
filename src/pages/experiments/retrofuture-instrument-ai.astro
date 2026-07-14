@@ -1,0 +1,663 @@
+---
+import PortfolioAIWorkspace from '../../components/experiments/PortfolioAIWorkspace.astro';
+/**
+ * EXPERIMENT · "Retrofuture Instrument" · functional prototype.
+ * Isolated route; nothing here touches production.
+ *
+ * The portfolio as one designed physical instrument from an optimistic
+ * future. A single dark tactile object: engraved identity plate, four
+ * permanently labeled project channel keys (fixed order, direct select,
+ * per-channel indicator light), and one large central display that
+ * receives most of the space. Selecting a channel depresses its key,
+ * lights its indicator, powers the previous channel down, and resolves
+ * the project's real work into the display with a subtle aperture
+ * adjustment. A contextual case-study key sits inside each display
+ * state. Viewed channels stay softly lit; a quiet "n / 4 projects
+ * viewed" meter is session-only.
+ *
+ * ?p= deep links, history, interruption-safe, reduced-motion instant,
+ * no-JS renders every project's display state in sequence.
+ */
+import homeLight from '../../assets/finderly/shots/home-light.webp';
+import captureShot from '../../assets/finderly/shots/capture.webp';
+import unitHifi from '../../assets/experiments/startupos-unit.webp';
+import logoFinal from '../../assets/artparde/logo-final.png';
+import siteShot from '../../assets/experiments/artparde-site.webp';
+
+const projects = [
+  {
+    id: 'finderly',
+    no: '01',
+    name: 'Finderly',
+    year: '2026',
+    cat: 'AI home repair',
+    roles: 'Product design, UX/UI, and front-end implementation',
+    fact: 'Rebuilt the home around starting a repair, with camera, video, and recent work available from one clear entry point.',
+    href: '/work/finderly/',
+  },
+  {
+    id: 'asteri',
+    no: '02',
+    name: 'Asteri AI',
+    year: '2026',
+    cat: 'AI work platform',
+    roles: 'Product design and design systems',
+    fact: 'Consolidated a fragmented token foundation while preserving the product’s core table and preparing the homepage for migration.',
+    href: '/work/asteri/',
+  },
+  {
+    id: 'startupos',
+    no: '03',
+    name: 'StartupOS',
+    year: '2022',
+    cat: 'Founder education',
+    roles: 'Product design',
+    fact: 'Designed the reusable template system the team used to ship the MVP in five months.',
+    href: '/work/startup-platform/',
+  },
+  {
+    id: 'artparde',
+    no: '04',
+    name: 'ArtPärdē',
+    year: '2024',
+    cat: 'Performing-arts nonprofit',
+    roles: 'Brand and web design',
+    fact: 'Created the identity and maintainable website the organization continues to run without me.',
+    href: '/work/artparde/',
+  },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Retrofuture Instrument · AI variant — Joel Ryerson</title>
+    <link rel="preload" href="/fonts/x/satoshi.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+
+  <body>
+    <p class="ribbon" role="note">Experiment · “Retrofuture Instrument” · AI workspace variant · not production</p>
+
+    <div class="page">
+      <main class="device" id="device" data-active="" aria-label="Portfolio instrument">
+        <!-- identity plate = the compact header, machined into the object -->
+        <header class="plate">
+          <span class="who">Joel Ryerson</span>
+          <span class="role">Product Designer &amp; Design Engineer</span>
+          <nav class="links" aria-label="Site">
+            <a class="key key-sm" href="#" aria-disabled="true">About</a>
+            <a class="key key-sm" href="mailto:joelryerson@gmail.com">Contact</a>
+          </nav>
+        </header>
+
+        <!-- channel console -->
+        <div class="console">
+          <p class="conlabel" id="conlabel">Project channels</p>
+          <div class="channels" role="group" aria-labelledby="conlabel">
+            {projects.map((p) => (
+              <button class="ch" type="button" data-select={p.id} data-ch={p.id} aria-pressed="false">
+                <span class="led" aria-hidden="true"></span>
+                <span class="chno" aria-hidden="true">{p.no}</span>
+                <span class="chname">{p.name}</span>
+                <span class="chyr" aria-hidden="true">{p.year}</span>
+              </button>
+            ))}
+          </div>
+          <p class="meter">
+            <span id="viewedn">0</span> / 4 projects viewed
+          </p>
+        </div>
+
+        <!-- central display -->
+        <div class="bay">
+          <div class="display" id="display">
+            <div class="screen">
+              <!-- standby: functional index, no boot theater -->
+              <section class="scene standby" data-p="" aria-label="Standby">
+                <p class="sb-line">No channel active</p>
+                <ul class="sb-index">
+                  {projects.map((p) => (
+                    <li><span>{p.no}</span> {p.name} <em>{p.year} · {p.cat}</em></li>
+                  ))}
+                </ul>
+                <p class="sb-hint">Select a project channel</p>
+              </section>
+
+              {projects.map((p) => (
+                <section class={`scene sc-${p.id}`} data-p={p.id} aria-label={p.name}>
+                  <div class="vis">
+                    {p.id === 'finderly' && (
+                      <div class="finrow">
+                        <div class="crop phone" style={`background-image:url(${homeLight.src})`}></div>
+                        <div class="crop cam" style={`background-image:url(${captureShot.src})`}></div>
+                      </div>
+                    )}
+                    {p.id === 'asteri' && (
+                      <div class="astrow">
+                        <div class="card"><span>Active studies</span><b>128</b><i>before · inline styles, restated per file</i></div>
+                        <div class="card"><span>Active studies</span><b>128</b><i>after · semantic tokens</i></div>
+                        <div class="chain">
+                          <span class="swatch"></span>
+                          <span class="wire"></span>
+                          <span class="tok">--surface-raised</span>
+                          <span class="wire"></span>
+                          <span class="applied">card background</span>
+                        </div>
+                      </div>
+                    )}
+                    {p.id === 'startupos' && <div class="crop shot" style={`background-image:url(${unitHifi.src})`}></div>}
+                    {p.id === 'artparde' && (
+                      <div class="aprow">
+                        <div class="crop mark" style={`background-image:url(${logoFinal.src})`}></div>
+                        <div class="crop site" style={`background-image:url(${siteShot.src})`}></div>
+                      </div>
+                    )}
+                  </div>
+                  <div class="readout">
+                    <p class="r-id"><b>{p.name}</b><span class="r-meta">{p.roles} · {p.year} · {p.cat}</span></p>
+                    <p class="r-fact">{p.fact}</p>
+                    <a class="key casekey" href={p.href}>Open case study<span aria-hidden="true"> →</span></a>
+                  </div>
+                </section>
+              ))}
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        root.classList.add('js');
+        const device = document.getElementById('device');
+        const channels = [...document.querySelectorAll('.ch')];
+        const scenes = [...document.querySelectorAll('.scene')];
+        const viewedEl = document.getElementById('viewedn');
+        const IDS = ['finderly', 'asteri', 'startupos', 'artparde'];
+        const pawListeners = [];
+        window.PAW_HOST = {
+          route: 'retrofuture-instrument',
+          dockProjectLabel: 'Dock to instrument',
+          getProject: () => device.dataset.active || '',
+          setProject: (id) => { if (device.dataset.active !== id) select(id); },
+          onChange: (cb) => pawListeners.push(cb),
+          anchors: () => ({ left: true, right: true, project: () => null }),
+          reserve: (m) => {
+            document.body.classList.toggle('paw-res-left', m === 'left');
+            document.body.classList.toggle('paw-res-right', m === 'right' || m === 'project');
+          },
+        };
+
+
+        let viewed = new Set();
+        try { viewed = new Set(JSON.parse(sessionStorage.getItem('rfi-viewed') || '[]')); } catch (e) {}
+
+        const paint = () => {
+          channels.forEach((c) => { if (viewed.has(c.dataset.ch)) c.dataset.viewed = 'true'; });
+          viewedEl.textContent = String(viewed.size);
+        };
+
+        const apply = (id) => {
+          const active = IDS.includes(id) ? id : '';
+          device.dataset.active = active;
+          scenes.forEach((s) => {
+            if (s.dataset.p === active) s.setAttribute('data-on', 'true');
+            else s.removeAttribute('data-on');
+          });
+          channels.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.ch === active)));
+          pawListeners.forEach((f) => f(active));
+          if (active) {
+            viewed.add(active);
+            try { sessionStorage.setItem('rfi-viewed', JSON.stringify([...viewed])); } catch (e) {}
+            paint();
+          }
+        };
+
+        const select = (id) => {
+          const next = device.dataset.active === id ? '' : id;
+          apply(next);
+          history.pushState({ p: next }, '', next ? '?p=' + next : location.pathname);
+        };
+
+        document.addEventListener('click', (e) => {
+          const c = e.target.closest('[data-select]');
+          if (c) select(c.dataset.select);
+        });
+
+        window.addEventListener('popstate', (e) => {
+          apply(e.state?.p ?? new URLSearchParams(location.search).get('p') ?? '');
+        });
+
+        paint();
+        apply(new URLSearchParams(location.search).get('p') || '');
+        history.replaceState({ p: device.dataset.active }, '', location.href);
+      })();
+    </script>
+
+    <style>
+      @font-face {
+        font-family: 'Satoshi X';
+        src: url('/fonts/x/satoshi.woff2') format('woff2');
+        font-weight: 300 900;
+        font-display: swap;
+      }
+
+      :global(*, *::before, *::after) { box-sizing: border-box; margin: 0; }
+
+      :root {
+        --shell: #131211;
+        --body-hi: #26221c;
+        --body-lo: #1b1815;
+        --edge: #353027;
+        --edge-dark: #0b0a08;
+        --face: #211d18;
+        --keycap: #2b2721;
+        --keycap-hi: #383228;
+        --ink: #e9e4d8;
+        --mute: #97907f;
+        --dim: #575145;
+        --signal: #ff5a1f;
+        --lamp: #ffb454;
+        --lamp-off: #3d372c;
+        --screen: #0e0d0b;
+        --dur: 520ms;
+        --ease: cubic-bezier(0.3, 0.9, 0.3, 1);
+      }
+
+      html, body { height: 100%; }
+      body {
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        background:
+          radial-gradient(120% 90% at 50% 0%, #1a1815 0%, var(--shell) 58%);
+        color: var(--ink);
+        font-family: 'Satoshi X', system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .ribbon {
+        background: #000;
+        color: #fff;
+        font-size: 12.5px;
+        font-weight: 600;
+        text-align: center;
+        padding: 7px 16px;
+        letter-spacing: 0.02em;
+      }
+
+      .page {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        padding: clamp(10px, 2vh, 26px) clamp(12px, 2.5vw, 34px);
+      }
+
+      /* ---------- the object ---------- */
+      .device {
+        flex: 1;
+        min-height: 0;
+        display: grid;
+        grid-template-columns: clamp(228px, 19vw, 280px) minmax(0, 1fr);
+        grid-template-rows: auto minmax(0, 1fr);
+        grid-template-areas: 'plate plate' 'console bay';
+        gap: clamp(12px, 1.6vw, 22px);
+        background: linear-gradient(178deg, var(--body-hi), var(--body-lo) 70%);
+        border: 1px solid var(--edge);
+        border-bottom-color: var(--edge-dark);
+        border-radius: 26px;
+        padding: clamp(14px, 1.9vw, 26px);
+        box-shadow:
+          0 30px 60px -30px rgba(0, 0, 0, 0.85),
+          inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      }
+
+      /* ---------- identity plate (the compact header) ---------- */
+      .plate {
+        grid-area: plate;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 10px 16px;
+        background: linear-gradient(180deg, #211e19, #1d1a15);
+        border: 1px solid #2c2820;
+        border-radius: 14px;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), inset 0 -2px 4px rgba(0, 0, 0, 0.35);
+      }
+      .who {
+        font-weight: 800;
+        font-size: 16px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #ded8c9;
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.7);
+      }
+      .role {
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--mute);
+      }
+      .links { margin-left: auto; display: flex; gap: 10px; }
+
+      /* ---------- keys (shared physical control) ---------- */
+      .key {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 0 18px;
+        background: linear-gradient(180deg, var(--keycap-hi), var(--keycap));
+        border: 1px solid #171410;
+        border-radius: 10px;
+        color: var(--ink);
+        font-weight: 700;
+        font-size: 13px;
+        letter-spacing: 0.06em;
+        text-decoration: none;
+        cursor: pointer;
+        box-shadow: 0 2px 0 #12100c, inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        transition: transform 140ms ease, box-shadow 140ms ease;
+      }
+      .key:active { transform: translateY(2px); box-shadow: 0 0 0 #12100c, inset 0 2px 5px rgba(0, 0, 0, 0.5); }
+      .key:focus-visible, .ch:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+      .key[aria-disabled='true'] { color: var(--dim); pointer-events: none; }
+      .key-sm { min-height: 34px; padding: 0 14px; font-size: 12px; }
+
+      /* ---------- channel console ---------- */
+      .console {
+        grid-area: console;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .conlabel {
+        font-size: 10.5px;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--dim);
+        padding-left: 4px;
+      }
+      .channels {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        flex: 1;
+        min-height: 0;
+      }
+      .ch {
+        display: grid;
+        grid-template-columns: auto auto 1fr auto;
+        align-items: center;
+        gap: 10px;
+        min-height: 56px;
+        padding: 0 16px 0 14px;
+        background: linear-gradient(180deg, var(--keycap-hi), var(--keycap));
+        border: 1px solid #171410;
+        border-radius: 12px;
+        color: var(--ink);
+        font-family: inherit;
+        cursor: pointer;
+        text-align: left;
+        box-shadow: 0 3px 0 #12100c, inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        transition: transform 140ms ease, box-shadow 140ms ease, background 300ms ease;
+      }
+      .ch:active { transform: translateY(2px); box-shadow: 0 1px 0 #12100c, inset 0 2px 5px rgba(0, 0, 0, 0.45); }
+      .led {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--lamp-off);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.6);
+        transition: background 300ms ease, box-shadow 300ms ease;
+      }
+      .ch[data-viewed='true'] .led { background: #8a6a35; }
+      .ch[aria-pressed='true'] .led {
+        background: var(--lamp);
+        box-shadow: 0 0 8px 1px rgba(255, 180, 84, 0.55);
+      }
+      .chno {
+        font-size: 10.5px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        color: var(--dim);
+        font-variant-numeric: tabular-nums;
+      }
+      .chname { font-size: 15.5px; font-weight: 780; letter-spacing: 0.015em; }
+      .chyr { font-size: 11px; font-weight: 600; color: var(--mute); font-variant-numeric: tabular-nums; }
+      .ch[aria-pressed='true'] {
+        background: linear-gradient(180deg, #241f18, #201b15);
+        transform: translateY(2px);
+        box-shadow: 0 1px 0 #12100c, inset 0 2px 6px rgba(0, 0, 0, 0.5);
+      }
+      .ch[aria-pressed='true'] .chname { color: #ffc98a; text-shadow: 0 0 14px rgba(255, 180, 84, 0.35); }
+
+      .meter {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--dim);
+        padding: 8px 4px 0;
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* ---------- central display ---------- */
+      .bay { grid-area: bay; min-height: 0; display: flex; }
+      .display {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        background: #0a0908;
+        border: 1px solid #060505;
+        border-radius: 18px;
+        padding: 10px;
+        box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.7), 0 1px 0 rgba(255, 255, 255, 0.045);
+      }
+      .screen {
+        flex: 1;
+        min-width: 0;
+        min-height: 0;
+        position: relative;
+        background: linear-gradient(180deg, #12100e, var(--screen) 40%);
+        border-radius: 10px;
+        padding: var(--ap, clamp(18px, 2.4vw, 34px));
+        transition: padding var(--dur) var(--ease);
+        overflow: hidden;
+      }
+      /* mechanical aperture: framing tightens or relaxes per channel */
+      .js .device[data-active='finderly'] .screen { --ap: clamp(14px, 1.8vw, 26px); }
+      .js .device[data-active='asteri'] .screen { --ap: clamp(26px, 3vw, 44px); }
+      .js .device[data-active='startupos'] .screen { --ap: clamp(12px, 1.6vw, 22px); }
+      .js .device[data-active='artparde'] .screen { --ap: clamp(22px, 2.6vw, 38px); }
+
+      .scene {
+        position: absolute;
+        inset: var(--ap, clamp(18px, 2.4vw, 34px));
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        transition: inset var(--dur) var(--ease);
+      }
+      .js .scene { visibility: hidden; }
+      .js .scene[data-on='true'], .js .device[data-active=''] .scene.standby { visibility: visible; }
+      @keyframes resolve {
+        from { opacity: 0; transform: scale(0.988); }
+        to { opacity: 1; transform: none; }
+      }
+      .js .scene[data-on='true'] { animation: resolve var(--dur) var(--ease); }
+
+      /* standby: quiet functional index */
+      .standby { justify-content: center; align-items: center; gap: 18px; }
+      .standby .sb-index { min-width: min(46%, 520px); }
+      .sb-line, .sb-hint {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: var(--dim);
+      }
+      .sb-index { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+      .sb-index li {
+        font-size: clamp(18px, 2.2vw, 28px);
+        font-weight: 740;
+        color: #cfc9ba;
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+      }
+      .sb-index li span { font-size: 11px; font-weight: 700; color: var(--dim); font-variant-numeric: tabular-nums; }
+      .sb-index li em { font-style: normal; font-size: 12px; font-weight: 600; color: var(--mute); }
+      .sb-hint { color: var(--lamp); opacity: 0.75; }
+
+      /* project scenes */
+      .vis { flex: 1; min-height: 0; position: relative; }
+      .crop { background-repeat: no-repeat; background-size: cover; border-radius: 6px; }
+
+      .finrow { position: absolute; inset: 0; display: flex; gap: 16px; }
+      .phone { width: min(44%, 360px); height: 100%; background-position: 50% 0; border: 1px solid #262219; }
+      .cam { width: min(28%, 230px); height: 78%; background-position: 50% 30%; border: 1px solid #262219; align-self: flex-end; }
+
+      .astrow { position: absolute; inset: 0; display: flex; gap: 22px; align-items: center; justify-content: center; flex-wrap: wrap; align-content: center; }
+      .card {
+        background: #f7f7f9;
+        color: #17181c;
+        border-radius: 10px;
+        padding: 16px 20px;
+        width: min(40%, 300px);
+        box-shadow: 0 8px 22px -12px rgba(0, 0, 0, 0.8);
+      }
+      .card span { font-size: 12px; color: #5b5e66; display: block; }
+      .card b { font-size: 30px; font-weight: 760; }
+      .card i { display: block; font-style: normal; font-size: 10.5px; color: #7a7d85; margin-top: 8px; }
+      .chain { width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 12px; color: var(--mute); }
+      .swatch { width: 16px; height: 16px; border-radius: 4px; background: #f7f7f9; }
+      .wire { flex: 0 0 44px; height: 1px; background: var(--dim); position: relative; }
+      .wire::after { content: ''; position: absolute; right: 0; top: -2.5px; width: 6px; height: 6px; border-radius: 50%; background: var(--signal); }
+      .tok { font-weight: 700; color: var(--ink); font-size: 12.5px; }
+      .applied { font-size: 12px; }
+
+      .shot { position: absolute; inset: 0; background-position: 50% 8%; border: 1px solid #262219; }
+
+      .aprow { position: absolute; inset: 0; display: flex; gap: 18px; }
+      .mark { width: min(34%, 300px); height: 100%; background-size: contain; background-position: 50% 50%; background-color: #0c0b0a; border: 1px solid #262219; }
+      .site { flex: 1; background-size: 100% auto; background-position: 50% 0; background-color: #0c0b0a; border: 1px solid #262219; }
+
+      /* readout strip */
+      .readout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas: 'id key' 'fact key';
+        column-gap: 22px;
+        row-gap: 4px;
+        align-items: center;
+        border-top: 1px solid #24201a;
+        padding-top: 12px;
+      }
+      .r-id { grid-area: id; display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+      .r-id b { font-size: 19px; font-weight: 800; letter-spacing: 0.01em; }
+      .r-meta { font-size: 12px; font-weight: 600; color: var(--mute); letter-spacing: 0.03em; }
+      .r-fact { grid-area: fact; font-size: 13.5px; line-height: 1.45; color: #c9c3b4; max-width: 62ch; }
+      .casekey { grid-area: key; white-space: nowrap; color: #ffc98a; }
+
+      /* ---------- reduced motion ---------- */
+      @media (prefers-reduced-motion: reduce) {
+        .screen, .scene, .key, .ch, .led { transition: none !important; }
+        .js .scene[data-on='true'] { animation: none; }
+      }
+
+      /* ---------- no-JS: linear fallback, every project open ---------- */
+      html:not(.js) .page { display: block; overflow: auto; }
+      html:not(.js) .device { display: flex; flex-direction: column; }
+      html:not(.js) .channels { flex-direction: row; flex-wrap: wrap; }
+      html:not(.js) .ch { flex: 1 1 200px; }
+      html:not(.js) .display, html:not(.js) .screen { display: block; height: auto; overflow: visible; }
+      html:not(.js) .scene { position: static; inset: auto; margin-bottom: 34px; }
+      html:not(.js) .standby { display: none; }
+      html:not(.js) .vis { min-height: 420px; }
+      html:not(.js) .finrow, html:not(.js) .astrow, html:not(.js) .aprow, html:not(.js) .shot { position: relative; inset: auto; height: 420px; }
+      html:not(.js) .meter { display: none; }
+
+      /* ---------- mobile: compact handheld ---------- */
+      @media (max-width: 760px) {
+        .page { padding: 8px 10px 10px; }
+        .device {
+          grid-template-columns: 1fr;
+          grid-template-rows: auto minmax(0, 1fr) auto;
+          grid-template-areas: 'plate' 'bay' 'console';
+          gap: 10px;
+          padding: 12px;
+          border-radius: 20px;
+        }
+        .plate { padding: 8px 12px; gap: 10px; flex-wrap: wrap; }
+        .who { font-size: 13px; letter-spacing: 0.12em; }
+        .role { display: none; }
+        .key-sm { min-height: 30px; padding: 0 10px; font-size: 11px; }
+
+        .console { gap: 8px; }
+        .conlabel { display: none; }
+        .channels { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: none; }
+        .ch { min-height: 52px; padding: 0 12px; grid-template-columns: auto 1fr; gap: 8px; }
+        .chno, .chyr { display: none; }
+        .chname { font-size: 14px; }
+        .meter { padding: 2px 4px 0; font-size: 10px; }
+
+        .display { padding: 7px; border-radius: 14px; }
+        .screen { --ap: 14px; }
+        .js .device[data-active] .screen { --ap: 14px; }
+        .scene { gap: 10px; }
+
+        .sb-index li { font-size: 19px; }
+
+        .finrow { gap: 10px; }
+        .phone { width: 58%; }
+        .cam { width: 34%; height: 62%; }
+        .astrow { gap: 10px; }
+        .card { width: 100%; padding: 12px 14px; }
+        .card b { font-size: 20px; }
+        .chain { font-size: 10.5px; }
+        .wire { flex-basis: 26px; }
+        .aprow { flex-direction: column; }
+        .mark { width: 100%; height: 34%; }
+        .site { flex: 1; }
+
+        .readout {
+          grid-template-columns: 1fr;
+          grid-template-areas: 'id' 'fact' 'key';
+          row-gap: 8px;
+          padding-top: 10px;
+        }
+        .r-id b { font-size: 16px; }
+        .r-meta { font-size: 11px; }
+        .r-fact { font-size: 12px; }
+        .casekey { justify-self: start; }
+      }
+      @media (max-width: 760px) and (max-height: 700px) {
+        .r-fact { display: none; }
+        .sb-index li { font-size: 16px; }
+        .ch { min-height: 48px; }
+      }
+    
+      /* ---------- AI workspace integration ---------- */
+      :root {
+        --paw-bg: #211d18;
+        --paw-bg2: #2b2721;
+        --paw-ink: #e9e4d8;
+        --paw-mute: #97907f;
+        --paw-line: #3a352b;
+        --paw-accent: #ffb454;
+        --paw-radius: 14px;
+      }
+      body.paw-res-left .page { margin-left: 428px; }
+      body.paw-res-right .page { margin-right: 428px; }
+
+    </style>
+    <PortfolioAIWorkspace />
+  </body>
+</html>

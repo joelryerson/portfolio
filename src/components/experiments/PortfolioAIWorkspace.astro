@@ -1,0 +1,871 @@
+---
+/**
+ * PortfolioAIWorkspace — shared floating AI workspace for the -ai
+ * experiment variants. Interaction-shell phase: deterministic local
+ * knowledge object + scripted answers, no external AI service.
+ *
+ * Host contract: the host route defines `window.PAW_HOST` BEFORE this
+ * component's script runs:
+ *   {
+ *     route:        string          — storage key suffix
+ *     getProject(): 'finderly'|'asteri'|'startupos'|'artparde'|''
+ *     setProject(id): void          — must use the host's own select()
+ *     onChange(cb): void            — cb(id) on every project change
+ *     anchors():    { left, right, project(): DOMRect|null }
+ *     reserve(mode): void           — 'left'|'right'|'project'|null
+ *     dockProjectLabel?: string     — menu label override
+ *   }
+ * Theme: hosts set --paw-* custom properties on :root.
+ */
+---
+
+<!-- minimized trigger -->
+<div class="paw-pill" id="paw-pill" data-corner="br">
+  <button class="paw-pill-grip" id="paw-pill-grip" type="button" aria-label="Move the assistant trigger (drag or arrow keys)">
+    <span aria-hidden="true">⠿</span>
+  </button>
+  <button class="paw-pill-open" id="paw-pill-open" type="button" aria-haspopup="dialog" aria-expanded="false">
+    <span class="paw-spark" aria-hidden="true">✦</span>
+    <span class="paw-pill-label">Ask about Joel</span>
+    <span class="paw-pill-ctx" id="paw-pill-ctx"></span>
+  </button>
+</div>
+
+<!-- expanded workspace -->
+<section class="paw-panel" id="paw-panel" role="dialog" aria-label="Ask about Joel — AI guide" tabindex="-1" hidden>
+  <header class="paw-head">
+    <button class="paw-handle" id="paw-handle" type="button" aria-label="Move panel (drag, or use the Position menu)">
+      <span aria-hidden="true">⠿</span>
+    </button>
+    <div class="paw-titles">
+      <p class="paw-title"><span class="paw-spark" aria-hidden="true">✦</span> Ask about Joel</p>
+      <p class="paw-sub">AI guide grounded in verified portfolio information · <span id="paw-ctx">Overview</span></p>
+    </div>
+    <div class="paw-tools">
+      <div class="paw-menu-wrap">
+        <button class="paw-btn" id="paw-pos-btn" type="button" aria-haspopup="menu" aria-expanded="false">Position</button>
+        <div class="paw-menu" id="paw-menu" role="menu" aria-label="Panel position" hidden>
+          <button role="menuitem" data-pos="float" class="paw-desk">Float</button>
+          <button role="menuitem" data-pos="tl" class="paw-desk">Top left</button>
+          <button role="menuitem" data-pos="tr" class="paw-desk">Top right</button>
+          <button role="menuitem" data-pos="bl" class="paw-desk">Bottom left</button>
+          <button role="menuitem" data-pos="br" class="paw-desk">Bottom right</button>
+      <button role="menuitem" data-pos="dock-left" class="paw-desk">Dock left</button>
+          <button role="menuitem" data-pos="dock-right" class="paw-desk">Dock right</button>
+          <button role="menuitem" data-pos="dock-project" class="paw-desk" id="paw-dock-proj">Dock to active project</button>
+          <button role="menuitem" data-pos="pill-bl" class="paw-mob">Minimized dock: bottom left</button>
+          <button role="menuitem" data-pos="pill-br" class="paw-mob">Minimized dock: bottom right</button>
+          <button role="menuitem" data-pos="reset">Reset position</button>
+        </div>
+      </div>
+      <button class="paw-btn" id="paw-reset-convo" type="button">Reset</button>
+      <button class="paw-btn paw-min" id="paw-min" type="button" aria-label="Minimize assistant">–</button>
+    </div>
+  </header>
+
+  <p class="paw-docked-note" id="paw-docked-note" hidden>Anchored · <button type="button" id="paw-undock" class="paw-linklike">return to floating</button></p>
+
+  <div class="paw-sheet-grip" id="paw-sheet-grip" aria-hidden="true"><span></span></div>
+
+  <div class="paw-log" id="paw-log" role="log" aria-label="Conversation">
+    <div class="paw-intro" id="paw-intro">
+      <p class="paw-intro-lede">A guide for evaluating Joel’s experience and role fit, grounded in his verified portfolio — nothing invented. This prototype runs on scripted local data; the live service comes later.</p>
+      <p class="paw-intro-ctx" id="paw-intro-ctx"></p>
+      <div class="paw-sugg" id="paw-sugg" aria-label="Suggested questions"></div>
+    </div>
+  </div>
+
+  <form class="paw-inputrow" id="paw-form">
+    <input class="paw-input" id="paw-input" type="text" autocomplete="off"
+      placeholder="Ask a hiring question…" aria-label="Ask a question about Joel" />
+    <button class="paw-mic" type="button" aria-disabled="true" title="Voice coming later">
+      <span aria-hidden="true">🎙</span><span class="paw-mic-note">Voice coming later</span>
+    </button>
+    <button class="paw-send" type="submit">Ask</button>
+  </form>
+
+  <button class="paw-resize" id="paw-resize" type="button" aria-label="Resize panel (drag)"></button>
+</section>
+
+<div class="paw-live" id="paw-live" aria-live="polite"></div>
+
+<script is:inline>
+  (() => {
+    'use strict';
+    const HOST = window.PAW_HOST;
+    if (!HOST) return;
+    const $ = (id) => document.getElementById(id);
+    const pill = $('paw-pill'), pillOpen = $('paw-pill-open'), pillGrip = $('paw-pill-grip'), pillCtx = $('paw-pill-ctx');
+    const panel = $('paw-panel'), handle = $('paw-handle'), log = $('paw-log'), intro = $('paw-intro');
+    const suggBox = $('paw-sugg'), introCtx = $('paw-intro-ctx'), ctxEl = $('paw-ctx');
+    const form = $('paw-form'), input = $('paw-input'), live = $('paw-live');
+    const menu = $('paw-menu'), posBtn = $('paw-pos-btn'), dockedNote = $('paw-docked-note');
+    const M = 20;                       // safe margin
+    const SNAP = 72;                    // snap threshold
+    const NAMES = { finderly: 'Finderly', asteri: 'Asteri AI', startupos: 'StartupOS', artparde: 'ArtPärdē' };
+    const CASE = { finderly: '/work/finderly/', asteri: '/work/asteri/', startupos: '/work/startup-platform/', artparde: '/work/artparde/' };
+    const mobile = () => matchMedia('(max-width: 760px)').matches;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if ($('paw-dock-proj') && HOST.dockProjectLabel) $('paw-dock-proj').textContent = HOST.dockProjectLabel;
+
+    /* ============================================================
+       KNOWLEDGE — deterministic local data. Verified facts only.
+       ============================================================ */
+    const KB = {
+      person: {
+        name: 'Joel Ryerson',
+        title: 'Product Designer & Design Engineer',
+        technical: 'Implements what he designs: front-end work on Finderly, a hand-built portfolio with its own token system, AI-assisted build workflow that he directs.',
+        limitations: [
+          'Asteri’s public evidence is abstracted (diagrams and neutralized artifacts, no product screenshots) due to client constraints.',
+          'StartupOS dates to 2022.',
+          'Public outcome metrics are limited; case studies favor verifiable decisions over unverifiable numbers.',
+        ],
+      },
+      projects: {
+        finderly: {
+          year: '2026', cat: 'AI home repair', role: 'Product design, UX/UI, and front-end implementation',
+          owned: 'Product design end to end plus front-end implementation of the home experience.',
+          shipped: 'The rebuilt home (light and dark), centered on starting a repair.',
+          decision: 'Media-first, not chatbot-first: photo and video of the real problem as the primary interface.',
+          incomplete: null,
+          evidence: ['Shipped home · light/dark', 'Capture flow'],
+        },
+        asteri: {
+          year: '2026', cat: 'AI work platform', role: 'Product design and design systems',
+          owned: 'The styling audit, token architecture, and consolidation strategy in a six-week engagement.',
+          shipped: 'Token foundation on pilot surfaces, zero visual diff; engineering continued the rollout after the engagement.',
+          decision: 'Token infrastructure before restyling; core table intentionally unchanged.',
+          incomplete: 'Homepage migration remained under review when the engagement ended.',
+          evidence: ['Audit findings diagram', 'Two-paths diagram · shipped path', 'Token chain'],
+        },
+        startupos: {
+          year: '2022', cat: 'Founder education', role: 'Product design',
+          owned: 'The reusable learning-unit template system.',
+          shipped: 'The template-built MVP, shipped in five months.',
+          decision: 'Templates over bespoke screens.',
+          incomplete: null,
+          evidence: ['Template unit · hi-fi'],
+        },
+        artparde: {
+          year: '2024', cat: 'Performing-arts nonprofit', role: 'Brand and web design',
+          owned: 'The identity and the website, plus the platform choices behind them.',
+          shipped: 'Identity and site, still in use and run by the organization without Joel.',
+          decision: 'Webflow + fee-free Zeffy chosen deliberately for a volunteer-run nonprofit.',
+          incomplete: null,
+          evidence: ['Identity mark', 'Live site'],
+        },
+      },
+    };
+
+    // Answer entries: id, chip label, keyword matchers, response.
+    const A = (id, label, match, text, evidence, actions, project) =>
+      ({ id, label, match, text, evidence: evidence || [], actions: actions || [], project: project || null });
+    const ANSWERS = [
+      // ---- global ----
+      A('own-global', 'What did Joel personally own?', ['personally own', 'personally owned', 'his role', 'responsib'],
+        'Each case study names it precisely. Finderly: product design plus front-end implementation. Asteri: the styling audit, token architecture, and consolidation strategy. StartupOS: the template system. ArtPärdē: identity and site. Where a team continued the work — like Asteri’s rollout — the case study says so.',
+        ['All four case studies'], [['show', 'finderly'], ['case', 'finderly']]),
+      A('shipped-global', 'What actually shipped?', ['actually shipped', 'what shipped', 'went to production'],
+        'Shipped and verifiable: Finderly’s rebuilt home (light and dark), Asteri’s token foundation on pilot surfaces with the rollout continuing after the engagement, StartupOS’s template-built MVP in 2022, and ArtPärdē’s identity and site, still in use today. Anything that did not ship is labeled as such.',
+        ['Shipped home · light/dark', 'Two-paths diagram · shipped path'], [['show', 'asteri'], ['ask', 'incomplete']]),
+      A('technical', 'How technical is Joel?', ['how technical', 'technical', 'can he code', 'does he code', 'engineer'],
+        'Joel implements what he designs. On Finderly that meant front-end work in the product codebase; this portfolio itself is custom-coded with its own token system; and his build workflow is AI-assisted, with him directing the tools. The honest framing: a product designer with real front-end execution, not a platform engineer.',
+        ['Finderly · implementation', 'This site · hand-built'], [['show', 'finderly'], ['ask', 'fit-de']]),
+      A('systems', 'Show his strongest systems work', ['systems thinking', 'systems work', 'strongest systems', 'design system', 'design-systems'],
+        'Asteri is the strongest systems evidence: audit, token architecture, consolidation, and a production rollout strategy inside six weeks. StartupOS shows the same instinct four years earlier as a template system. Together they make the pattern hard to dismiss as a one-off.',
+        ['Audit findings diagram', 'Token chain'], [['show', 'asteri'], ['ask', 'cmp-ast-sos']]),
+      A('fit-senior', 'Which project best fits a senior product-design role?', ['senior product', 'product-design role', 'best fits'],
+        'Finderly, for a senior product-design role: recent, end to end, and shipped, with a defensible product decision at its center. Asteri is the supporting depth on systems, and ArtPärdē covers visual range.',
+        ['Shipped home · light/dark'], [['show', 'finderly'], ['case', 'finderly']]),
+      A('fit-de', 'Which project is most relevant to a design-engineering role?', ['design-engineering', 'design engineering', 'engineering role'],
+        'For design engineering: Finderly plus this site itself. Finderly shows design and front-end implementation by the same person, and the portfolio is hand-built with a real token system. Asteri adds the token-pipeline thinking on top.',
+        ['Finderly · implementation', 'This site · hand-built'], [['show', 'finderly'], ['case', 'finderly']]),
+      A('cmp-fin-ast', 'Compare Finderly and Asteri', ['compare finderly and asteri', 'finderly vs asteri', 'asteri vs finderly'],
+        'Finderly is product craft: a consumer home experience rebuilt end to end, design through front-end code, shipped in 2026. Asteri is infrastructure: a token foundation consolidated under an enterprise product without visible disruption, also 2026. One shows judgment in the interface; the other shows judgment underneath it.',
+        ['Both case studies'], [['show', 'finderly'], ['show', 'asteri']]),
+      A('cmp-fin-sos', 'Compare Finderly and StartupOS', ['compare finderly and startupos', 'finderly vs startupos', 'startupos vs finderly'],
+        'Four years apart, same instinct, different altitude. StartupOS (2022) built reusable templates so a small team could ship an MVP in five months. Finderly (2026) rebuilt a shipped product’s home around the real job, and Joel implemented the front-end himself. The delta between them is the growth story.',
+        ['Template unit · hi-fi', 'Shipped home · light/dark'], [['show', 'startupos'], ['show', 'finderly']]),
+      A('cmp-ast-sos', 'Compare Asteri and StartupOS', ['compare asteri and startupos', 'asteri vs startupos', 'startupos vs asteri', 'compare with startupos'],
+        'Both are structure over one-offs. StartupOS solved it at the content layer with templates in 2022; Asteri solved it at the styling layer with token architecture in 2026, shipped to production with zero visual difference. Asteri is the more rigorous version of the same conviction.',
+        ['Two-paths diagram'], [['show', 'asteri'], ['show', 'startupos']]),
+      A('incomplete', 'What work remained incomplete?', ['incomplete', 'unfinished', 'remained in progress', 'didn’t finish', 'didnt finish', 'not finished'],
+        'Two things are stated openly. At Asteri, the homepage migration was still under review when the six-week engagement ended, and engineering continued the token rollout after Joel left. The portfolio treats both as facts, not footnotes.',
+        ['Asteri case study · scope notes'], [['case', 'asteri']]),
+      A('gaps', 'What are the honest gaps in Joel’s public portfolio?', ['honest gaps', 'limitations', 'public evidence', 'gaps', 'weakness'],
+        'Three honest limits. Asteri’s public evidence is abstracted — diagrams and neutralized artifacts rather than product screenshots, due to client constraints. StartupOS dates to 2022. And public outcome metrics are limited across projects; the case studies favor verifiable decisions over unverifiable numbers.',
+        ['Asteri · abstracted artifacts'], [['case', 'asteri']]),
+      A('branding', 'Show me Joel’s branding work', ['branding', 'brand work', 'identity work', 'logo', 'visual identity'],
+        'ArtPärdē is the branding evidence: identity, mark, and website for a performing-arts nonprofit, built so volunteers can run it themselves. It is deliberately the opposite texture from the enterprise product work.',
+        ['Identity mark', 'Live site'], [['show', 'artparde'], ['case', 'artparde']]),
+      A('open-relevant', 'Open the most relevant case study', ['open the most relevant', 'most relevant case', 'open case study', 'open the case'],
+        '', [], []),
+      // ---- finderly ----
+      A('fin-own', 'What did Joel personally design?', ['finderly personally', 'personally design', 'own on finderly', 'design on finderly'],
+        'Joel owned Finderly’s product design end to end: UX, UI, and the front-end implementation of what he designed. The defining call was rebuilding the home around starting a repair rather than a chat thread, so camera, video, and recent work sit at one clear entry point.',
+        ['Shipped home · light/dark', 'Capture flow'], [['show', 'finderly'], ['case', 'finderly']], 'finderly'),
+      A('fin-impl', 'What did he implement?', ['he implement', 'implement on finderly', 'implemented'],
+        'Joel implemented the front-end of the home experience he designed, working in the product’s React Native codebase with a token pipeline connecting Figma to code. Design and implementation are the same person here, which is the point of the case study.',
+        ['Finderly · implementation'], [['case', 'finderly']], 'finderly'),
+      A('fin-home', 'What changed in the home experience?', ['changed in the home', 'home experience', 'previous home', 'old home'],
+        'The previous home led with a chat thread, which buried the actual job. Joel rebuilt it around starting a repair: camera, video, and recent work are available from one clear entry point. The case study shows the former home against the shipped one.',
+        ['Former home vs shipped home'], [['show', 'finderly'], ['case', 'finderly']], 'finderly'),
+      A('fin-judgment', 'What demonstrates product judgment here?', ['product judgment', 'judgment here', 'judgement'],
+        'In 2026 the default move is to make every AI product look like a chatbot. Joel argued the media — photo and video of the actual problem — was the product’s real interface, and rebuilt the home media-first. That decision survived shipping.',
+        ['Media-first decision'], [['case', 'finderly']], 'finderly'),
+      // ---- asteri ----
+      A('ast-audit', 'What did Joel audit?', ['joel audit', 'audit at asteri', 'what did he audit'],
+        'Joel audited the entire frontend’s styling sources and found systemic UI inconsistency: values restated inline per file with no shared source of truth. That audit is what justified building token infrastructure before restyling any screens.',
+        ['Audit findings diagram'], [['show', 'asteri'], ['case', 'asteri']], 'asteri'),
+      A('ast-shipped', 'What shipped versus remained in progress?', ['shipped versus', 'shipped at asteri', 'asteri shipped', 'versus remained'],
+        'The consolidated token foundation shipped to production on pilot surfaces with zero visual difference, and engineering continued the rollout after Joel’s six-week engagement ended. The homepage migration was still under review at that point — the case study says so directly.',
+        ['Two-paths diagram · shipped path'], [['show', 'asteri'], ['case', 'asteri']], 'asteri'),
+      A('ast-tokens', 'What happened with the token architecture?', ['token architecture', 'token structure', 'happened with the token'],
+        'Asteri is Joel’s clearest public design-systems example. He audited fragmented styling sources, explored an initial token structure, identified duplication in that approach, and consolidated it into a leaner foundation. The core Activity Database table was intentionally left unchanged, and the homepage migration remained under review when the engagement ended.',
+        ['Token chain', 'Two-paths diagram'], [['show', 'asteri'], ['case', 'asteri'], ['ask', 'cmp-ast-sos']], 'asteri'),
+      A('ast-table', 'Why was the core table left unchanged?', ['core table', 'table left unchanged', 'table unchanged'],
+        'The core table is the product’s primary workflow, so Joel left it intentionally unchanged while the foundations moved underneath it. The pilot migration was appearance-unchanged by design: modernized implementation, zero visual diff, no user retraining.',
+        ['Two-paths diagram · pilot migration'], [['case', 'asteri']], 'asteri'),
+      // ---- startupos ----
+      A('sos-system', 'What reusable system did Joel create?', ['reusable system', 'system did joel create'],
+        'Joel designed a reusable learning-unit template system rather than bespoke screens for each piece of content. The team assembled the MVP from those templates and shipped in five months.',
+        ['Template unit · hi-fi'], [['show', 'startupos'], ['case', 'startupos']], 'startupos'),
+      A('sos-template', 'How did the template structure support the MVP?', ['template structure', 'support the mvp', 'mvp'],
+        'The template structure meant new content did not need new design: each learning unit drew from the same components and layout rules. That is what made a five-month MVP possible for a small team in 2022.',
+        ['Template unit · hi-fi'], [['case', 'startupos']], 'startupos'),
+      A('sos-role', 'What was Joel’s role?', ['joel’s role', 'joels role', 'role on startupos', 'his role on'],
+        'Joel was the product designer on StartupOS in 2022. It is his strongest legacy piece and it is dated honestly: the portfolio leads with 2026 work and keeps this as evidence of range.',
+        ['StartupOS case study'], [['show', 'startupos']], 'startupos'),
+      A('sos-thinking', 'What does this demonstrate about product thinking?', ['product thinking', 'demonstrate about'],
+        'It shows the same instinct that later shaped Asteri: invest in reusable structure instead of restyling one-offs. In 2022 that meant templates; in 2026 it meant token infrastructure.',
+        ['Template unit · hi-fi'], [['ask', 'systems'], ['show', 'asteri']], 'startupos'),
+      // ---- artparde ----
+      A('ap-created', 'What did Joel create?', ['joel create', 'did joel create', 'create for artparde'],
+        'Joel created ArtPärdē’s identity and built the website the organization still runs. Platform choices were part of the design: Webflow for maintainability and fee-free Zeffy for ticketing, chosen deliberately for a volunteer-run nonprofit.',
+        ['Identity mark', 'Live site'], [['show', 'artparde'], ['case', 'artparde']], 'artparde'),
+      A('ap-maintain', 'What makes the identity maintainable?', ['maintainable', 'maintain'],
+        'Maintainability was designed in: a simple identity system the organization can apply themselves, on a platform non-designers can edit. They produce their own posters and promo within it, without Joel.',
+        ['Live site'], [['case', 'artparde']], 'artparde'),
+      A('ap-skills', 'What visual-design skills does this demonstrate?', ['visual-design skills', 'visual design', 'visual skills'],
+        'It is the clearest public evidence of Joel’s visual range: a hand-drawn, color-forward identity system applied across the mark, the site, and event collateral — deliberately unlike the enterprise product work elsewhere in the portfolio.',
+        ['Identity mark'], [['show', 'artparde']], 'artparde'),
+      A('ap-inuse', 'What remained in use after delivery?', ['remained in use', 'after delivery', 'still in use'],
+        'The identity and the website. The organization continues to run both without him, which was the explicit goal of the engagement.',
+        ['Live site'], [['case', 'artparde']], 'artparde'),
+    ];
+    const byId = Object.fromEntries(ANSWERS.map((a) => [a.id, a]));
+
+    const GLOBAL_SUGG = ['own-global', 'shipped-global', 'technical', 'systems', 'fit-senior', 'cmp-fin-ast', 'gaps'];
+    const PROJ_SUGG = {
+      finderly: ['fin-own', 'fin-impl', 'fin-home', 'fin-judgment', 'cmp-fin-ast', 'gaps'],
+      asteri: ['ast-audit', 'ast-shipped', 'ast-tokens', 'ast-table', 'cmp-ast-sos', 'gaps'],
+      startupos: ['sos-system', 'sos-template', 'sos-role', 'sos-thinking', 'cmp-fin-sos', 'gaps'],
+      artparde: ['ap-created', 'ap-maintain', 'ap-skills', 'ap-inuse', 'branding', 'gaps'],
+    };
+
+    // free-text matcher: phrase hits > keyword hits; compare special-case
+    const matchAnswer = (raw) => {
+      const q = raw.toLowerCase().replace(/[?!.,;:'"’]/g, ' ').replace(/\s+/g, ' ').trim();
+      if (!q) return null;
+      if (q.includes('compare') || q.includes(' vs ')) {
+        const has = (id) => q.includes(id === 'artparde' ? 'artp' : id === 'asteri' ? 'asteri' : id);
+        if (has('finderly') && has('asteri')) return byId['cmp-fin-ast'];
+        if (has('finderly') && has('startupos')) return byId['cmp-fin-sos'];
+        if (has('asteri') && has('startupos')) return byId['cmp-ast-sos'];
+      }
+      let best = null, bestScore = 0;
+      for (const a of ANSWERS) {
+        let s = 0;
+        for (const m of a.match) if (q.includes(m.toLowerCase().replace(/[’]/g, ''))) s += m.includes(' ') ? 3 : 1;
+        // prefer answers for the project the user names
+        if (a.project && q.includes(a.project === 'artparde' ? 'artp' : a.project)) s += 1;
+        if (s > bestScore) { bestScore = s; best = a; }
+      }
+      return bestScore >= 1 ? best : null;
+    };
+
+    /* ============================================================
+       STATE
+       ============================================================ */
+    const KEY = 'paw:' + HOST.route;
+    const DEFAULTS = { mode: 'min', place: { kind: 'snap', zone: 'br' }, pill: 'br', size: { w: 404, h: 560 }, convo: [], draft: '', sheet: 'half' };
+    let S;
+    try { S = Object.assign({}, DEFAULTS, JSON.parse(sessionStorage.getItem(KEY) || '{}')); }
+    catch (e) { S = Object.assign({}, DEFAULTS); }
+    const save = () => { try { sessionStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+
+    /* ============================================================
+       GEOMETRY — float / snap / dock, viewport clamped
+       ============================================================ */
+    const vw = () => window.innerWidth, vh = () => window.innerHeight;
+    const size = () => {
+      const w = Math.min(Math.max(S.size.w, 340), Math.min(560, vw() - 2 * M));
+      const h = Math.min(Math.max(S.size.h, 420), vh() - 2 * M);
+      return { w, h };
+    };
+    const zoneXY = (zone, w, h) => ({
+      tl: [M, M], tr: [vw() - w - M, M],
+      lc: [M, Math.max(M, (vh() - h) / 2)], rc: [vw() - w - M, Math.max(M, (vh() - h) / 2)],
+      bl: [M, vh() - h - M], br: [vw() - w - M, vh() - h - M],
+    })[zone];
+    const clamp = (x, y, w, h) => [
+      Math.min(Math.max(x, M), Math.max(M, vw() - w - M)),
+      Math.min(Math.max(y, M), Math.max(M, vh() - h - M)),
+    ];
+
+    const layout = () => {
+      if (mobile()) { layoutMobile(); return; }
+      panel.classList.remove('paw-sheet');
+      panel.style.height = '';
+      const { w, h } = size();
+      let x, y, W = w, H = h, dock = null;
+      if (S.place.kind === 'dock') {
+        dock = S.place.side;
+        if (dock === 'project') {
+          const rect = HOST.anchors().project ? HOST.anchors().project() : null;
+          if (rect && rect.width > 380) {
+            W = Math.min(w, rect.width - 32); H = Math.min(h, Math.max(420, rect.height - 32));
+            [x, y] = clamp(rect.right - W - 16, rect.top + 16, W, H);
+          } else { // fall back to a right-side dock (host reserves space)
+            W = w; H = vh() - 2 * M; x = vw() - W - M; y = M;
+          }
+        } else {
+          W = w; H = vh() - 2 * M;
+          x = dock === 'left' ? M : vw() - W - M; y = M;
+        }
+      } else if (S.place.kind === 'snap') {
+        [x, y] = zoneXY(S.place.zone, W, H);
+      } else {
+        [x, y] = clamp(S.place.x, S.place.y, W, H);
+      }
+      Object.assign(panel.style, { left: x + 'px', top: y + 'px', width: W + 'px', height: H + 'px', right: 'auto', bottom: 'auto' });
+      panel.classList.toggle('paw-docked', !!dock);
+      dockedNote.hidden = !dock;
+      HOST.reserve(dock);
+    };
+    const layoutMobile = () => {
+      panel.classList.add('paw-sheet');
+      panel.classList.remove('paw-docked');
+      dockedNote.hidden = true;
+      HOST.reserve(null);
+      panel.style.left = '0'; panel.style.right = '0'; panel.style.bottom = '0'; panel.style.top = 'auto'; panel.style.width = 'auto';
+      panel.style.height = S.sheet === 'full' ? 'calc(100dvh - 52px)' : '58dvh';
+    };
+    const layoutPill = () => {
+      const corners = mobile() ? ['bl', 'br'] : ['tl', 'tr', 'bl', 'br'];
+      const c = corners.includes(S.pill) ? S.pill : 'br';
+      pill.dataset.corner = c;
+      pill.style.left = c.endsWith('l') ? M + 'px' : 'auto';
+      pill.style.right = c.endsWith('r') ? M + 'px' : 'auto';
+      pill.style.top = c.startsWith('t') ? M + 'px' : 'auto';
+      pill.style.bottom = c.startsWith('b') ? M + 'px' : 'auto';
+    };
+
+    /* ============================================================
+       MODE (min / exp) + focus contract
+       ============================================================ */
+    const setMode = (mode, focusTarget) => {
+      S.mode = mode; save();
+      const exp = mode === 'exp';
+      panel.hidden = !exp;
+      pill.hidden = exp;
+      pillOpen.setAttribute('aria-expanded', String(exp));
+      if (exp) { layout(); (focusTarget || panel).focus(); }
+      else { HOST.reserve(null); layoutPill(); (focusTarget || pillOpen).focus(); }
+    };
+
+    /* ============================================================
+       CONVERSATION
+       ============================================================ */
+    const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const renderMsg = (m) => {
+      const el = document.createElement('div');
+      el.className = 'paw-msg paw-msg-' + m.who;
+      if (m.who === 'u') { el.textContent = m.text; return el; }
+      let html = '<p>' + esc(m.text) + '</p>';
+      if (m.evidence && m.evidence.length) html += '<p class="paw-evd">' + m.evidence.map((e) => '<span>Evidence · ' + esc(e) + '</span>').join('') + '</p>';
+      el.innerHTML = html;
+      if (m.actions && m.actions.length) {
+        const row = document.createElement('div');
+        row.className = 'paw-acts';
+        for (const [kind, arg] of m.actions) {
+          if (kind === 'case') {
+            const a = document.createElement('a');
+            a.className = 'paw-chip'; a.href = CASE[arg];
+            a.textContent = 'Open ' + NAMES[arg] + ' case study';
+            row.appendChild(a);
+          } else {
+            const b = document.createElement('button');
+            b.type = 'button'; b.className = 'paw-chip';
+            b.textContent = kind === 'show' ? 'Show ' + NAMES[arg] : (byId[arg] ? byId[arg].label : arg);
+            b.addEventListener('click', () => {
+              if (kind === 'show') {
+                HOST.setProject(arg);
+                live.textContent = 'Now showing ' + NAMES[arg];
+              } else answer(byId[arg], byId[arg].label);
+            });
+            row.appendChild(b);
+          }
+        }
+        el.appendChild(row);
+      }
+      return el;
+    };
+    const push = (m) => {
+      S.convo.push(m);
+      if (S.convo.length > 40) S.convo = S.convo.slice(-40);
+      save();
+      log.appendChild(renderMsg(m));
+      log.scrollTop = log.scrollHeight;
+    };
+    const answer = (a, asked) => {
+      push({ who: 'u', text: asked });
+      if (!a) {
+        push({ who: 'a', text: 'This prototype’s guide is scripted and covers Joel’s four public projects: what he owned, what shipped, how technical he is, and the honest limits of the public evidence. Try one of the suggested questions below, or name a project.', evidence: [], actions: [['ask', 'own-global'], ['ask', 'gaps']] });
+        return;
+      }
+      if (a.id === 'open-relevant') {
+        const p = HOST.getProject() || 'finderly';
+        push({ who: 'a', text: (HOST.getProject() ? NAMES[p] + ' is active, so its case study is the direct next step.' : 'With nothing selected, Finderly is the strongest starting point: recent, end to end, and shipped.'), evidence: [], actions: [['case', p], ['show', p]] });
+        return;
+      }
+      push({ who: 'a', text: a.text, evidence: a.evidence, actions: a.actions });
+    };
+
+    const renderSuggestions = () => {
+      const p = HOST.getProject();
+      const list = p ? PROJ_SUGG[p] : GLOBAL_SUGG;
+      suggBox.innerHTML = '';
+      for (const id of list) {
+        const b = document.createElement('button');
+        b.type = 'button'; b.className = 'paw-chip';
+        b.textContent = byId[id].label;
+        b.addEventListener('click', () => answer(byId[id], byId[id].label));
+        suggBox.appendChild(b);
+      }
+    };
+    const renderContext = () => {
+      const p = HOST.getProject();
+      const name = p ? NAMES[p] : '';
+      ctxEl.textContent = p ? 'Viewing ' + name : 'Overview';
+      pillCtx.textContent = p ? ' · ' + name : '';
+      introCtx.textContent = p
+        ? 'You are viewing ' + name + ' (' + KB.projects[p].year + ' · ' + KB.projects[p].cat + '). ' + KB.projects[p].role + '.'
+        : 'Nothing selected yet — questions below cover the whole portfolio.';
+      renderSuggestions();
+    };
+    const restoreConvo = () => {
+      for (const m of S.convo) log.appendChild(renderMsg(m));
+      if (S.convo.length) log.scrollTop = log.scrollHeight;
+    };
+
+    /* ============================================================
+       DRAG (Pointer Events) — panel handle, pill grip, resize, sheet
+       ============================================================ */
+    const dragState = { active: null };
+    const beginDrag = (kind, e) => {
+      if (kind === 'panel' && (mobile() || panel.classList.contains('paw-docked'))) return;
+      if (kind === 'pill' && panelVisible()) return;
+      e.preventDefault();
+      const target = e.currentTarget;
+      try { target.setPointerCapture(e.pointerId); } catch (err) {}
+      const r = (kind === 'pill' ? pill : panel).getBoundingClientRect();
+      dragState.active = { kind, id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: r.left, oy: r.top, ow: r.width, oh: r.height, prevPlace: JSON.parse(JSON.stringify(S.place)), prevPill: S.pill, prevSize: Object.assign({}, S.size), prevSheet: S.sheet };
+      document.body.classList.add('paw-dragging');
+    };
+    const panelVisible = () => !panel.hidden;
+    const onMove = (e) => {
+      const d = dragState.active;
+      if (!d || e.pointerId !== d.id) return;
+      const dx = e.clientX - d.sx, dy = e.clientY - d.sy;
+      if (d.kind === 'panel') {
+        const { w, h } = size();
+        const [x, y] = clamp(d.ox + dx, d.oy + dy, w, h);
+        S.place = { kind: 'float', x, y };
+        panel.style.left = x + 'px'; panel.style.top = y + 'px';
+      } else if (d.kind === 'pill') {
+        const [x, y] = clamp(d.ox + dx, d.oy + dy, d.ow, d.oh);
+        pill.style.left = x + 'px'; pill.style.top = y + 'px'; pill.style.right = 'auto'; pill.style.bottom = 'auto';
+      } else if (d.kind === 'resize') {
+        S.size = { w: d.ow + dx, h: d.oh + dy };
+        const { w, h } = size();
+        S.size = { w, h };
+        panel.style.width = w + 'px'; panel.style.height = h + 'px';
+        const r = panel.getBoundingClientRect();
+        const [x, y] = clamp(r.left, r.top, w, h);
+        panel.style.left = x + 'px'; panel.style.top = y + 'px';
+      } else if (d.kind === 'sheet') {
+        const hpx = Math.min(Math.max(d.oh - dy, vh() * 0.34), vh() - 52);
+        panel.style.height = hpx + 'px';
+      }
+    };
+    const endDrag = (e, cancelled) => {
+      const d = dragState.active;
+      if (!d || (e && e.pointerId !== d.id)) return;
+      dragState.active = null;
+      document.body.classList.remove('paw-dragging');
+      if (cancelled) {
+        S.place = d.prevPlace; S.pill = d.prevPill; S.size = d.prevSize; S.sheet = d.prevSheet;
+        save(); layout(); layoutPill();
+        return;
+      }
+      if (d.kind === 'panel') {
+        // snap if released near a zone
+        const { w, h } = size();
+        const r = panel.getBoundingClientRect();
+        let snapped = null, bestDist = SNAP + 1;
+        for (const z of ['tl', 'tr', 'lc', 'rc', 'bl', 'br']) {
+          const [zx, zy] = zoneXY(z, w, h);
+          const dist = Math.hypot(r.left - zx, r.top - zy);
+          if (dist < bestDist) { bestDist = dist; snapped = z; }
+        }
+        if (snapped) S.place = { kind: 'snap', zone: snapped };
+        save(); layout();
+      } else if (d.kind === 'pill') {
+        const r = pill.getBoundingClientRect();
+        const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+        const corners = mobile() ? ['bl', 'br'] : ['tl', 'tr', 'bl', 'br'];
+        let best = 'br', bd = Infinity;
+        for (const c of corners) {
+          const px = c.endsWith('l') ? M + r.width / 2 : vw() - M - r.width / 2;
+          const py = c.startsWith('t') ? M + r.height / 2 : vh() - M - r.height / 2;
+          const dist = Math.hypot(cx - px, cy - py);
+          if (dist < bd) { bd = dist; best = c; }
+        }
+        S.pill = best; save(); layoutPill();
+      } else if (d.kind === 'resize') {
+        save();
+      } else if (d.kind === 'sheet') {
+        const hpx = panel.getBoundingClientRect().height;
+        S.sheet = hpx > vh() * 0.72 ? 'full' : 'half';
+        save(); layoutMobile();
+      }
+    };
+    handle.addEventListener('pointerdown', (e) => beginDrag('panel', e));
+    pillGrip.addEventListener('pointerdown', (e) => beginDrag('pill', e));
+    $('paw-resize').addEventListener('pointerdown', (e) => beginDrag('resize', e));
+    $('paw-sheet-grip').addEventListener('pointerdown', (e) => { if (mobile()) beginDrag('sheet', e); });
+    for (const el of [handle, pillGrip, $('paw-resize'), $('paw-sheet-grip')]) {
+      el.addEventListener('pointermove', onMove);
+      el.addEventListener('pointerup', (e) => endDrag(e, false));
+      el.addEventListener('pointercancel', (e) => endDrag(e, true));
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && dragState.active) { endDrag({ pointerId: dragState.active.id }, true); e.stopPropagation(); }
+    }, true);
+    // keyboard nudge for the pill grip (no drag required)
+    pillGrip.addEventListener('keydown', (e) => {
+      const map = { ArrowLeft: 'l', ArrowRight: 'r', ArrowUp: 't', ArrowDown: 'b' };
+      if (!map[e.key]) return;
+      e.preventDefault();
+      let [v, hz] = [S.pill[0], S.pill[1]];
+      if (map[e.key] === 'l') hz = 'l'; if (map[e.key] === 'r') hz = 'r';
+      if (map[e.key] === 't' && !mobile()) v = 't'; if (map[e.key] === 'b') v = 'b';
+      S.pill = v + hz; save(); layoutPill();
+    });
+
+    /* ============================================================
+       POSITION MENU
+       ============================================================ */
+    const closeMenu = () => { menu.hidden = true; posBtn.setAttribute('aria-expanded', 'false'); };
+    posBtn.addEventListener('click', () => {
+      menu.hidden = !menu.hidden;
+      posBtn.setAttribute('aria-expanded', String(!menu.hidden));
+      if (!menu.hidden) menu.querySelector('button:not([hidden])').focus();
+    });
+    menu.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { closeMenu(); posBtn.focus(); e.stopPropagation(); }
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        const items = [...menu.querySelectorAll('button')].filter((b) => b.offsetParent);
+        const i = items.indexOf(document.activeElement);
+        items[(i + (e.key === 'ArrowDown' ? 1 : items.length - 1)) % items.length].focus();
+      }
+    });
+    document.addEventListener('click', (e) => { if (!menu.hidden && !e.target.closest('.paw-menu-wrap')) closeMenu(); });
+    menu.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-pos]');
+      if (!b) return;
+      const pos = b.dataset.pos;
+      if (pos === 'reset') { S.place = JSON.parse(JSON.stringify(DEFAULTS.place)); S.pill = DEFAULTS.pill; S.size = Object.assign({}, DEFAULTS.size); S.sheet = 'half'; }
+      else if (pos === 'float') { const r = panel.getBoundingClientRect(); S.place = { kind: 'float', x: r.left, y: r.top }; }
+      else if (pos === 'dock-left') S.place = { kind: 'dock', side: 'left' };
+      else if (pos === 'dock-right') S.place = { kind: 'dock', side: 'right' };
+      else if (pos === 'dock-project') S.place = { kind: 'dock', side: 'project' };
+      else if (pos === 'pill-bl') S.pill = 'bl';
+      else if (pos === 'pill-br') S.pill = 'br';
+      else S.place = { kind: 'snap', zone: pos };
+      save(); layout(); layoutPill(); closeMenu(); posBtn.focus();
+    });
+    $('paw-undock').addEventListener('click', () => { S.place = { kind: 'snap', zone: 'br' }; save(); layout(); });
+
+    /* ============================================================
+       WIRING
+       ============================================================ */
+    pillOpen.addEventListener('click', () => setMode('exp'));
+    $('paw-min').addEventListener('click', () => setMode('min'));
+    panel.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !dragState.active) {
+        if (!menu.hidden) return; // menu handler closes itself
+        setMode('min');
+      }
+    });
+    $('paw-reset-convo').addEventListener('click', () => {
+      S.convo = []; S.draft = ''; input.value = ''; save();
+      log.querySelectorAll('.paw-msg').forEach((m) => m.remove());
+    });
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const q = input.value.trim();
+      if (!q) return;
+      input.value = ''; S.draft = ''; save();
+      answer(matchAnswer(q), q);
+    });
+    input.addEventListener('input', () => { S.draft = input.value; save(); });
+
+    HOST.onChange(() => { renderContext(); if (S.place.kind === 'dock' && S.place.side === 'project' && !panel.hidden) layout(); });
+    window.addEventListener('resize', () => { layoutPill(); if (!panel.hidden) layout(); });
+
+    // init
+    input.value = S.draft || '';
+    renderContext();
+    restoreConvo();
+    layoutPill();
+    if (S.mode === 'exp') { panel.hidden = false; pill.hidden = true; pillOpen.setAttribute('aria-expanded', 'true'); layout(); }
+  })();
+</script>
+
+<style is:global>
+  .paw-panel[hidden], .paw-menu[hidden], .paw-pill[hidden], .paw-docked-note[hidden] { display: none !important; }
+
+  .paw-pill, .paw-panel {
+    --bg: var(--paw-bg, #fbfaf7);
+    --bg2: var(--paw-bg2, #f1efe9);
+    --ink: var(--paw-ink, #17150f);
+    --mute: var(--paw-mute, #6e6a60);
+    --line: var(--paw-line, #cdcabf);
+    --accent: var(--paw-accent, #e94a10);
+    --radius: var(--paw-radius, 10px);
+    font-family: var(--paw-font, inherit);
+    color: var(--ink);
+    z-index: 900;
+  }
+
+  /* ---------- minimized pill ---------- */
+  .paw-pill {
+    position: fixed;
+    display: flex;
+    align-items: stretch;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: calc(var(--radius) + 4px);
+    box-shadow: 0 10px 30px -14px rgba(0, 0, 0, 0.45);
+  }
+  .paw-pill-grip {
+    display: flex; align-items: center;
+    padding: 0 8px;
+    min-width: 30px;
+    background: var(--bg2);
+    border: none;
+    border-right: 1px solid var(--line);
+    border-radius: calc(var(--radius) + 3px) 0 0 calc(var(--radius) + 3px);
+    color: var(--mute);
+    cursor: grab;
+    touch-action: none;
+    font-size: 13px;
+  }
+  .paw-pill-open {
+    display: flex; align-items: center; gap: 8px;
+    min-height: 48px;
+    padding: 0 18px 0 12px;
+    background: none; border: none;
+    font: inherit; font-weight: 700; font-size: 14px;
+    color: var(--ink);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .paw-pill-ctx { color: var(--mute); font-weight: 600; }
+  .paw-spark { color: var(--accent); }
+
+  /* ---------- panel ---------- */
+  .paw-panel {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    min-width: 340px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.5);
+    transition: left 200ms ease, top 200ms ease, width 200ms ease, height 200ms ease;
+  }
+  body.paw-dragging .paw-panel, body.paw-dragging .paw-pill { transition: none !important; }
+  .paw-panel.paw-docked { border-color: var(--accent); }
+  .paw-panel:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .paw-head {
+    display: flex; align-items: flex-start; gap: 8px;
+    padding: 10px 10px 8px 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  .paw-handle {
+    min-width: 34px; min-height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg2); border: 1px solid var(--line); border-radius: calc(var(--radius) - 4px);
+    color: var(--mute); font-size: 14px;
+    cursor: grab; touch-action: none;
+  }
+  .paw-docked .paw-handle { cursor: default; opacity: 0.4; }
+  .paw-titles { flex: 1; min-width: 0; }
+  .paw-title { margin: 0; font-weight: 800; font-size: 14.5px; line-height: 1.2; padding-top: 4px; }
+  .paw-sub { margin: 3px 0 0; font-size: 11px; color: var(--mute); line-height: 1.35; }
+  .paw-tools { display: flex; gap: 6px; align-items: flex-start; }
+  .paw-btn {
+    min-height: 44px; padding: 0 10px;
+    background: none; border: 1px solid var(--line); border-radius: calc(var(--radius) - 4px);
+    font: inherit; font-size: 12px; font-weight: 700; color: var(--ink);
+    cursor: pointer;
+  }
+  .paw-btn:hover { background: var(--bg2); }
+  .paw-min { min-width: 44px; font-size: 16px; }
+
+  .paw-menu-wrap { position: relative; }
+  .paw-menu {
+    position: absolute; right: 0; top: calc(100% + 4px);
+    display: flex; flex-direction: column;
+    min-width: 220px;
+    background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: 0 16px 40px -18px rgba(0, 0, 0, 0.5);
+    padding: 6px; z-index: 10;
+  }
+  .paw-menu button {
+    text-align: left; background: none; border: none;
+    font: inherit; font-size: 13px; color: var(--ink);
+    padding: 9px 10px; min-height: 40px; border-radius: calc(var(--radius) - 4px);
+    cursor: pointer;
+  }
+  .paw-menu button:hover, .paw-menu button:focus-visible { background: var(--bg2); }
+  @media (max-width: 760px) { .paw-desk { display: none; } }
+  @media (min-width: 761px) { .paw-mob { display: none; } }
+
+  .paw-docked-note {
+    margin: 0; padding: 6px 14px;
+    font-size: 11.5px; color: var(--mute);
+    border-bottom: 1px solid var(--line);
+    background: var(--bg2);
+  }
+  .paw-linklike { background: none; border: none; padding: 0; font: inherit; color: var(--accent); text-decoration: underline; cursor: pointer; }
+
+  .paw-sheet-grip { display: none; }
+
+  .paw-log {
+    flex: 1; min-height: 0;
+    overflow-y: auto;
+    padding: 14px;
+    display: flex; flex-direction: column; gap: 12px;
+    overscroll-behavior: contain;
+  }
+  .paw-intro-lede { margin: 0; font-size: 13px; line-height: 1.5; color: var(--ink); }
+  .paw-intro-ctx { margin: 8px 0 10px; font-size: 12px; line-height: 1.45; color: var(--mute); }
+  .paw-sugg, .paw-acts { display: flex; flex-wrap: wrap; gap: 6px; }
+  .paw-chip {
+    display: inline-flex; align-items: center;
+    min-height: 34px; padding: 5px 11px;
+    background: var(--bg2); border: 1px solid var(--line); border-radius: 999px;
+    font: inherit; font-size: 12px; font-weight: 600; color: var(--ink);
+    cursor: pointer; text-decoration: none; text-align: left;
+  }
+  .paw-chip:hover { border-color: var(--accent); }
+  .paw-msg { max-width: 100%; }
+  .paw-msg-u {
+    align-self: flex-end;
+    font-size: 13px; font-weight: 600;
+    color: var(--mute);
+    padding: 6px 0 0;
+    border-top: 1px solid var(--line);
+    width: 100%; text-align: right;
+  }
+  .paw-msg-a p { margin: 0 0 8px; font-size: 13.5px; line-height: 1.55; }
+  .paw-evd { display: flex; flex-wrap: wrap; gap: 6px; }
+  .paw-evd span {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--mute);
+    border: 1px dashed var(--line); border-radius: 4px;
+    padding: 3px 7px;
+  }
+  .paw-acts { margin-top: 8px; }
+
+  .paw-inputrow {
+    display: flex; gap: 6px; align-items: center;
+    padding: 10px;
+    border-top: 1px solid var(--line);
+  }
+  .paw-input {
+    flex: 1; min-width: 0; min-height: 44px;
+    padding: 0 12px;
+    background: var(--bg2); color: var(--ink);
+    border: 1px solid var(--line); border-radius: calc(var(--radius) - 2px);
+    font: inherit; font-size: 13.5px;
+  }
+  .paw-input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .paw-mic {
+    min-height: 44px; padding: 0 10px;
+    display: inline-flex; align-items: center; gap: 6px;
+    background: none; border: 1px dashed var(--line); border-radius: calc(var(--radius) - 2px);
+    color: var(--mute); font: inherit; font-size: 10.5px; font-weight: 700;
+    cursor: not-allowed;
+  }
+  .paw-mic-note { max-width: 64px; line-height: 1.15; text-align: left; }
+  .paw-send {
+    min-height: 44px; min-width: 56px;
+    background: var(--ink); color: var(--bg);
+    border: none; border-radius: calc(var(--radius) - 2px);
+    font: inherit; font-size: 13px; font-weight: 800;
+    cursor: pointer;
+  }
+  .paw-send:hover { background: var(--accent); }
+
+  .paw-resize {
+    position: absolute; right: 2px; bottom: 2px;
+    width: 22px; height: 22px;
+    background:
+      linear-gradient(135deg, transparent 50%, var(--mute) 50%, var(--mute) 58%, transparent 58%, transparent 72%, var(--mute) 72%, var(--mute) 80%, transparent 80%);
+    border: none; cursor: nwse-resize; touch-action: none;
+    opacity: 0.7;
+  }
+  .paw-docked .paw-resize { display: none; }
+
+  .paw-pill button:focus-visible, .paw-panel button:focus-visible, .paw-panel a:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+
+  .paw-live { position: fixed; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
+  /* ---------- mobile bottom sheet ---------- */
+  @media (max-width: 760px) {
+    .paw-panel.paw-sheet {
+      min-width: 0;
+      border-radius: 16px 16px 0 0;
+      border-left: none; border-right: none; border-bottom: none;
+      box-shadow: 0 -18px 50px -20px rgba(0, 0, 0, 0.55);
+      transition: height 200ms ease;
+    }
+    .paw-sheet .paw-sheet-grip {
+      display: flex; justify-content: center;
+      padding: 8px 0 2px;
+      touch-action: none;
+      cursor: grab;
+      order: -1;
+    }
+    .paw-sheet .paw-sheet-grip span { width: 44px; height: 5px; border-radius: 3px; background: var(--line); }
+    .paw-sheet .paw-handle { display: none; }
+    .paw-sheet .paw-resize { display: none; }
+    .paw-mic-note { display: none; }
+    .paw-pill-ctx { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .paw-panel, .paw-panel.paw-sheet, .paw-pill { transition: none !important; }
+  }
+</style>
