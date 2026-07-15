@@ -1,0 +1,68 @@
+{
+  "groups": {
+    "product-design": {
+      "skills": [
+        "Product design",
+        "UX/UI",
+        "Interaction design",
+        "UX writing"
+      ],
+      "projects": [
+        "finderly",
+        "asteri",
+        "startupos"
+      ]
+    },
+    "design-systems": {
+      "skills": [
+        "Design tokens",
+        "Token architecture",
+        "Material 3 / HCT color systems",
+        "Component systems",
+        "Ant Design theming"
+      ],
+      "projects": [
+        "asteri",
+        "finderly",
+        "startupos"
+      ]
+    },
+    "front-end": {
+      "skills": [
+        "React Native",
+        "Expo",
+        "React",
+        "Next.js",
+        "TypeScript",
+        "CSS Modules",
+        "Reanimated"
+      ],
+      "projects": [
+        "finderly",
+        "asteri"
+      ]
+    },
+    "ai-workflow": {
+      "skills": [
+        "Agentic build workflow (Claude Code, Codex)",
+        "Figma-to-code token pipeline",
+        "Deterministic demo data and API mocks"
+      ],
+      "projects": [
+        "finderly",
+        "asteri"
+      ]
+    },
+    "brand": {
+      "skills": [
+        "Brand identity",
+        "Wordmark design",
+        "Webflow",
+        "Tool selection for maintainability"
+      ],
+      "projects": [
+        "artparde"
+      ]
+    }
+  }
+}

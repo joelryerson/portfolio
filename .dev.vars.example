@@ -1,0 +1,8 @@
+# Copy to .dev.vars for local `wrangler pages dev` runs. NEVER commit .dev.vars.
+# Secrets (set in Cloudflare with `wrangler pages secret put <NAME>` or the dashboard):
+OPENAI_API_KEY=
+OPENAI_VECTOR_STORE_ID=
+# Non-sensitive config:
+OPENAI_MODEL=gpt-5-mini
+# Set to 1 to force scripted fallback even when secrets exist:
+PAW_FORCE_FALLBACK=

@@ -1,0 +1,76 @@
+// Creates/reuses the portfolio vector store and uploads the approved
+// searchable documents. Safe to rerun when knowledge files change (it
+// replaces files with the same name). Requires OPENAI_API_KEY in the
+// environment — the key is never printed or written anywhere.
+//
+//   OPENAI_API_KEY=sk-... node scripts/portfolio-ai/upload-knowledge.mjs
+//
+// Output: the vector-store ID to set as the OPENAI_VECTOR_STORE_ID secret.
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const KEY = process.env.OPENAI_API_KEY;
+if (!KEY) {
+  console.error('OPENAI_API_KEY is not set. Aborting (nothing uploaded).');
+  process.exit(1);
+}
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+const DOCS = path.join(ROOT, 'src/data/portfolio-knowledge/docs');
+const STORE_NAME = 'joel-portfolio-knowledge';
+const H = { authorization: `Bearer ${KEY}` };
+const api = async (url, opts = {}) => {
+  const res = await fetch('https://api.openai.com/v1' + url, { ...opts, headers: { ...H, ...(opts.headers || {}) } });
+  if (!res.ok) throw new Error(`${url} -> ${res.status}: ${(await res.text()).slice(0, 300)}`);
+  return res.json();
+};
+
+// 1. create or reuse the vector store
+const stores = await api('/vector_stores?limit=100');
+let store = stores.data.find((s) => s.name === STORE_NAME);
+if (store) console.log('Reusing vector store:', store.id);
+else {
+  store = await api('/vector_stores', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ name: STORE_NAME }),
+  });
+  console.log('Created vector store:', store.id);
+}
+
+// 2. remove stale files with the same names, then upload approved docs
+const existing = await api(`/vector_stores/${store.id}/files?limit=100`);
+const docFiles = fs.readdirSync(DOCS).filter((f) => f.endsWith('.md'));
+for (const vf of existing.data) {
+  try {
+    const meta = await api('/files/' + vf.id);
+    if (docFiles.includes(meta.filename)) {
+      await api(`/vector_stores/${store.id}/files/${vf.id}`, { method: 'DELETE' });
+      await api('/files/' + vf.id, { method: 'DELETE' });
+      console.log('Replaced stale', meta.filename);
+    }
+  } catch (e) { /* file already gone */ }
+}
+for (const f of docFiles) {
+  const form = new FormData();
+  form.append('purpose', 'assistants');
+  form.append('file', new Blob([fs.readFileSync(path.join(DOCS, f))], { type: 'text/markdown' }), f);
+  const file = await api('/files', { method: 'POST', body: form });
+  await api(`/vector_stores/${store.id}/files`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ file_id: file.id }),
+  });
+  console.log('Uploaded', f);
+}
+
+// 3. wait for indexing
+process.stdout.write('Indexing');
+for (;;) {
+  const s = await api('/vector_stores/' + store.id);
+  if (s.file_counts.in_progress === 0) { console.log(' done:', JSON.stringify(s.file_counts)); break; }
+  process.stdout.write('.');
+  await new Promise((r) => setTimeout(r, 1500));
+}
+console.log('\nSet this as the OPENAI_VECTOR_STORE_ID secret:');
+console.log(store.id);

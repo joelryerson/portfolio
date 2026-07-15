@@ -176,6 +176,7 @@ const projects = [
         const pawListeners = [];
         window.PAW_HOST = {
           route: 'focus-matrix',
+          live: true,
           getProject: () => matrix.dataset.active || '',
           setProject: (id) => select(id),
           onChange: (cb) => pawListeners.push(cb),

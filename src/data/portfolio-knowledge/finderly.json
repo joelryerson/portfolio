@@ -1,0 +1,126 @@
+{
+  "project": "finderly",
+  "name": "Finderly",
+  "facts": [
+    {
+      "id": "fin-001",
+      "statement": "Joel designed and shipped a product-wide UX overhaul of Finderly (AI Vision Technologies' AI home-repair app): 379 commits across 303 files in one month, June–July 2026.",
+      "category": "scope",
+      "project": "finderly",
+      "status": "shipped",
+      "dateRange": "June–July 2026",
+      "sourceLabel": "Finderly · case study",
+      "sourcePath": "/work/finderly/",
+      "sourceAnchor": null,
+      "skills": [
+        "Product design",
+        "Front-end implementation"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "fin-002",
+      "statement": "The central decision was rebuilding Finderly as media-first and state-aware rather than chat-first: the home leads with a persistent capture hero, recent projects, and common fixes.",
+      "category": "decision",
+      "project": "finderly",
+      "status": "shipped",
+      "dateRange": "June–July 2026",
+      "sourceLabel": "Finderly · The decision",
+      "sourcePath": "/work/finderly/",
+      "sourceAnchor": "#the-decision",
+      "skills": [
+        "Product judgment"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "fin-003",
+      "statement": "Joel rebuilt the capture pipeline end to end: ordered multi-capture (up to six photos or one video), a warm camera between shots, one review surface, and a 'living blueprint' analysis state driven by the real upload lifecycle.",
+      "category": "execution",
+      "project": "finderly",
+      "status": "shipped",
+      "dateRange": "June–July 2026",
+      "sourceLabel": "Finderly · Capture pipeline",
+      "sourcePath": "/work/finderly/",
+      "sourceAnchor": "#making-capture-worth-leading-with",
+      "skills": [
+        "Interaction design",
+        "Front-end implementation"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "fin-004",
+      "statement": "Joel implemented in the product's React Native / Expo / TypeScript codebase; the color system became a Material HCT-generated system with 57 semantic roles, with judgment calls recorded in version control.",
+      "category": "technical",
+      "project": "finderly",
+      "status": "implemented",
+      "dateRange": "June–July 2026",
+      "sourceLabel": "Finderly · case study",
+      "sourcePath": "/work/finderly/",
+      "sourceAnchor": null,
+      "skills": [
+        "React Native",
+        "Design tokens"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "fin-005",
+      "statement": "Joel cut features he had already built when they did not earn their complexity: drag-to-reorder for review media was removed, and sound recording moved out of review into an AI-requested diagnostic.",
+      "category": "decision",
+      "project": "finderly",
+      "status": "shipped",
+      "sourceLabel": "Finderly · What got cut",
+      "sourcePath": "/work/finderly/",
+      "sourceAnchor": "#what-got-cut",
+      "skills": [
+        "Product judgment"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "fin-006",
+      "statement": "The overhaul ran as an agentic workflow: a design audit document as source of truth, AI agents building at Joel's direction, with taste, cuts, and QA staying human. The month ended with the frontend suite green and the branch merged to main.",
+      "category": "process",
+      "project": "finderly",
+      "status": "shipped",
+      "sourceLabel": "Finderly · Agentic workflow",
+      "sourcePath": "/work/finderly/",
+      "sourceAnchor": "#how-one-designer-ships-this-in-a-month",
+      "skills": [
+        "Agentic build workflow"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "fin-007",
+      "statement": "Honest-interface decisions shipped: progress bars hidden while backend step tracking was untrustworthy, real privacy controls replacing a misleading cookie banner, and web AI consent recorded as passive rather than falsely claimed as explicit.",
+      "category": "decision",
+      "project": "finderly",
+      "status": "shipped",
+      "sourceLabel": "Finderly · case study",
+      "sourcePath": "/work/finderly/",
+      "sourceAnchor": null,
+      "skills": [
+        "Product judgment"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "fin-008",
+      "statement": "Public outcome metrics for Finderly (usage, conversion, retention) are not part of the public case study.",
+      "category": "limitation",
+      "project": "finderly",
+      "status": "not_publicly_verifiable",
+      "sourceLabel": "Public-evidence limitation",
+      "sourcePath": null,
+      "sourceAnchor": null,
+      "skills": [],
+      "visibility": "public",
+      "limitations": [
+        "Case study documents scope and decisions, not usage metrics."
+      ]
+    }
+  ]
+}

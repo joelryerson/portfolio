@@ -1,0 +1,63 @@
+{
+  "project": "artparde",
+  "name": "ArtPärdē",
+  "facts": [
+    {
+      "id": "ap-001",
+      "statement": "Joel built the brand identity and Webflow website for ArtPärdē, a San Francisco 501(c)(3) performing-arts nonprofit (2024, ongoing), and still keeps the site current when new shows land.",
+      "category": "scope",
+      "project": "artparde",
+      "status": "shipped",
+      "dateRange": "2024–ongoing",
+      "sourceLabel": "ArtPärdē · case study",
+      "sourcePath": "/work/artparde/",
+      "sourceAnchor": null,
+      "skills": [
+        "Brand identity",
+        "Webflow"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "ap-002",
+      "statement": "The deliberate decision was boring, durable tooling for a volunteer-run nonprofit: Webflow so a new show is a content edit, Zeffy because it takes zero platform fees, with the craft budget spent on the brand.",
+      "category": "decision",
+      "project": "artparde",
+      "status": "shipped",
+      "sourceLabel": "ArtPärdē · Boring, durable tooling",
+      "sourcePath": "/work/artparde/",
+      "sourceAnchor": "#the-decision",
+      "skills": [
+        "Tool selection"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "ap-003",
+      "statement": "The ARTPÄRDĒ wordmark went through image-model-assisted concepting, a typeface study across dozens of settings, and was finally vectorized letter by letter: machine breadth, human finish.",
+      "category": "execution",
+      "project": "artparde",
+      "status": "shipped",
+      "sourceLabel": "ArtPärdē · case study",
+      "sourcePath": "/work/artparde/",
+      "sourceAnchor": null,
+      "skills": [
+        "Brand identity",
+        "Wordmark design"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "ap-004",
+      "statement": "Two years on, the site is still the organization's home; updates take minutes and nothing has needed rescuing.",
+      "category": "outcome",
+      "project": "artparde",
+      "status": "shipped",
+      "sourceLabel": "ArtPärdē · Two years on",
+      "sourcePath": "/work/artparde/",
+      "sourceAnchor": "#where-it-landed",
+      "skills": [],
+      "visibility": "public"
+    }
+  ]
+}

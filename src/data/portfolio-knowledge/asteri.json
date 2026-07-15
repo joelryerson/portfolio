@@ -1,0 +1,150 @@
+{
+  "project": "asteri",
+  "name": "Asteri AI",
+  "facts": [
+    {
+      "id": "ast-001",
+      "statement": "Joel's six-week engagement (May–June 2026) at Asteri, a seed-stage AI startup building a work-intelligence platform for Fortune 500 life-sciences teams, produced the company's first design system foundation.",
+      "category": "scope",
+      "project": "asteri",
+      "status": "shipped",
+      "dateRange": "May–June 2026",
+      "sourceLabel": "Asteri · case study",
+      "sourcePath": "/work/asteri/",
+      "sourceAnchor": null,
+      "skills": [
+        "Design systems"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "ast-002",
+      "statement": "Joel audited roughly 370 frontend files and found systemic UI inconsistency: about one style decision in ten flowed through a token; the rest were restated inline, per file, by hand.",
+      "category": "finding",
+      "project": "asteri",
+      "status": "shipped",
+      "sourceLabel": "Asteri · The audit finding",
+      "sourcePath": "/work/asteri/",
+      "sourceAnchor": "#the-finding",
+      "skills": [
+        "Audit"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "ast-003",
+      "statement": "Joel proposed token infrastructure first instead of restyling screens, pitching it to leadership as maintenance cost and regression risk; it became the direction in one conversation.",
+      "category": "decision",
+      "project": "asteri",
+      "status": "shipped",
+      "sourceLabel": "Asteri · Infrastructure-first pivot",
+      "sourcePath": "/work/asteri/",
+      "sourceAnchor": "#the-pivot",
+      "skills": [
+        "Design systems",
+        "Stakeholder communication"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "ast-004",
+      "statement": "Leadership made the business-critical data table off-limits (no redesign, restyle, or rebuild); Joel planned the migration around that constraint rather than fighting it.",
+      "category": "constraint",
+      "project": "asteri",
+      "status": "shipped",
+      "sourceLabel": "Asteri · Infrastructure-first pivot",
+      "sourcePath": "/work/asteri/",
+      "sourceAnchor": "#the-pivot",
+      "skills": [
+        "Migration planning"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "ast-005",
+      "statement": "What got built: a two-layer token hierarchy (primitives aliased into semantic tokens) generating CSS variables for CSS Modules and custom components, mapped into the Ant Design theme layer.",
+      "category": "technical",
+      "project": "asteri",
+      "status": "shipped",
+      "sourceLabel": "Asteri · Design-system foundation",
+      "sourcePath": "/work/asteri/",
+      "sourceAnchor": "#what-got-built",
+      "skills": [
+        "Token architecture"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "ast-006",
+      "statement": "Joel's first token architecture had values duplicated across four claimed sources of truth; he identified the flaw and iterated to a leaner semantic architecture with fewer sources of truth.",
+      "category": "iteration",
+      "project": "asteri",
+      "status": "shipped",
+      "sourceLabel": "Asteri · case study (deep dive)",
+      "sourcePath": "/work/asteri/",
+      "sourceAnchor": null,
+      "skills": [
+        "Token architecture"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "ast-007",
+      "statement": "The pilot migration covered about seven dashboard files with appearance intentionally unchanged: zero visual diff, QA'd against a mock server, reviewable and testable by design.",
+      "category": "execution",
+      "project": "asteri",
+      "status": "shipped",
+      "sourceLabel": "Asteri · Zero-visual-diff tradeoff",
+      "sourcePath": "/work/asteri/",
+      "sourceAnchor": "#the-tradeoff",
+      "skills": [
+        "Migration planning"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "ast-008",
+      "statement": "The token foundation reached production on the pilot dashboard surfaces within the engagement, with documentation and a migration path the engineering team adopted to continue the rollout after Joel left.",
+      "category": "outcome",
+      "project": "asteri",
+      "status": "shipped",
+      "sourceLabel": "Asteri · Where it landed",
+      "sourcePath": "/work/asteri/",
+      "sourceAnchor": "#where-it-landed",
+      "skills": [
+        "Design systems"
+      ],
+      "visibility": "public",
+      "limitations": [
+        "Scope precision: production reach within the engagement was the pilot surfaces; the broader rollout was continued by engineering after the engagement."
+      ]
+    },
+    {
+      "id": "ast-009",
+      "statement": "The product homepage's migration remained under review when the engagement ended.",
+      "category": "status",
+      "project": "asteri",
+      "status": "under_review",
+      "sourceLabel": "Asteri · case study",
+      "sourcePath": "/work/asteri/",
+      "sourceAnchor": null,
+      "skills": [],
+      "visibility": "public",
+      "limitations": [
+        "Stated by Joel for these prototypes; not yet spelled out in the public case study, which is awaiting a precision pass."
+      ]
+    },
+    {
+      "id": "ast-010",
+      "statement": "Public product imagery for Asteri is limited: the case study uses abstracted diagrams and neutralized artifacts rather than product screenshots, due to client constraints.",
+      "category": "limitation",
+      "project": "asteri",
+      "status": "not_publicly_verifiable",
+      "sourceLabel": "Public-evidence limitation",
+      "sourcePath": "/work/asteri/",
+      "sourceAnchor": null,
+      "skills": [],
+      "visibility": "public"
+    }
+  ]
+}

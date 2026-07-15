@@ -1,0 +1,77 @@
+{
+  "project": "startupos",
+  "name": "StartupOS",
+  "facts": [
+    {
+      "id": "sos-001",
+      "statement": "In 2022 Joel was the product designer for StartupOS, a founder-education platform, designing every surface from landing pages through dashboards to networking, and writing the copy before a content designer was hired.",
+      "category": "scope",
+      "project": "startupos",
+      "status": "historical",
+      "dateRange": "2022",
+      "sourceLabel": "StartupOS · case study",
+      "sourcePath": "/work/startup-platform/",
+      "sourceAnchor": null,
+      "skills": [
+        "Product design",
+        "UX writing"
+      ],
+      "visibility": "public",
+      "limitations": [
+        "The 2022 date and 'Product Designer' title are reconstructed from salvaged materials and are pending Joel's final verification."
+      ]
+    },
+    {
+      "id": "sos-002",
+      "statement": "Joel designed one reusable Learning Unit template (five iterations against user feedback) instead of bespoke unit designs, so direction changes landed in one place and propagated everywhere.",
+      "category": "decision",
+      "project": "startupos",
+      "status": "historical",
+      "sourceLabel": "StartupOS · Template pivot",
+      "sourcePath": "/work/startup-platform/",
+      "sourceAnchor": "#the-pivot",
+      "skills": [
+        "Design systems thinking"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "sos-003",
+      "statement": "The MVP shipped inside five months; founders used the Pitch Deck path on real decks and Demo Day feedback validated the platform.",
+      "category": "outcome",
+      "project": "startupos",
+      "status": "historical",
+      "sourceLabel": "StartupOS · case study",
+      "sourcePath": "/work/startup-platform/",
+      "sourceAnchor": "#where-it-landed",
+      "skills": [],
+      "visibility": "public"
+    },
+    {
+      "id": "sos-004",
+      "statement": "The Problem-Solution Fit unit put a real validation experiment in front of non-expert founders as a wizard: one decision per screen, a review step, and an honest fork afterward.",
+      "category": "execution",
+      "project": "startupos",
+      "status": "historical",
+      "sourceLabel": "StartupOS · Problem-Solution Fit wizard",
+      "sourcePath": "/work/startup-platform/",
+      "sourceAnchor": "#getting-specific",
+      "skills": [
+        "UX design"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "sos-005",
+      "statement": "StartupOS is deliberately presented as dated 2022 work: pre-AI process and Material Design foundations, kept because the structure-over-artifacts instinct is the same one behind Asteri's token system.",
+      "category": "context",
+      "project": "startupos",
+      "status": "historical",
+      "sourceLabel": "StartupOS · 2022 seen from 2026",
+      "sourcePath": "/work/startup-platform/",
+      "sourceAnchor": "#2022-seen-from-2026",
+      "skills": [],
+      "visibility": "public"
+    }
+  ]
+}

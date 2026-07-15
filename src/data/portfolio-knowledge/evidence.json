@@ -1,0 +1,106 @@
+{
+  "allowedRoutes": [
+    "/work/finderly/",
+    "/work/asteri/",
+    "/work/startup-platform/",
+    "/work/artparde/"
+  ],
+  "targets": {
+    "fin-case": {
+      "label": "Finderly · case study",
+      "project": "finderly",
+      "url": "/work/finderly/"
+    },
+    "fin-decision": {
+      "label": "Finderly · The decision (media-first)",
+      "project": "finderly",
+      "url": "/work/finderly/#the-decision"
+    },
+    "fin-capture": {
+      "label": "Finderly · Capture pipeline",
+      "project": "finderly",
+      "url": "/work/finderly/#making-capture-worth-leading-with"
+    },
+    "fin-cuts": {
+      "label": "Finderly · What got cut",
+      "project": "finderly",
+      "url": "/work/finderly/#what-got-cut"
+    },
+    "fin-workflow": {
+      "label": "Finderly · Agentic workflow",
+      "project": "finderly",
+      "url": "/work/finderly/#how-one-designer-ships-this-in-a-month"
+    },
+    "ast-case": {
+      "label": "Asteri · case study",
+      "project": "asteri",
+      "url": "/work/asteri/"
+    },
+    "ast-finding": {
+      "label": "Asteri · The audit finding",
+      "project": "asteri",
+      "url": "/work/asteri/#the-finding"
+    },
+    "ast-pivot": {
+      "label": "Asteri · Infrastructure-first pivot",
+      "project": "asteri",
+      "url": "/work/asteri/#the-pivot"
+    },
+    "ast-built": {
+      "label": "Asteri · Design-system foundation",
+      "project": "asteri",
+      "url": "/work/asteri/#what-got-built"
+    },
+    "ast-tradeoff": {
+      "label": "Asteri · Zero-visual-diff tradeoff",
+      "project": "asteri",
+      "url": "/work/asteri/#the-tradeoff"
+    },
+    "ast-landed": {
+      "label": "Asteri · Where it landed",
+      "project": "asteri",
+      "url": "/work/asteri/#where-it-landed"
+    },
+    "sos-case": {
+      "label": "StartupOS · case study",
+      "project": "startupos",
+      "url": "/work/startup-platform/"
+    },
+    "sos-pivot": {
+      "label": "StartupOS · Template pivot",
+      "project": "startupos",
+      "url": "/work/startup-platform/#the-pivot"
+    },
+    "sos-specific": {
+      "label": "StartupOS · Problem-Solution Fit wizard",
+      "project": "startupos",
+      "url": "/work/startup-platform/#getting-specific"
+    },
+    "sos-dated": {
+      "label": "StartupOS · 2022 seen from 2026",
+      "project": "startupos",
+      "url": "/work/startup-platform/#2022-seen-from-2026"
+    },
+    "ap-case": {
+      "label": "ArtPärdē · case study",
+      "project": "artparde",
+      "url": "/work/artparde/"
+    },
+    "ap-decision": {
+      "label": "ArtPärdē · Boring, durable tooling",
+      "project": "artparde",
+      "url": "/work/artparde/#the-decision"
+    },
+    "ap-landed": {
+      "label": "ArtPärdē · Two years on",
+      "project": "artparde",
+      "url": "/work/artparde/#where-it-landed"
+    },
+    "limit-public": {
+      "label": "Public-evidence limitation",
+      "project": null,
+      "url": null,
+      "description": "A stated boundary of the public materials, not a link."
+    }
+  }
+}

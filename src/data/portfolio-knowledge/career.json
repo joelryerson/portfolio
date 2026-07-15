@@ -1,0 +1,39 @@
+{
+  "engagements": [
+    {
+      "project": "finderly",
+      "org": "AI Vision Technologies",
+      "role": "Design Engineer",
+      "dateRange": "June–July 2026",
+      "summary": "Product-wide UX overhaul of an AI home-repair app: 379 commits across 303 files in one month, shipped (frontend suite green, branch merged to main)."
+    },
+    {
+      "project": "asteri",
+      "org": "Asteri (seed-stage AI startup)",
+      "role": "Design Engineer",
+      "dateRange": "May–June 2026",
+      "summary": "Six-week engagement: styling audit, token infrastructure, pilot migration of dashboard surfaces with zero visual diff; engineering continued the rollout."
+    },
+    {
+      "project": "artparde",
+      "org": "ArtPärdē (501(c)(3) performing-arts nonprofit)",
+      "role": "Brand & web",
+      "dateRange": "2024, ongoing",
+      "summary": "Brand identity and Webflow site; still the organization's home two years later. Joel keeps the site current when new shows land."
+    },
+    {
+      "project": "startupos",
+      "org": "StartupOS",
+      "role": "Product Designer",
+      "dateRange": "2022",
+      "summary": "Designed every surface of a founder-education platform; MVP shipped in five months on a reusable learning-unit template system."
+    }
+  ],
+  "pathNote": {
+    "statement": "Joel's route into design ran through caregiving, EMT work, barista work, and business development before product design and design engineering.",
+    "visibility": "public",
+    "limitations": [
+      "The public About page presenting this in full is still in progress."
+    ]
+  }
+}

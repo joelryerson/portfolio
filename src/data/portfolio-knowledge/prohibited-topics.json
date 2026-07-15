@@ -1,0 +1,112 @@
+{
+  "note": "Patterns are matched against the lowercased question with apostrophes stripped. Keep phrases specific enough not to collide with normal hiring questions.",
+  "categories": [
+    {
+      "id": "health",
+      "label": "Health, medications, or mental health",
+      "patterns": [
+        "medication",
+        "medications",
+        "diagnos",
+        "mental health",
+        "therapy",
+        "illness",
+        "his health",
+        "joels health",
+        "medical history",
+        "medical condition",
+        "disability"
+      ]
+    },
+    {
+      "id": "finances",
+      "label": "Personal finances or salary",
+      "patterns": [
+        "salary",
+        "compensation history",
+        "net worth",
+        "his debt",
+        "financial situation",
+        "his income",
+        "how much does joel make",
+        "how much does he make",
+        "pay rate"
+      ]
+    },
+    {
+      "id": "family",
+      "label": "Family, partner, or private relationships",
+      "patterns": [
+        "his partner",
+        "joels partner",
+        "his wife",
+        "his husband",
+        "girlfriend",
+        "boyfriend",
+        "his family",
+        "joels family",
+        "is joel married",
+        "his kids",
+        "his children",
+        "his mother",
+        "his father"
+      ]
+    },
+    {
+      "id": "private-comms",
+      "label": "Private conversations or messages",
+      "patterns": [
+        "private conversation",
+        "private message",
+        "his dms",
+        "text messages",
+        "private chats",
+        "private ai conversation",
+        "ai chat history"
+      ]
+    },
+    {
+      "id": "confidential",
+      "label": "Confidential client or company information",
+      "patterns": [
+        "confidential",
+        "under nda",
+        "internal asteri",
+        "asteri product details",
+        "proprietary",
+        "internal documents",
+        "private source code"
+      ]
+    },
+    {
+      "id": "protected",
+      "label": "Protected characteristics",
+      "patterns": [
+        "how old is joel",
+        "joels age",
+        "his age",
+        "his religion",
+        "his ethnicity",
+        "his race",
+        "sexual orientation",
+        "political views",
+        "political affiliation"
+      ]
+    },
+    {
+      "id": "impersonation",
+      "label": "Impersonation requests",
+      "patterns": [
+        "pretend you are joel",
+        "answer as joel",
+        "speak as joel",
+        "respond as joel",
+        "in first person as joel",
+        "roleplay as joel",
+        "pretend to be joel",
+        "answer in first person"
+      ]
+    }
+  ],
+  "refusal": "That is outside what this guide covers. It answers questions about Joel's public professional work: his projects, decisions, skills, and the evidence behind them. For anything personal, ask Joel directly."
+}

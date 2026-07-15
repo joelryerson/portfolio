@@ -1,0 +1,35 @@
+{
+  "pairs": [
+    {
+      "q": "What did Joel personally own on Finderly?",
+      "a": "Joel owned Finderly's product design end to end — UX, UI, and the front-end implementation of what he designed: 379 commits across 303 files in one month. The defining call was rebuilding the home around starting a repair rather than a chat thread.",
+      "evidence": [
+        "fin-case",
+        "fin-decision"
+      ]
+    },
+    {
+      "q": "What actually shipped at Asteri?",
+      "a": "The token foundation reached production on the pilot dashboard surfaces within the six-week engagement, with zero visual difference by design, and the engineering team adopted the documented migration path to continue the rollout after Joel left. The product homepage's migration was still under review when the engagement ended.",
+      "evidence": [
+        "ast-landed",
+        "ast-tradeoff"
+      ]
+    },
+    {
+      "q": "Why was the core Asteri table left unchanged?",
+      "a": "Leadership made the business-critical data table off-limits — no redesign, restyle, or rebuild. Joel planned the migration around that constraint rather than fighting it; his view in the case study is that a system that only works when nothing is off-limits is not much of a system.",
+      "evidence": [
+        "ast-pivot"
+      ]
+    },
+    {
+      "q": "What remained in use at ArtPärdē after delivery?",
+      "a": "The identity and the website — two years on, the site is still the organization's home. Day-to-day it runs on tooling volunteers can operate, and Joel still keeps the site current when new shows land.",
+      "evidence": [
+        "ap-landed",
+        "ap-case"
+      ]
+    }
+  ]
+}

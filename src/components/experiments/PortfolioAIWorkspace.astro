@@ -82,6 +82,17 @@
     </div>
   </div>
 
+  <div class="paw-cmp-bar" id="paw-cmp-bar" hidden>
+    <button class="paw-chip" id="paw-cmp-toggle" type="button" aria-expanded="false">Compare Joel to a role</button>
+  </div>
+  <div class="paw-cmp" id="paw-cmp" hidden>
+    <textarea id="paw-jd" maxlength="12000" rows="5" placeholder="Paste a job description…" aria-label="Job description to compare against Joel’s public evidence"></textarea>
+    <div class="paw-cmp-row">
+      <button type="button" id="paw-cmp-run" class="paw-send">Compare</button>
+      <button type="button" id="paw-cmp-clear" class="paw-btn">Clear</button>
+    </div>
+  </div>
+
   <form class="paw-inputrow" id="paw-form">
     <input class="paw-input" id="paw-input" type="text" autocomplete="off"
       placeholder="Ask a hiring question…" aria-label="Ask a question about Joel" />
@@ -115,6 +126,7 @@
     const NAMES = { finderly: 'Finderly', asteri: 'Asteri AI', startupos: 'StartupOS', artparde: 'ArtPärdē' };
     const CASE = { finderly: '/work/finderly/', asteri: '/work/asteri/', startupos: '/work/startup-platform/', artparde: '/work/artparde/' };
     const mobile = () => matchMedia('(max-width: 760px)').matches;
+    const LIVE = !!HOST.live;   // grounded endpoint enabled for this host only
 
     /* ============================================================
        KNOWLEDGE — deterministic local data. Verified facts only.
@@ -232,7 +244,7 @@
         'Asteri is Joel’s clearest public design-systems example. He audited fragmented styling sources, explored an initial token structure, identified duplication in that approach, and consolidated it into a leaner foundation. The core Activity Database table was intentionally left unchanged, and the homepage migration remained under review when the engagement ended.',
         ['Token chain', 'Two-paths diagram'], [['show', 'asteri'], ['case', 'asteri'], ['ask', 'cmp-ast-sos']], 'asteri'),
       A('ast-table', 'Why was the core table left unchanged?', ['core table', 'table left unchanged', 'table unchanged'],
-        'The core table is the product’s primary workflow, so Joel left it intentionally unchanged while the foundations moved underneath it. The pilot migration was appearance-unchanged by design: modernized implementation, zero visual diff, no user retraining.',
+        'Leadership made the business-critical table off-limits — no redesign, restyle, or rebuild — and Joel planned the migration around that constraint rather than fighting it. His view in the case study: a system that only works when nothing is off-limits is not much of a system. The pilot migration elsewhere was appearance-unchanged by design: zero visual diff.',
         ['Two-paths diagram · pilot migration'], [['case', 'asteri']], 'asteri'),
       // ---- startupos ----
       A('sos-system', 'What reusable system did Joel create?', ['reusable system', 'system did joel create'],
@@ -258,7 +270,7 @@
         'It is the clearest public evidence of Joel’s visual range: a hand-drawn, color-forward identity system applied across the mark, the site, and event collateral — deliberately unlike the enterprise product work elsewhere in the portfolio.',
         ['Identity mark'], [['show', 'artparde']], 'artparde'),
       A('ap-inuse', 'What remained in use after delivery?', ['remained in use', 'after delivery', 'still in use'],
-        'The identity and the website. The organization continues to run both without him, which was the explicit goal of the engagement.',
+        'The identity and the website — two years on, the site is still the organization’s home and nothing has needed rescuing. Day-to-day it runs on tooling volunteers can operate, and Joel still keeps the site current when new shows land.',
         ['Live site'], [['case', 'artparde']], 'artparde'),
     ];
     const byId = Object.fromEntries(ANSWERS.map((a) => [a.id, a]));
@@ -305,7 +317,7 @@
       place: hostDefaults().expanded,
       pillMode: 'host', pillCorner: 'br', pillXY: null,
       size: { w: 404, h: 560 }, sheet: 'half',
-      convo: [], draft: '', unread: 0, herePid: null,
+      convo: [], draft: '', jd: '', unread: 0, herePid: null,
     });
     let S;
     try {
@@ -364,11 +376,22 @@
         if (dock === 'follow' || dock === 'here') {
           const pid = dock === 'here' ? S.herePid : (HOST.getProject() || null);
           const rect = pid ? HOST.region(pid) : HOST.region();
-          if (rect && rect.width > 300) {
-            W = Math.min(w, Math.max(320, rect.width - 24));
-            H = Math.min(h, Math.max(420, rect.height - 24));
+          if (rect && rect.width >= w + 24 && rect.height >= 444) {
+            // region is large enough: dock inside its safe area
+            W = Math.min(w, rect.width - 24);
+            H = Math.min(h, rect.height - 24);
             [x, y] = clamp(rect.right - W - 12, rect.top + 12, W, H);
             noteMsg = NOTE_LABEL[dock];
+          } else if (rect) {
+            // region collapsed below the panel's usable minimum: keep the
+            // association but sit just beside it (toward the viewport
+            // center), at full usable size — never shrink below minimum
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+            const px = cx < vw() / 2 ? rect.right + 12 : rect.left - W - 12;
+            const py = cy < vh() / 2 ? rect.top : rect.bottom - H;
+            [x, y] = clamp(px, py, W, H);
+            noteMsg = 'Docked near this region';
           } else { // no region available: quiet fallback to a safe snap
             [x, y] = zoneXY('br', W, H);
             noteMsg = NOTE_LABEL[dock] + ' · no anchor available';
@@ -475,8 +498,17 @@
       const el = document.createElement('div');
       el.className = 'paw-msg paw-msg-' + m.who;
       if (m.who === 'u') { el.textContent = m.text; return el; }
-      let html = '<p>' + esc(m.text) + '</p>';
-      if (m.evidence && m.evidence.length) html += '<p class="paw-evd">' + m.evidence.map((e) => '<span>Evidence · ' + esc(e) + '</span>').join('') + '</p>';
+      let html = '<p>' + esc(m.text).replace(/\n/g, '<br>') + '</p>';
+      if (m.evidence && m.evidence.length) html += '<p class="paw-evd">' + m.evidence.map((e) => {
+        if (typeof e === 'string') return '<span>Evidence · ' + esc(e) + '</span>';
+        const label = 'Evidence · ' + esc(e.label || '');
+        const url = e.url && /^\/work\//.test(e.url) ? e.url : null;
+        return url
+          ? '<a href="' + esc(url) + '" title="' + esc(e.relevance || '') + '">' + label + '</a>'
+          : '<span title="' + esc(e.relevance || '') + '">' + label + '</span>';
+      }).join('') + '</p>';
+      if (m.limitations && m.limitations.length) html += '<p class="paw-limits">' + m.limitations.map(esc).join('<br>') + '</p>';
+      if (m.confidence && m.confidence !== 'high') html += '<p class="paw-conf">Confidence: ' + esc(m.confidence) + '</p>';
       el.innerHTML = html;
       if (m.actions && m.actions.length) {
         const row = document.createElement('div');
@@ -490,17 +522,30 @@
           } else {
             const b = document.createElement('button');
             b.type = 'button'; b.className = 'paw-chip';
-            b.textContent = kind === 'show' ? 'Show ' + NAMES[arg] : (byId[arg] ? byId[arg].label : arg);
+            b.textContent = kind === 'show' ? 'Show ' + NAMES[arg] : kind === 'askfree' ? arg : (byId[arg] ? byId[arg].label : arg);
             b.addEventListener('click', () => {
               if (kind === 'show') {
                 HOST.setProject(arg);
                 live.textContent = 'Now showing ' + NAMES[arg];
-              } else answer(byId[arg], byId[arg].label);
+              } else if (kind === 'askfree') submitQuestion(arg);
+              else answer(byId[arg], byId[arg].label);
             });
             row.appendChild(b);
           }
         }
         el.appendChild(row);
+      }
+      if (m.followUps && m.followUps.length) {
+        const fu = document.createElement('div');
+        fu.className = 'paw-acts';
+        for (const q of m.followUps) {
+          const b = document.createElement('button');
+          b.type = 'button'; b.className = 'paw-chip';
+          b.textContent = q;
+          b.addEventListener('click', () => submitQuestion(q));
+          fu.appendChild(b);
+        }
+        el.appendChild(fu);
       }
       return el;
     };
@@ -529,6 +574,110 @@
       respond({ who: 'a', text: a.text, evidence: a.evidence, actions: a.actions });
     };
 
+    /* ============================================================
+       LIVE grounded requests (Focus Matrix only) — cancellable,
+       duplicate-safe, falls back to the scripted summary
+       ============================================================ */
+    const FALLBACK_NOTE = 'The live AI guide is temporarily unavailable, so this answer uses Joel’s verified portfolio summary.';
+    let inflight = null;
+    const setBusy = (b) => {
+      form.querySelector('.paw-send').disabled = b;
+      const run = $('paw-cmp-run');
+      if (run) run.disabled = b;
+    };
+    const cancelInflight = () => {
+      if (!inflight) return;
+      inflight.userCancelled = true;
+      inflight.controller.abort();
+      inflight.row.remove();
+      inflight = null;
+      setBusy(false);
+    };
+    const loadingRow = () => {
+      const el = document.createElement('div');
+      el.className = 'paw-loading';
+      const s = document.createElement('span');
+      s.textContent = 'Finding relevant portfolio evidence…';
+      const c = document.createElement('button');
+      c.type = 'button'; c.className = 'paw-linklike'; c.textContent = 'Cancel';
+      c.addEventListener('click', cancelInflight);
+      el.append(s, c);
+      log.appendChild(el);
+      log.scrollTop = log.scrollHeight;
+      return el;
+    };
+    const errorRow = (question, mode, jd, msg) => {
+      const el = document.createElement('div');
+      el.className = 'paw-loading paw-error';
+      const s = document.createElement('span');
+      s.textContent = msg || 'The guide could not answer just now.';
+      const r = document.createElement('button');
+      r.type = 'button'; r.className = 'paw-linklike'; r.textContent = 'Retry';
+      r.addEventListener('click', () => { el.remove(); liveAsk(question, mode, jd, true); });
+      el.append(s, r);
+      log.appendChild(el);
+      log.scrollTop = log.scrollHeight;
+    };
+    const scriptedFallback = (question, mode) => {
+      if (mode === 'role_comparison') {
+        push({ who: 'a', text: 'Role comparison needs the live guide, which is temporarily unavailable. In the meantime, the four case studies are the verified evidence base for any role match.', evidence: ['All four case studies'], actions: [['case', 'finderly'], ['case', 'asteri'], ['case', 'startupos'], ['case', 'artparde']], limitations: [FALLBACK_NOTE] });
+        return;
+      }
+      const a = matchAnswer(question);
+      if (!a) { push({ who: 'a', text: 'The verified summary covers Joel’s four public projects: what he owned, what shipped, and the honest limits of the public evidence. Try one of the suggested questions, or name a project.', evidence: [], actions: [['ask', 'own-global'], ['ask', 'gaps']], limitations: [FALLBACK_NOTE] }); return; }
+      if (a.id === 'open-relevant') { answer(a, question); return; }
+      push({ who: 'a', text: a.text, evidence: a.evidence, actions: a.actions, limitations: [FALLBACK_NOTE] });
+    };
+    const liveAsk = async (question, mode, jd, isRetry) => {
+      if (inflight) return; // duplicate-submission guard
+      if (!isRetry) push({ who: 'u', text: mode === 'role_comparison' ? 'Compare Joel to a role (job description pasted)' : question });
+      const row = loadingRow();
+      setBusy(true);
+      const controller = new AbortController();
+      const requestId = 'r' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+      const me = { controller, row, requestId, userCancelled: false };
+      inflight = me;
+      const timeout = setTimeout(() => { if (inflight === me) controller.abort(); }, 30000);
+      let res = null, data = null;
+      try {
+        res = await fetch('/api/portfolio-ai', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          signal: controller.signal,
+          body: JSON.stringify({
+            requestId,
+            question: mode === 'role_comparison' ? '' : question,
+            jobDescription: mode === 'role_comparison' ? jd : '',
+            mode: mode === 'role_comparison' ? 'role_comparison' : 'question',
+            project: HOST.getProject() || '',
+            context: S.convo.slice(-8).map((m) => ({ who: m.who, text: String(m.text || '').slice(0, 1200) })),
+          }),
+        });
+        data = await res.json().catch(() => null);
+      } catch (err) {
+        clearTimeout(timeout);
+        if (me.userCancelled || inflight !== me) return; // cancelled: no stale insert
+        inflight = null; setBusy(false); row.remove();
+        scriptedFallback(question, mode);
+        return;
+      }
+      clearTimeout(timeout);
+      if (me.userCancelled || inflight !== me) return; // cancelled mid-flight
+      inflight = null; setBusy(false); row.remove();
+      if (!res.ok) { errorRow(question, mode, jd, data && data.error ? data.error : null); return; }
+      if (!data || data.mode === 'fallback') { scriptedFallback(question, mode); return; }
+      push({
+        who: 'a',
+        text: data.answer,
+        evidence: (data.evidence || []).map((e) => ({ label: e.sourceLabel, url: e.url, relevance: e.relevance })),
+        actions: (data.actions || []).map((a) => { const i = a.indexOf(':'); const k = a.slice(0, i); return [k === 'ask' ? 'askfree' : k, a.slice(i + 1)]; }),
+        followUps: data.followUps || [],
+        limitations: data.limitations || [],
+        confidence: data.confidence,
+      });
+    };
+    const submitQuestion = (q) => { if (LIVE) liveAsk(q, 'question'); else answer(matchAnswer(q), q); };
+
     const renderSuggestions = () => {
       const p = HOST.getProject();
       const list = p ? PROJ_SUGG[p] : GLOBAL_SUGG;
@@ -537,7 +686,7 @@
         const b = document.createElement('button');
         b.type = 'button'; b.className = 'paw-chip';
         b.textContent = byId[id].label;
-        b.addEventListener('click', () => answer(byId[id], byId[id].label));
+        b.addEventListener('click', () => submitQuestion(byId[id].label));
         suggBox.appendChild(b);
       }
     };
@@ -748,17 +897,44 @@
       const q = input.value.trim();
       if (!q) return;
       input.value = ''; S.draft = ''; save();
-      answer(matchAnswer(q), q);
+      submitQuestion(q);
     });
     input.addEventListener('input', () => { S.draft = input.value; save(); });
 
     HOST.onChange(() => {
       renderContext();
       if (S.unread === 0) updatePill();
-      if (!panel.hidden && S.place.kind === 'dock' && (S.place.side === 'follow' || S.place.side === 'here')) layout();
-      if (panel.hidden && S.pillMode === 'host') layoutPill();
+      // host layouts animate (~600ms): re-measure after the transition settles
+      const settle = () => {
+        if (!panel.hidden && S.place.kind === 'dock' && (S.place.side === 'follow' || S.place.side === 'here')) layout();
+        if (panel.hidden && S.pillMode === 'host') layoutPill();
+      };
+      settle();
+      setTimeout(settle, 380);
+      setTimeout(settle, 750);
     });
     window.addEventListener('resize', () => { layoutPill(); if (!panel.hidden) layout(); });
+
+    // compare-to-role UI (live host only)
+    if (LIVE) {
+      $('paw-cmp-bar').hidden = false;
+      document.querySelector('.paw-intro-note').textContent = 'AI guide grounded in Joel’s approved professional materials.';
+      document.querySelector('.paw-intro-lede').textContent = 'Ask hiring questions about Joel’s work; answers cite his approved public evidence. Questions are answered using Joel’s approved professional materials, and this prototype does not intentionally store conversation transcripts. The guide is not a substitute for speaking with Joel.';
+      const jdEl = $('paw-jd');
+      jdEl.value = S.jd || '';
+      $('paw-cmp-toggle').addEventListener('click', () => {
+        const open = $('paw-cmp').hidden;
+        $('paw-cmp').hidden = !open;
+        $('paw-cmp-toggle').setAttribute('aria-expanded', String(open));
+        if (open) jdEl.focus();
+      });
+      jdEl.addEventListener('input', () => { S.jd = jdEl.value; save(); });
+      $('paw-cmp-run').addEventListener('click', () => {
+        const jd = jdEl.value.trim();
+        if (jd) liveAsk('', 'role_comparison', jd);
+      });
+      $('paw-cmp-clear').addEventListener('click', () => { jdEl.value = ''; S.jd = ''; save(); });
+    }
 
     // init
     input.value = S.draft || '';
@@ -945,6 +1121,30 @@
     padding: 3px 7px;
   }
   .paw-acts { margin-top: 8px; }
+
+  .paw-loading {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12.5px; color: var(--mute);
+    padding: 4px 0;
+  }
+  .paw-error span { color: var(--ink); }
+  .paw-limits {
+    margin: 6px 0 0;
+    font-size: 11.5px; line-height: 1.45; color: var(--mute);
+    border-left: 2px solid var(--line);
+    padding-left: 8px;
+  }
+  .paw-conf { margin: 4px 0 0; font-size: 11px; color: var(--mute); }
+  .paw-cmp-bar { padding: 8px 10px 0; }
+  .paw-cmp { padding: 8px 10px 0; display: flex; flex-direction: column; gap: 8px; }
+  .paw-cmp textarea {
+    width: 100%; resize: vertical; min-height: 90px; max-height: 220px;
+    background: var(--bg2); color: var(--ink);
+    border: 1px solid var(--line); border-radius: calc(var(--radius) - 2px);
+    font: inherit; font-size: 12.5px; padding: 8px 10px;
+  }
+  .paw-cmp textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .paw-cmp-row { display: flex; gap: 8px; }
 
   .paw-inputrow {
     display: flex; gap: 6px; align-items: center;
