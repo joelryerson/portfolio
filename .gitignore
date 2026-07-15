@@ -20,3 +20,4 @@ npm-debug.log*
 content/raw/
 .dev.vars
 .wrangler/
+.private/

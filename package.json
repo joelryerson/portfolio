@@ -6,7 +6,10 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "portfolio-ai:import-linkedin": "node scripts/portfolio-ai/linkedin/import-linkedin.mjs",
+    "portfolio-ai:approve-linkedin": "node scripts/portfolio-ai/linkedin/approve-linkedin.mjs",
+    "portfolio-ai:test-linkedin": "node scripts/portfolio-ai/linkedin/tests/run-tests.mjs"
   },
   "repository": {
     "type": "git",

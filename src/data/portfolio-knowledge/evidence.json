@@ -101,6 +101,12 @@
       "project": null,
       "url": null,
       "description": "A stated boundary of the public materials, not a link."
+    },
+    "career-summary": {
+      "label": "Approved career timeline",
+      "project": null,
+      "url": null,
+      "description": "Approved structured career fact; the public About page presenting it in full is in progress."
     }
   }
 }

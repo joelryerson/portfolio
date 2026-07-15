@@ -1,0 +1,11 @@
+{
+  "version": 0,
+  "note": "Approved structured career timeline. Only the approve-linkedin command may write roles here; raw/pending LinkedIn data never enters this file. The 2020 baseline is approved independently of any LinkedIn import.",
+  "baseline": {
+    "professionalDesignStartYear": 2020,
+    "approxYears": "approximately six years as of 2026",
+    "approvedFactId": "car-001"
+  },
+  "roles": [],
+  "provenance": { "lastImportedAt": null, "lastApprovedAt": null, "sourceExportDate": null, "sourceHash": null, "approvalVersion": 0 }
+}

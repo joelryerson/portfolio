@@ -22,7 +22,7 @@ for (const c of cases) {
     question: c.question || '',
     jobDescription: c.jobDescription || '',
     mode: c.mode === 'role_comparison' ? 'role_comparison' : 'question',
-    project: '',
+    project: c.project || '',
     context: [],
   };
   const t0 = performance.now();
@@ -65,7 +65,7 @@ for (const c of cases) {
     continue;
   }
 
-  const answer = String(data.answer || '');
+  const answer = String(data.answer || '').replace(/[\u2010-\u2015\u2212]/g, '-');
   const lower = answer.toLowerCase();
   const evidenceUrls = (data.evidence || []).map((e) => e.url || '').join(' ');
   const problems = [];

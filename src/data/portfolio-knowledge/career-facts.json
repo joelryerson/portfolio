@@ -1,0 +1,69 @@
+{
+  "project": "career",
+  "name": "Career & positioning",
+  "facts": [
+    {
+      "id": "car-001",
+      "statement": "Joel has approximately six years of professional design experience beginning in 2020, spanning product design, UX/UI, visual systems, front-end implementation, and design-system work.",
+      "category": "career-duration",
+      "project": "career",
+      "status": "shipped",
+      "dateRange": "2020–present",
+      "sourceLabel": "Approved career timeline",
+      "sourcePath": null,
+      "sourceAnchor": null,
+      "skills": [
+        "Product design",
+        "UX/UI"
+      ],
+      "visibility": "public",
+      "limitations": [
+        "This is the total professional design timeline. It does not imply six years of any single specialty (React Native, design systems, AI-assisted development, management, or enterprise SaaS)."
+      ]
+    },
+    {
+      "id": "car-002",
+      "statement": "Joel is a product, UX, and UI designer first, whose role has evolved to include implementing, owning, and maintaining the front end. AI-assisted development has changed the traditional handoff between design and engineering, allowing him to carry product decisions further into production while retaining responsibility for interaction quality, visual systems, usability, and implementation. His work sits in an emerging space between product design and design engineering, but product judgment remains the foundation.",
+      "category": "positioning",
+      "project": "career",
+      "status": "shipped",
+      "sourceLabel": "Approved positioning",
+      "sourcePath": null,
+      "sourceAnchor": null,
+      "skills": [
+        "Product design",
+        "Front-end implementation"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "car-003",
+      "statement": "Joel is a product designer who owns implementation. His foundation is product, UX, and UI design, but his role now extends through front-end development and maintenance using AI-assisted workflows.",
+      "category": "positioning",
+      "project": "career",
+      "status": "shipped",
+      "sourceLabel": "Approved positioning (short)",
+      "sourcePath": null,
+      "sourceAnchor": null,
+      "skills": [
+        "Product design"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "car-004",
+      "statement": "Before product design: emergency medicine, caregiving, and enterprise sales.",
+      "category": "career-path",
+      "project": "career",
+      "status": "historical",
+      "sourceLabel": "Approved career note",
+      "sourcePath": null,
+      "sourceAnchor": null,
+      "skills": [],
+      "visibility": "public",
+      "limitations": [
+        "Approved summary only; the full chronology is reserved for the public About page."
+      ]
+    }
+  ]
+}

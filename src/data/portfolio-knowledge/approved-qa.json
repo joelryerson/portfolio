@@ -55,7 +55,7 @@
     },
     {
       "q": "How technical is Joel?",
-      "a": "Joel implements what he designs. On Finderly that meant front-end work in the product’s React Native codebase; this portfolio itself is custom-coded with its own token system; and his build workflow is AI-assisted, with him directing the tools. The honest framing: a product designer with real front-end execution, not a platform engineer.",
+      "a": "Joel is a product designer who owns implementation. On Finderly that meant front-end work in the product’s React Native codebase; this portfolio itself is custom-coded with its own token system; and his build workflow is AI-assisted, with him directing the tools — architecture, prompts, review, QA, and final acceptance stay his. The honest framing: product judgment first, with real front-end execution — not a platform or backend engineer.",
       "evidence": [
         "fin-workflow",
         "fin-case"
@@ -138,6 +138,53 @@
         "fin-case"
       ],
       "mode": "cross_project"
+    },
+    {
+      "q": "How recent is Joel’s strongest work?",
+      "a": "Joel’s most recent major shipped work is Finderly’s large redesign and front-end update, merged in July 2026 — 379 commits across 303 files. Finderly remains an active, ongoing product, so that release is the latest major milestone rather than a finished endpoint. Before that: Asteri’s token foundation (May–June 2026).",
+      "evidence": [
+        "fin-case",
+        "ast-landed"
+      ],
+      "mode": "career"
+    },
+    {
+      "q": "Is Joel more suited to product design or design engineering?",
+      "a": "Joel is best suited to an evolving hybrid role: product designer first, with genuine design-engineering and front-end ownership. His core strength is deciding how a product should work and feel, but he now also implements and maintains those decisions in code. Traditional roles separated product design from front-end execution; AI-assisted development has made that boundary more fluid, and Joel’s recent work — Finderly end to end, Asteri’s token foundation — shows how one person can responsibly own more of the path from product judgment to production.",
+      "evidence": [
+        "fin-case",
+        "ast-built",
+        "career-summary"
+      ],
+      "mode": "career"
+    },
+    {
+      "q": "What is not demonstrated publicly?",
+      "a": "The honest portfolio-level gaps: limited quantified product or business outcomes; no public evidence of formal people management, hiring, or performance management; limited evidence of work at large organizational scale; Asteri’s full design-system rollout is not shown as completed and its homepage migration remained under review; Asteri product imagery is abstracted; and the exact formal StartupOS title is not publicly verified.",
+      "evidence": [
+        "limit-public",
+        "ast-landed"
+      ],
+      "mode": "career"
+    },
+    {
+      "q": "What kind of company gets the most from Joel?",
+      "a": "Early-stage product teams get the most from Joel, especially AI, SaaS, or consumer-product teams that need one designer to move from product strategy and UX decisions into polished front-end implementation. He is particularly useful where design systems are immature and hands-on ownership is valued — the pattern in both Finderly and Asteri.",
+      "evidence": [
+        "fin-case",
+        "ast-case"
+      ],
+      "mode": "career"
+    },
+    {
+      "q": "What did Joel learn or revise during the Asteri work?",
+      "a": "The audit of roughly 370 frontend files found that only about one style decision in ten flowed through a token — the rest were restated inline, per file. Joel’s own first token architecture then repeated the disease in token clothing: values duplicated across four places that each claimed to be the source of truth. He recognized the duplication risk and simplified to a leaner two-layer architecture generating CSS variables and mapping into Ant Design, with production adoption deliberately limited to the pilot dashboard surfaces. The revision of his own approach is the point of the story.",
+      "evidence": [
+        "ast-finding",
+        "ast-built",
+        "ast-tradeoff"
+      ],
+      "mode": "project_question"
     }
   ]
 }

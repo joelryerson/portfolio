@@ -121,6 +121,22 @@
       "limitations": [
         "Case study documents scope and decisions, not usage metrics."
       ]
+    },
+    {
+      "id": "fin-009",
+      "statement": "Joel’s most recent major shipped work is Finderly’s large redesign and front-end update, merged in July 2026. Finderly remains an active, ongoing product, so that release represents the latest major milestone rather than a finished endpoint.",
+      "category": "status",
+      "project": "finderly",
+      "status": "shipped",
+      "dateRange": "July 2026",
+      "sourceLabel": "Finderly · case study",
+      "sourcePath": "/work/finderly/",
+      "sourceAnchor": null,
+      "skills": [],
+      "visibility": "public",
+      "limitations": [
+        "Ongoing means the product continues to evolve; it does not mean the July 2026 release is unfinished or unshipped."
+      ]
     }
   ]
 }

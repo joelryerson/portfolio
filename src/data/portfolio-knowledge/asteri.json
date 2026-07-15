@@ -76,7 +76,7 @@
     },
     {
       "id": "ast-006",
-      "statement": "Joel's first token architecture had values duplicated across four claimed sources of truth; he identified the flaw and iterated to a leaner semantic architecture with fewer sources of truth.",
+      "statement": "Joel’s early proposed design-system structure risked creating too many token surfaces: values were duplicated across four places that each claimed to be the source of truth. He recognized the duplication risk and simplified the approach into a leaner two-layer architecture that generates CSS variables and integrates with the Ant Design theme layer. Initial production adoption remained deliberately limited to the pilot surfaces.",
       "category": "iteration",
       "project": "asteri",
       "status": "shipped",

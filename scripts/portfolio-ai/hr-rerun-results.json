@@ -1,0 +1,475 @@
+{
+  "hr-04": {
+    "sourceMode": "workers_ai",
+    "mode": "cross_project",
+    "answer": "Asteri demonstrates the strongest systems thinking. Joel’s audit of roughly 370 frontend files uncovered systemic UI inconsistencies, leading to a proposal for a token‑based infrastructure that replaces ad‑hoc inline styling. The resulting two‑layer token hierarchy generates CSS variables for CSS Modules and custom components, integrating seamlessly with Ant Design’s theme layer. This design system approach addresses maintainability, consistency, and scalability across the product.",
+    "evidence": [
+      "/work/asteri/#the-finding",
+      "/work/asteri/#the-pivot",
+      "/work/asteri/#what-got-built",
+      "/work/asteri/"
+    ],
+    "limitations": [],
+    "packet": [
+      {
+        "id": "fin-002",
+        "project": "finderly"
+      },
+      {
+        "id": "fin-004",
+        "project": "finderly"
+      },
+      {
+        "id": "fin-005",
+        "project": "finderly"
+      },
+      {
+        "id": "fin-007",
+        "project": "finderly"
+      },
+      {
+        "id": "ast-002",
+        "project": "asteri"
+      },
+      {
+        "id": "ast-003",
+        "project": "asteri"
+      },
+      {
+        "id": "ast-005",
+        "project": "asteri"
+      },
+      {
+        "id": "ast-006",
+        "project": "asteri"
+      },
+      {
+        "id": "sos-002",
+        "project": "startupos"
+      },
+      {
+        "id": "ap-002",
+        "project": "artparde"
+      },
+      {
+        "id": "ap-001",
+        "project": "artparde"
+      }
+    ]
+  },
+  "hr-07": {
+    "sourceMode": "deterministic",
+    "mode": "project_question",
+    "answer": "The audit of roughly 370 frontend files found that only about one style decision in ten flowed through a token — the rest were restated inline, per file. Joel’s own first token architecture then repeated the disease in token clothing: values duplicated across four places that each claimed to be the source of truth. He recognized the duplication risk and simplified to a leaner two-layer architecture generating CSS variables and mapping into Ant Design, with production adoption deliberately limited to the pilot dashboard surfaces. The revision of his own approach is the point of the story.",
+    "evidence": [
+      "/work/asteri/#the-finding",
+      "/work/asteri/#what-got-built",
+      "/work/asteri/#the-tradeoff"
+    ],
+    "limitations": [],
+    "packet": "deterministic (no packet)"
+  },
+  "hr-09": {
+    "sourceMode": "deterministic",
+    "mode": "career",
+    "answer": "The honest portfolio-level gaps: limited quantified product or business outcomes; no public evidence of formal people management, hiring, or performance management; limited evidence of work at large organizational scale; Asteri’s full design-system rollout is not shown as completed and its homepage migration remained under review; Asteri product imagery is abstracted; and the exact formal StartupOS title is not publicly verified.",
+    "evidence": [
+      "Public-evidence limitation",
+      "/work/asteri/#where-it-landed"
+    ],
+    "limitations": [],
+    "packet": "deterministic (no packet)"
+  },
+  "hr-11": {
+    "sourceMode": "deterministic",
+    "mode": "career",
+    "answer": "Joel is best suited to an evolving hybrid role: product designer first, with genuine design-engineering and front-end ownership. His core strength is deciding how a product should work and feel, but he now also implements and maintains those decisions in code. Traditional roles separated product design from front-end execution; AI-assisted development has made that boundary more fluid, and Joel’s recent work — Finderly end to end, Asteri’s token foundation — shows how one person can responsibly own more of the path from product judgment to production.",
+    "evidence": [
+      "/work/finderly/",
+      "/work/asteri/#what-got-built",
+      "Approved career timeline"
+    ],
+    "limitations": [],
+    "packet": "deterministic (no packet)"
+  },
+  "hr-12": {
+    "sourceMode": "workers_ai",
+    "mode": "cross_project",
+    "answer": "For a design‑systems role, start with the Asteri case study—Joel built the company’s first design‑system foundation, including a two‑layer token hierarchy that feeds CSS Modules and Ant Design. The work also involved auditing 370 files for UI consistency.",
+    "evidence": [
+      "/work/asteri/",
+      "/work/asteri/#what-got-built",
+      "/work/asteri/#the-finding"
+    ],
+    "limitations": [],
+    "packet": [
+      {
+        "id": "ast-001",
+        "project": "asteri"
+      },
+      {
+        "id": "ast-003",
+        "project": "asteri"
+      },
+      {
+        "id": "fin-004",
+        "project": "finderly"
+      },
+      {
+        "id": "sos-002",
+        "project": "startupos"
+      },
+      {
+        "id": "ap-003",
+        "project": "artparde"
+      },
+      {
+        "id": "fin-001",
+        "project": "finderly"
+      },
+      {
+        "id": "fin-002",
+        "project": "finderly"
+      },
+      {
+        "id": "fin-003",
+        "project": "finderly"
+      },
+      {
+        "id": "fin-005",
+        "project": "finderly"
+      },
+      {
+        "id": "fin-007",
+        "project": "finderly"
+      },
+      {
+        "id": "ast-002",
+        "project": "asteri"
+      },
+      {
+        "id": "ast-005",
+        "project": "asteri"
+      }
+    ]
+  },
+  "hr-14": {
+    "sourceMode": "workers_ai",
+    "mode": "career",
+    "answer": "Joel uses AI agents to build components and code under his own direction. He defines the product intent and architectural decisions, writes prompts for the agents, and reviews the generated output. The human team retains control over taste, cuts, quality assurance, and final acceptance before the code is merged into the main branch.",
+    "evidence": [
+      "/work/finderly/#how-one-designer-ships-this-in-a-month"
+    ],
+    "limitations": [],
+    "packet": [
+      {
+        "id": "fin-004",
+        "project": "finderly"
+      },
+      {
+        "id": "ap-002",
+        "project": "artparde"
+      },
+      {
+        "id": "fin-006",
+        "project": "finderly"
+      },
+      {
+        "id": "fin-001",
+        "project": "finderly"
+      },
+      {
+        "id": "fin-002",
+        "project": "finderly"
+      },
+      {
+        "id": "fin-003",
+        "project": "finderly"
+      },
+      {
+        "id": "fin-005",
+        "project": "finderly"
+      },
+      {
+        "id": "fin-009",
+        "project": "finderly"
+      },
+      {
+        "id": "ast-002",
+        "project": "asteri"
+      },
+      {
+        "id": "ast-003",
+        "project": "asteri"
+      },
+      {
+        "id": "ast-004",
+        "project": "asteri"
+      },
+      {
+        "id": "ast-006",
+        "project": "asteri"
+      }
+    ]
+  },
+  "hr-15": {
+    "sourceMode": "workers_ai",
+    "mode": "project_question",
+    "answer": "After Joel’s six‑week engagement at Asteri ended in June 2026, the homepage migration remained under review, and the token foundation he built was released to production for a limited set of pilot dashboard surfaces; engineering continued a broader rollout of that foundation.",
+    "evidence": [
+      "/work/asteri/",
+      "/work/asteri/#the-tradeoff",
+      "/work/asteri/#where-it-landed"
+    ],
+    "limitations": [],
+    "packet": [
+      {
+        "id": "ast-001",
+        "project": "asteri"
+      },
+      {
+        "id": "ast-009",
+        "project": "asteri"
+      },
+      {
+        "id": "ast-005",
+        "project": "asteri"
+      },
+      {
+        "id": "ast-006",
+        "project": "asteri"
+      },
+      {
+        "id": "ast-010",
+        "project": "asteri"
+      },
+      {
+        "id": "ast-002",
+        "project": "asteri"
+      },
+      {
+        "id": "ast-003",
+        "project": "asteri"
+      },
+      {
+        "id": "ast-004",
+        "project": "asteri"
+      },
+      {
+        "id": "ast-007",
+        "project": "asteri"
+      },
+      {
+        "id": "ast-008",
+        "project": "asteri"
+      },
+      {
+        "id": "fin-006",
+        "project": "finderly"
+      },
+      {
+        "id": "fin-009",
+        "project": "finderly"
+      }
+    ]
+  },
+  "hr-16": {
+    "sourceMode": "deterministic",
+    "mode": "career",
+    "answer": "Joel’s most recent major shipped work is Finderly’s large redesign and front-end update, merged in July 2026 — 379 commits across 303 files. Finderly remains an active, ongoing product, so that release is the latest major milestone rather than a finished endpoint. Before that: Asteri’s token foundation (May–June 2026).",
+    "evidence": [
+      "/work/finderly/",
+      "/work/asteri/#where-it-landed"
+    ],
+    "limitations": [],
+    "packet": "deterministic (no packet)"
+  },
+  "hr-17": {
+    "sourceMode": "deterministic",
+    "mode": "career",
+    "answer": "Early-stage product teams get the most from Joel, especially AI, SaaS, or consumer-product teams that need one designer to move from product strategy and UX decisions into polished front-end implementation. He is particularly useful where design systems are immature and hands-on ownership is valued — the pattern in both Finderly and Asteri.",
+    "evidence": [
+      "/work/finderly/",
+      "/work/asteri/"
+    ],
+    "limitations": [],
+    "packet": "deterministic (no packet)"
+  },
+  "hr-18": {
+    "sourceMode": "workers_ai",
+    "mode": "role_comparison",
+    "answer": "Strong alignment: Joel meets all listed requirements. He has over six years of professional design experience (2020–present), has shipped consumer and enterprise software (Finderly, Asteri, ArtPärdē, StartupOS), owns end‑to‑end product and front‑end implementation, has built design systems at Finderly and Asteri, has communicated design decisions to leadership, and partners closely with engineering teams.",
+    "evidence": [
+      "car-001",
+      "/work/finderly/",
+      "/work/finderly/",
+      "/work/finderly/#the-decision",
+      "/work/finderly/#what-got-cut",
+      "/work/finderly/"
+    ],
+    "limitations": [],
+    "packet": [
+      {
+        "id": "car-002",
+        "project": "career"
+      },
+      {
+        "id": "car-001",
+        "project": "career"
+      },
+      {
+        "id": "car-003",
+        "project": "career"
+      },
+      {
+        "id": "car-004",
+        "project": "career"
+      },
+      {
+        "id": "fin-004",
+        "project": "finderly"
+      },
+      {
+        "id": "ast-008",
+        "project": "asteri"
+      },
+      {
+        "id": "sos-001",
+        "project": "startupos"
+      },
+      {
+        "id": "fin-001",
+        "project": "finderly"
+      },
+      {
+        "id": "ast-001",
+        "project": "asteri"
+      },
+      {
+        "id": "ap-004",
+        "project": "artparde"
+      },
+      {
+        "id": "fin-002",
+        "project": "finderly"
+      },
+      {
+        "id": "ast-003",
+        "project": "asteri"
+      },
+      {
+        "id": "ast-005",
+        "project": "asteri"
+      },
+      {
+        "id": "sos-003",
+        "project": "startupos"
+      },
+      {
+        "id": "ap-001",
+        "project": "artparde"
+      },
+      {
+        "id": "fin-005",
+        "project": "finderly"
+      },
+      {
+        "id": "fin-006",
+        "project": "finderly"
+      },
+      {
+        "id": "fin-007",
+        "project": "finderly"
+      }
+    ]
+  },
+  "hr-19": {
+    "sourceMode": "workers_ai",
+    "mode": "role_comparison",
+    "answer": "Strong alignment: Joel owns design tokens and theming infrastructure – Finderly’s Material HCT 57‑role system and Asteri’s two‑layer token hierarchy are implemented in production. Joel bridges design and engineering – the Finderly redesign and Asteri token work were built through a design‑driven, AI‑assisted workflow that he led and maintained. Partial alignment: The role calls for accessibility expertise, but no approved fact documents Joel’s work on accessibility standards. Honest gaps: No evidence shows Joel’s experience with accessibility or with TypeScript in the Asteri token implementation. Questions for Joel: Does Joel have experience applying accessibility guidelines in production UI? Can he clarify his use of TypeScript in the Asteri token infrastructure?",
+    "evidence": [
+      "/work/finderly/",
+      "/work/finderly/",
+      "/work/finderly/#how-one-designer-ships-this-in-a-month",
+      "/work/asteri/#what-got-built",
+      "/work/asteri/"
+    ],
+    "limitations": [
+      "No approved fact documents Joel’s experience with accessibility. No approved fact documents Joel’s use of TypeScript in the Asteri token infrastructure."
+    ],
+    "packet": [
+      {
+        "id": "car-002",
+        "project": "career"
+      },
+      {
+        "id": "car-003",
+        "project": "career"
+      },
+      {
+        "id": "car-001",
+        "project": "career"
+      },
+      {
+        "id": "fin-004",
+        "project": "finderly"
+      },
+      {
+        "id": "ast-008",
+        "project": "asteri"
+      },
+      {
+        "id": "car-004",
+        "project": "career"
+      },
+      {
+        "id": "ast-001",
+        "project": "asteri"
+      },
+      {
+        "id": "ast-005",
+        "project": "asteri"
+      },
+      {
+        "id": "sos-001",
+        "project": "startupos"
+      },
+      {
+        "id": "fin-001",
+        "project": "finderly"
+      },
+      {
+        "id": "ast-006",
+        "project": "asteri"
+      },
+      {
+        "id": "ast-003",
+        "project": "asteri"
+      },
+      {
+        "id": "sos-003",
+        "project": "startupos"
+      },
+      {
+        "id": "ap-001",
+        "project": "artparde"
+      },
+      {
+        "id": "ap-004",
+        "project": "artparde"
+      },
+      {
+        "id": "fin-002",
+        "project": "finderly"
+      },
+      {
+        "id": "fin-005",
+        "project": "finderly"
+      },
+      {
+        "id": "fin-006",
+        "project": "finderly"
+      }
+    ]
+  }
+}
