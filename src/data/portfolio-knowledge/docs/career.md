@@ -9,10 +9,6 @@ Positioning: AI-native product design plus design engineering: design systems, t
 - 2024, ongoing — ArtPärdē (501(c)(3) performing-arts nonprofit) — Brand & web: Brand identity and Webflow site; still the organization's home two years later. Joel keeps the site current when new shows land. Evidence: /work/artparde/
 - 2022 — StartupOS — Product Designer: Designed every surface of a founder-education platform; MVP shipped in five months on a reusable learning-unit template system. Evidence: /work/startup-platform/
 
-## Path
-Joel's route into design ran through caregiving, EMT work, barista work, and business development before product design and design engineering.
-Limitation: The public About page presenting this in full is still in progress.
-
 ## Skills
 - product-design: Product design, UX/UI, Interaction design, UX writing (projects: finderly, asteri, startupos)
 - design-systems: Design tokens, Token architecture, Material 3 / HCT color systems, Component systems, Ant Design theming (projects: asteri, finderly, startupos)

@@ -58,10 +58,9 @@ const careerMd = [
   `## Engagements`,
   ...career.engagements.map((e) => `- ${e.dateRange} — ${e.org} — ${e.role}: ${e.summary} Evidence: /work/${e.project === 'startupos' ? 'startup-platform' : e.project}/`),
   ``,
-  `## Path`,
-  career.pathNote.statement,
-  `Limitation: ${career.pathNote.limitations.join(' ')}`,
-  ``,
+  ...(career.pathNote.visibility === 'public'
+    ? [`## Path`, career.pathNote.statement, `Limitation: ${career.pathNote.limitations.join(' ')}`, ``]
+    : []),
   `## Skills`,
   ...Object.entries(skills.groups).map(([k, g]) => `- ${k}: ${g.skills.join(', ')} (projects: ${g.projects.join(', ')})`),
 ].join('\n');

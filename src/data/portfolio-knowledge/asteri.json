@@ -117,7 +117,9 @@
       "visibility": "public",
       "limitations": [
         "Scope precision: production reach within the engagement was the pilot surfaces; the broader rollout was continued by engineering after the engagement."
-      ]
+      ],
+      "approval_required": true,
+      "approvalQuestion": "The public case study says \"first design system shipped to production in six weeks.\" May the assistant ever use that broader phrasing, or does the case study get the precision pass first? Until decided, the assistant states only the pilot-surfaces claim."
     },
     {
       "id": "ast-009",
@@ -132,7 +134,9 @@
       "visibility": "public",
       "limitations": [
         "Stated by Joel for these prototypes; not yet spelled out in the public case study, which is awaiting a precision pass."
-      ]
+      ],
+      "approval_required": true,
+      "approvalQuestion": "Confirm the homepage-migration-under-review status may be stated publicly before it appears in the case study."
     },
     {
       "id": "ast-010",

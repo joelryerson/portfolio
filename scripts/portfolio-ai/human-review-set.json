@@ -1,0 +1,25 @@
+{
+  "note": "Manual hiring-manager acceptance set. Run with human-review.mjs against a LIVE-configured endpoint; it writes human-review-sheet.md with the model outputs and EMPTY score columns. Scores (1–5) for factual accuracy, evidence quality, candor, relevance, concision, usefulness, status precision, confidence calibration, and time-saved-vs-browsing are filled in by a human — never by the model.",
+  "questions": [
+    { "id": "hr-01", "q": "What did Joel personally own?" },
+    { "id": "hr-02", "q": "What work did he implement himself?" },
+    { "id": "hr-03", "q": "Which project best demonstrates product judgment?" },
+    { "id": "hr-04", "q": "Which project shows the strongest systems thinking?" },
+    { "id": "hr-05", "q": "How technical is Joel?" },
+    { "id": "hr-06", "q": "How does Finderly compare with StartupOS?" },
+    { "id": "hr-07", "q": "What did Joel learn or revise during the Asteri work?" },
+    { "id": "hr-08", "q": "What is the strongest public evidence of visual design?" },
+    { "id": "hr-09", "q": "What is not demonstrated publicly?" },
+    { "id": "hr-10", "q": "What should I ask Joel in an interview?" },
+    { "id": "hr-11", "q": "Is Joel more suited to product design or design engineering?" },
+    { "id": "hr-12", "q": "Which case study should I open first for a design-systems role?" },
+    { "id": "hr-13", "q": "What tradeoffs did Joel make on Finderly?" },
+    { "id": "hr-14", "q": "How does Joel work with AI tools?" },
+    { "id": "hr-15", "q": "What happened after Joel's Asteri engagement ended?" },
+    { "id": "hr-16", "q": "How recent is Joel's strongest work?" },
+    { "id": "hr-17", "q": "What kind of company gets the most from Joel?" },
+    { "id": "hr-18", "q": "mode:role_comparison", "jd": "Senior Product Designer. 5+ years shipping consumer or enterprise software; end-to-end ownership; systems thinking; design-system contributions; strong communication with leadership; partners closely with engineering." },
+    { "id": "hr-19", "q": "mode:role_comparison", "jd": "Design Engineer. Production UI in React or React Native; owns design tokens and theming infrastructure; TypeScript; accessibility; AI-assisted development workflow; bridges design and engineering." },
+    { "id": "hr-20", "q": "mode:role_comparison", "jd": "Product Design Manager. 3+ years managing 4+ designers; hiring and performance management; process leadership; roadmap partnership with PM and engineering; mentorship and career development." }
+  ]
+}

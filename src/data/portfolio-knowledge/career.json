@@ -31,9 +31,11 @@
   ],
   "pathNote": {
     "statement": "Joel's route into design ran through caregiving, EMT work, barista work, and business development before product design and design engineering.",
-    "visibility": "public",
+    "visibility": "pending-approval",
     "limitations": [
       "The public About page presenting this in full is still in progress."
-    ]
+    ],
+    "approval_required": true,
+    "approvalQuestion": "May the caregiver → EMT → barista → BDR path be stated by the assistant before the public About page ships?"
   }
 }

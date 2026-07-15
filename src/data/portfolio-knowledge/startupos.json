@@ -19,7 +19,9 @@
       "visibility": "public",
       "limitations": [
         "The 2022 date and 'Product Designer' title are reconstructed from salvaged materials and are pending Joel's final verification."
-      ]
+      ],
+      "approval_required": true,
+      "approvalQuestion": "Confirm the 2022 date and \"Product Designer\" title (currently reconstructed from salvaged copy). Until then the assistant keeps the provenance limitation attached."
     },
     {
       "id": "sos-002",
