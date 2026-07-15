@@ -1,35 +1,143 @@
 {
+  "note": "Canonical questions answered deterministically by the server (no model call). Wording is approved fallback copy; evidence keys map into evidence.json targets.",
   "pairs": [
     {
+      "q": "What did Joel personally own?",
+      "a": "Each case study names it precisely. Finderly: product design plus front-end implementation. Asteri: the styling audit, token architecture, and consolidation strategy. StartupOS: the reusable template system. ArtPärdē: identity and site. Where a team continued the work — like Asteri’s rollout — the case study says so.",
+      "evidence": [
+        "fin-case",
+        "ast-case"
+      ],
+      "mode": "career"
+    },
+    {
       "q": "What did Joel personally own on Finderly?",
-      "a": "Joel owned Finderly's product design end to end — UX, UI, and the front-end implementation of what he designed: 379 commits across 303 files in one month. The defining call was rebuilding the home around starting a repair rather than a chat thread.",
+      "a": "Joel owned Finderly’s product design end to end — UX, UI, and the front-end implementation of what he designed: 379 commits across 303 files in one month. The defining call was rebuilding the home around starting a repair rather than a chat thread.",
       "evidence": [
         "fin-case",
         "fin-decision"
-      ]
+      ],
+      "mode": "project_question"
+    },
+    {
+      "q": "What actually shipped?",
+      "a": "Shipped and verifiable: Finderly’s rebuilt home (light and dark), Asteri’s token foundation on a limited set of pilot dashboard surfaces with engineering continuing the broader rollout, StartupOS’s template-built MVP in 2022, and ArtPärdē’s identity and site, still in use today. Anything that did not ship is labeled as such.",
+      "evidence": [
+        "fin-case",
+        "ast-landed"
+      ],
+      "mode": "cross_project"
     },
     {
       "q": "What actually shipped at Asteri?",
-      "a": "The token foundation reached production on the pilot dashboard surfaces within the six-week engagement, with zero visual difference by design, and the engineering team adopted the documented migration path to continue the rollout after Joel left. The product homepage's migration was still under review when the engagement ended.",
+      "a": "The consolidated token foundation reached production on a limited set of pilot dashboard surfaces — roughly seven files with no intended visual change — and engineering continued the broader rollout after Joel’s six-week engagement ended. The homepage migration remained under review when the engagement ended.",
       "evidence": [
         "ast-landed",
         "ast-tradeoff"
-      ]
+      ],
+      "mode": "project_question"
+    },
+    {
+      "q": "What remained under review at Asteri?",
+      "a": "The homepage migration remained under review when Joel’s engagement ended. That status is stated here directly because the public case study is still awaiting a precision pass on it.",
+      "evidence": [
+        "ast-case"
+      ],
+      "mode": "project_question"
     },
     {
       "q": "Why was the core Asteri table left unchanged?",
       "a": "Leadership made the business-critical data table off-limits — no redesign, restyle, or rebuild. Joel planned the migration around that constraint rather than fighting it; his view in the case study is that a system that only works when nothing is off-limits is not much of a system.",
       "evidence": [
         "ast-pivot"
-      ]
+      ],
+      "mode": "project_question"
     },
     {
-      "q": "What remained in use at ArtPärdē after delivery?",
-      "a": "The identity and the website — two years on, the site is still the organization's home. Day-to-day it runs on tooling volunteers can operate, and Joel still keeps the site current when new shows land.",
+      "q": "How technical is Joel?",
+      "a": "Joel implements what he designs. On Finderly that meant front-end work in the product’s React Native codebase; this portfolio itself is custom-coded with its own token system; and his build workflow is AI-assisted, with him directing the tools. The honest framing: a product designer with real front-end execution, not a platform engineer.",
       "evidence": [
-        "ap-landed",
+        "fin-workflow",
+        "fin-case"
+      ],
+      "mode": "career"
+    },
+    {
+      "q": "Which project best demonstrates systems thinking?",
+      "a": "Asteri is the strongest systems evidence: audit, token architecture, consolidation, and a production rollout strategy inside six weeks. StartupOS shows the same instinct four years earlier as a template system. Together they make the pattern hard to dismiss as a one-off.",
+      "evidence": [
+        "ast-built",
+        "sos-pivot"
+      ],
+      "mode": "cross_project"
+    },
+    {
+      "q": "What system did Joel create for StartupOS?",
+      "a": "Joel designed a reusable Learning Unit template system rather than bespoke screens for each piece of content. The team assembled the MVP from those templates and shipped in five months in 2022.",
+      "evidence": [
+        "sos-pivot",
+        "sos-case"
+      ],
+      "mode": "project_question"
+    },
+    {
+      "q": "What was Joel’s role on StartupOS?",
+      "a": "In 2022, Joel worked on product design for StartupOS, including its reusable template system — designing every surface and writing the copy before a content designer was hired. His exact formal title there is not publicly verified, so the portfolio describes the work rather than a title.",
+      "evidence": [
+        "sos-case"
+      ],
+      "mode": "project_question"
+    },
+    {
+      "q": "What did Joel create for ArtPärdē?",
+      "a": "Joel created ArtPärdē’s identity and built the Webflow website the organization still runs — deliberately boring, durable tooling for a volunteer-run nonprofit, with the craft budget spent on the brand. Two years on it is still the organization’s home, and Joel keeps the site current when new shows land.",
+      "evidence": [
+        "ap-decision",
+        "ap-landed"
+      ],
+      "mode": "project_question"
+    },
+    {
+      "q": "Show me Joel’s branding work",
+      "a": "ArtPärdē is the branding evidence: identity, mark, and website for a performing-arts nonprofit, built so volunteers can run it themselves. It is deliberately the opposite texture from the enterprise product work.",
+      "evidence": [
         "ap-case"
-      ]
+      ],
+      "mode": "project_question"
+    },
+    {
+      "q": "What are the honest gaps in Joel’s public portfolio?",
+      "a": "Three honest limits. Asteri’s public evidence is abstracted — diagrams and neutralized artifacts rather than product screenshots, due to client constraints. StartupOS dates to 2022, and Joel’s formal title there is not publicly verified. And public outcome metrics are limited across projects; the case studies favor verifiable decisions over unverifiable numbers.",
+      "evidence": [
+        "limit-public",
+        "ast-case"
+      ],
+      "mode": "career"
+    },
+    {
+      "q": "What work remained incomplete?",
+      "a": "Two things are stated openly. At Asteri, the homepage migration remained under review when the six-week engagement ended, and engineering continued the token rollout after Joel left. The portfolio treats both as facts, not footnotes.",
+      "evidence": [
+        "ast-landed"
+      ],
+      "mode": "project_question"
+    },
+    {
+      "q": "What did Joel do before design?",
+      "a": "Before product design: emergency medicine, caregiving, and enterprise sales. The public About page presenting this in full is still in progress.",
+      "evidence": [
+        "limit-public"
+      ],
+      "mode": "career"
+    },
+    {
+      "q": "Compare Finderly and StartupOS",
+      "a": "Four years apart, same instinct, different altitude. StartupOS (2022) built reusable templates so a small team could ship an MVP in five months. Finderly (2026) rebuilt a shipped product’s home around the real job, and Joel implemented the front-end himself. The delta between them is the growth story.",
+      "evidence": [
+        "sos-case",
+        "fin-case"
+      ],
+      "mode": "cross_project"
     }
   ]
 }

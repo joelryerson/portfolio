@@ -7,7 +7,11 @@ Positioning: AI-native product design plus design engineering: design systems, t
 - June–July 2026 — AI Vision Technologies — Design Engineer: Product-wide UX overhaul of an AI home-repair app: 379 commits across 303 files in one month, shipped (frontend suite green, branch merged to main). Evidence: /work/finderly/
 - May–June 2026 — Asteri (seed-stage AI startup) — Design Engineer: Six-week engagement: styling audit, token infrastructure, pilot migration of dashboard surfaces with zero visual diff; engineering continued the rollout. Evidence: /work/asteri/
 - 2024, ongoing — ArtPärdē (501(c)(3) performing-arts nonprofit) — Brand & web: Brand identity and Webflow site; still the organization's home two years later. Joel keeps the site current when new shows land. Evidence: /work/artparde/
-- 2022 — StartupOS — Product Designer: Designed every surface of a founder-education platform; MVP shipped in five months on a reusable learning-unit template system. Evidence: /work/startup-platform/
+- 2022 — StartupOS — Product design: Designed every surface of a founder-education platform; MVP shipped in five months on a reusable learning-unit template system. Evidence: /work/startup-platform/
+
+## Path
+Before product design: emergency medicine, caregiving, and enterprise sales.
+Limitation: Approved summary only; the full chronology is reserved for the public About page.
 
 ## Skills
 - product-design: Product design, UX/UI, Interaction design, UX writing (projects: finderly, asteri, startupos)

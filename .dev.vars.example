@@ -1,8 +1,10 @@
-# Copy to .dev.vars for local `wrangler pages dev` runs. NEVER commit .dev.vars.
-# Secrets (set in Cloudflare with `wrangler pages secret put <NAME>` or the dashboard):
-OPENAI_API_KEY=
-OPENAI_VECTOR_STORE_ID=
-# Non-sensitive config:
-OPENAI_MODEL=gpt-5-mini
-# Set to 1 to force scripted fallback even when secrets exist:
+# Copy to .dev.vars for local `wrangler pages dev` runs (gitignored).
+# The Workers AI binding needs no key here — it comes from `wrangler login`
+# plus the --ai AI flag (or dashboard binding when deployed).
+WORKERS_AI_MODEL=@cf/openai/gpt-oss-20b
+# Set to 1 (or true) to disable all inference and use deterministic + fallback only:
 PAW_FORCE_FALLBACK=
+# --- Archived OpenAI variables (inactive; kept only for the archived implementation) ---
+# OPENAI_API_KEY=
+# OPENAI_VECTOR_STORE_ID=
+# OPENAI_MODEL=

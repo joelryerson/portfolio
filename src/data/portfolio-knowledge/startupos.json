@@ -4,7 +4,7 @@
   "facts": [
     {
       "id": "sos-001",
-      "statement": "In 2022 Joel was the product designer for StartupOS, a founder-education platform, designing every surface from landing pages through dashboards to networking, and writing the copy before a content designer was hired.",
+      "statement": "In 2022, Joel worked on product design for StartupOS, a founder-education platform, including its reusable template system — designing every surface from landing pages through dashboards to networking, and writing the copy before a content designer was hired.",
       "category": "scope",
       "project": "startupos",
       "status": "historical",
@@ -18,10 +18,9 @@
       ],
       "visibility": "public",
       "limitations": [
-        "The 2022 date and 'Product Designer' title are reconstructed from salvaged materials and are pending Joel's final verification."
+        "The year 2022 is approved. Joel’s exact formal job title there is not publicly verified, so the assistant describes the work, not a title."
       ],
-      "approval_required": true,
-      "approvalQuestion": "Confirm the 2022 date and \"Product Designer\" title (currently reconstructed from salvaged copy). Until then the assistant keeps the provenance limitation attached."
+      "approval_required": false
     },
     {
       "id": "sos-002",

@@ -24,18 +24,18 @@
     {
       "project": "startupos",
       "org": "StartupOS",
-      "role": "Product Designer",
+      "role": "Product design",
       "dateRange": "2022",
-      "summary": "Designed every surface of a founder-education platform; MVP shipped in five months on a reusable learning-unit template system."
+      "summary": "Designed every surface of a founder-education platform; MVP shipped in five months on a reusable learning-unit template system.",
+      "roleNote": "Formal title not publicly verified"
     }
   ],
   "pathNote": {
-    "statement": "Joel's route into design ran through caregiving, EMT work, barista work, and business development before product design and design engineering.",
-    "visibility": "pending-approval",
+    "statement": "Before product design: emergency medicine, caregiving, and enterprise sales.",
+    "visibility": "public",
+    "approval_required": false,
     "limitations": [
-      "The public About page presenting this in full is still in progress."
-    ],
-    "approval_required": true,
-    "approvalQuestion": "May the caregiver → EMT → barista → BDR path be stated by the assistant before the public About page ships?"
+      "Approved summary only; the full chronology is reserved for the public About page."
+    ]
   }
 }

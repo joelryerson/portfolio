@@ -50,3 +50,23 @@ In every case the knowledge base uses the narrower, safer public claim.
   frontmatter carries titles (Design Engineer / Product Designer / Brand & web).
 - **Resolution**: `career.json` uses the case-study titles as canonical; descriptive role
   summaries remain as summaries, not titles.
+
+
+---
+
+# Resolution addendum (2026-07-17 — Joel's decisions applied)
+
+| # | Status | Applied resolution |
+|---|---|---|
+| 1 | **Resolved (narrow claim approved)** | Assistant states only: token foundation reached production on a limited set of pilot dashboard surfaces (~7 files, no intended visual change); engineering continued the broader rollout. The case-study headline stays flagged for a precision pass. |
+| 2 | **Resolved (approved)** | "The homepage migration remained under review when Joel's engagement ended," with the not-yet-in-case-study limitation retained. |
+| 3 | Resolved earlier | Leadership constraint wording in use. |
+| 4 | **Resolved (split decision)** | 2022 approved. "Product Designer" NOT published as a verified formal title — the assistant describes the work ("worked on product design … including its reusable template system"). |
+| 5 | Resolved earlier | Ongoing-maintenance wording in use. |
+| 6 | **Resolved (narrow line approved)** | Only: "Before product design: emergency medicine, caregiving, and enterprise sales." Full chronology reserved for the About page. |
+
+## Remaining unresolved items
+
+1. The public Asteri case-study headline ("first design system shipped to production in six weeks") still needs its precision pass — a content edit outside this experiment's scope.
+2. The homepage-migration status still is not documented in the public case study (same precision pass).
+3. Public-evidence limitations that are constraints, not conflicts: no Asteri product imagery, no public outcome metrics, no public people-management evidence.

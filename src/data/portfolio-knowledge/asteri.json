@@ -104,7 +104,7 @@
     },
     {
       "id": "ast-008",
-      "statement": "The token foundation reached production on the pilot dashboard surfaces within the engagement, with documentation and a migration path the engineering team adopted to continue the rollout after Joel left.",
+      "statement": "The consolidated token foundation reached production on a limited set of pilot dashboard surfaces, covering roughly seven files with no intended visual change. Engineering continued the broader rollout.",
       "category": "outcome",
       "project": "asteri",
       "status": "shipped",
@@ -116,14 +116,13 @@
       ],
       "visibility": "public",
       "limitations": [
-        "Scope precision: production reach within the engagement was the pilot surfaces; the broader rollout was continued by engineering after the engagement."
+        "The public case-study headline ('first design system shipped to production in six weeks') is broader than this approved claim and is flagged for a later precision pass."
       ],
-      "approval_required": true,
-      "approvalQuestion": "The public case study says \"first design system shipped to production in six weeks.\" May the assistant ever use that broader phrasing, or does the case study get the precision pass first? Until decided, the assistant states only the pilot-surfaces claim."
+      "approval_required": false
     },
     {
       "id": "ast-009",
-      "statement": "The product homepage's migration remained under review when the engagement ended.",
+      "statement": "The homepage migration remained under review when Joel’s engagement ended.",
       "category": "status",
       "project": "asteri",
       "status": "under_review",
@@ -133,10 +132,9 @@
       "skills": [],
       "visibility": "public",
       "limitations": [
-        "Stated by Joel for these prototypes; not yet spelled out in the public case study, which is awaiting a precision pass."
+        "This status is not currently documented in the public case study."
       ],
-      "approval_required": true,
-      "approvalQuestion": "Confirm the homepage-migration-under-review status may be stated publicly before it appears in the case study."
+      "approval_required": false
     },
     {
       "id": "ast-010",

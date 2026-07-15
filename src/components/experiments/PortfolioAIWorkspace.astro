@@ -254,7 +254,7 @@
         'The template structure meant new content did not need new design: each learning unit drew from the same components and layout rules. That is what made a five-month MVP possible for a small team in 2022.',
         ['Template unit · hi-fi'], [['case', 'startupos']], 'startupos'),
       A('sos-role', 'What was Joel’s role?', ['joel’s role', 'joels role', 'role on startupos', 'his role on'],
-        'Joel was the product designer on StartupOS in 2022. It is his strongest legacy piece and it is dated honestly: the portfolio leads with 2026 work and keeps this as evidence of range.',
+        'In 2022, Joel worked on product design for StartupOS, including its reusable template system — his exact formal title there is not publicly verified, so the portfolio describes the work rather than a title. It is his strongest legacy piece and it is dated honestly: the portfolio leads with 2026 work and keeps this as evidence of range.',
         ['StartupOS case study'], [['show', 'startupos']], 'startupos'),
       A('sos-thinking', 'What does this demonstrate about product thinking?', ['product thinking', 'demonstrate about'],
         'It shows the same instinct that later shaped Asteri: invest in reusable structure instead of restyling one-offs. In 2022 that meant templates; in 2026 it meant token infrastructure.',
@@ -579,6 +579,7 @@
        duplicate-safe, falls back to the scripted summary
        ============================================================ */
     const FALLBACK_NOTE = 'The live AI guide is temporarily unavailable, so this answer uses Joel’s verified portfolio summary.';
+    const QUOTA_NOTE = 'The live AI guide has reached its current usage limit, so this answer uses Joel’s verified portfolio summary.';
     let inflight = null;
     const setBusy = (b) => {
       form.querySelector('.paw-send').disabled = b;
@@ -618,15 +619,16 @@
       log.appendChild(el);
       log.scrollTop = log.scrollHeight;
     };
-    const scriptedFallback = (question, mode) => {
+    const scriptedFallback = (question, mode, reason) => {
+      const note = reason === 'quota' ? QUOTA_NOTE : FALLBACK_NOTE;
       if (mode === 'role_comparison') {
-        push({ who: 'a', text: 'Role comparison needs the live guide, which is temporarily unavailable. In the meantime, the four case studies are the verified evidence base for any role match.', evidence: ['All four case studies'], actions: [['case', 'finderly'], ['case', 'asteri'], ['case', 'startupos'], ['case', 'artparde']], limitations: [FALLBACK_NOTE] });
+        push({ who: 'a', text: 'Role comparison needs the live guide, which is unavailable right now. In the meantime, the four case studies are the verified evidence base for any role match.', evidence: ['All four case studies'], actions: [['case', 'finderly'], ['case', 'asteri'], ['case', 'startupos'], ['case', 'artparde']], limitations: [note] });
         return;
       }
       const a = matchAnswer(question);
-      if (!a) { push({ who: 'a', text: 'The verified summary covers Joel’s four public projects: what he owned, what shipped, and the honest limits of the public evidence. Try one of the suggested questions, or name a project.', evidence: [], actions: [['ask', 'own-global'], ['ask', 'gaps']], limitations: [FALLBACK_NOTE] }); return; }
+      if (!a) { push({ who: 'a', text: 'The verified summary covers Joel’s four public projects: what he owned, what shipped, and the honest limits of the public evidence. Try one of the suggested questions, or name a project.', evidence: [], actions: [['ask', 'own-global'], ['ask', 'gaps']], limitations: [note] }); return; }
       if (a.id === 'open-relevant') { answer(a, question); return; }
-      push({ who: 'a', text: a.text, evidence: a.evidence, actions: a.actions, limitations: [FALLBACK_NOTE] });
+      push({ who: 'a', text: a.text, evidence: a.evidence, actions: a.actions, limitations: [note] });
     };
     const liveAsk = async (question, mode, jd, isRetry) => {
       if (inflight) return; // duplicate-submission guard
@@ -665,7 +667,7 @@
       if (me.userCancelled || inflight !== me) return; // cancelled mid-flight
       inflight = null; setBusy(false); row.remove();
       if (!res.ok) { errorRow(question, mode, jd, data && data.error ? data.error : null); return; }
-      if (!data || data.mode === 'fallback') { scriptedFallback(question, mode); return; }
+      if (!data || data.mode === 'fallback') { scriptedFallback(question, mode, data && data.reason); return; }
       push({
         who: 'a',
         text: data.answer,

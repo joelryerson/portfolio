@@ -2,7 +2,7 @@
 
 
 
-Role: Product Designer. Dates: 2022. Organization: StartupOS.
+Role: Product design. Dates: 2022. Organization: StartupOS.
 
 Summary: Designed every surface of a founder-education platform; MVP shipped in five months on a reusable learning-unit template system.
 
@@ -16,12 +16,12 @@ historical marks dated work; not_publicly_verifiable marks stated public limitat
 
 
 
-### In 2022 Joel was the product designer for StartupOS, a founder-education platform, designing every surface from landing pages through dashboards to networking, and writing the copy before a content designer was hired.
+### In 2022, Joel worked on product design for StartupOS, a founder-education platform, including its reusable template system — designing every surface from landing pages through dashboards to networking, and writing the copy before a content designer was hired.
 - Status: historical (2022)
 - Category: scope
 - Evidence: StartupOS · case study — /work/startup-platform/
 - Skills: Product design, UX writing
-- Limitation: The 2022 date and 'Product Designer' title are reconstructed from salvaged materials and are pending Joel's final verification.
+- Limitation: The year 2022 is approved. Joel’s exact formal job title there is not publicly verified, so the assistant describes the work, not a title.
 
 ### Joel designed one reusable Learning Unit template (five iterations against user feedback) instead of bespoke unit designs, so direction changes landed in one place and propagated everywhere.
 - Status: historical

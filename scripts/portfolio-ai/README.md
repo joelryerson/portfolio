@@ -1,64 +1,64 @@
-# Grounded portfolio assistant — setup
+# Grounded portfolio assistant — setup (Workers AI edition)
 
-The `/api/portfolio-ai` Pages Function answers hiring questions grounded in the
-curated knowledge base (`src/data/portfolio-knowledge/`). Until the secrets below
-are configured, the deployed endpoint returns `mode: "fallback"` and the Focus
-Matrix AI route answers from the verified scripted summary instead.
+The `/api/portfolio-ai` Pages Function answers hiring questions using the
+curated knowledge base (`src/data/portfolio-knowledge/`) with **Cloudflare
+Workers AI** — no external API key and no vector store. Retrieval is
+deterministic over the approved facts; the model only synthesizes.
 
-## Secrets and variables
+Hybrid routing: restricted topics and canonical questions are answered
+deterministically server-side; only open-ended questions, cross-project
+synthesis, and job-description comparisons invoke the model. Every response
+carries `sourceMode: deterministic | workers_ai | fallback`.
+
+## Configuration
 
 | Name | Kind | Purpose |
 | --- | --- | --- |
-| `OPENAI_API_KEY` | **secret** | Server-side OpenAI access. Never in client code. |
-| `OPENAI_VECTOR_STORE_ID` | **secret** | Output of the upload script below. |
-| `OPENAI_MODEL` | var (optional) | Defaults to `gpt-5-mini`; change for cost/quality tests. |
-| `PAW_FORCE_FALLBACK` | var (optional) | `1` forces scripted fallback without touching secrets. |
-
-## One-time knowledge upload
-
-```sh
-node scripts/portfolio-ai/build-docs.mjs          # regenerate approved docs from the KB
-OPENAI_API_KEY=sk-... node scripts/portfolio-ai/upload-knowledge.mjs
-# prints the vector-store id → use it below
-```
-
-Rerun both whenever files in `src/data/portfolio-knowledge/` change.
+| `AI` | binding | Workers AI binding (Pages → Settings → Functions → AI, or wrangler config). |
+| `WORKERS_AI_MODEL` | var (optional) | Defaults to `@cf/openai/gpt-oss-20b`. One place to change for quality/usage testing. |
+| `PAW_FORCE_FALLBACK` | var (optional) | `1`/`true` disables all inference (deterministic + scripted fallback only). |
 
 ## Local development
 
 ```sh
-cp .dev.vars.example .dev.vars                    # fill in values; file is gitignored
+npx wrangler login                       # one-time; requires Joel (browser auth)
 npx astro build
-npx wrangler pages dev dist --port 8788           # static site + function locally
+npx wrangler pages dev dist --ai AI      # static site + function + local AI binding
 ```
 
-## Cloudflare preview + production
+Without `wrangler login`, run `npx wrangler pages dev dist` (no `--ai`): the
+endpoint serves deterministic answers and verified fallback; no inference.
+Local `--ai` inference proxies to your Cloudflare account and counts against
+the Workers AI free allocation.
 
-```sh
-npx wrangler pages secret put OPENAI_API_KEY --project-name joelryerson-design
-npx wrangler pages secret put OPENAI_VECTOR_STORE_ID --project-name joelryerson-design
-```
+## Enabling on Cloudflare Preview/Production (manual, Joel only)
 
-or Dashboard → Pages → joelryerson-design → Settings → Environment variables:
-add both secrets (encrypt) plus optional `OPENAI_MODEL`, for **Preview** and
-**Production** environments as desired. Redeploy after adding.
-
-Never commit a real key. `.dev.vars` is gitignored; only `.dev.vars.example`
-belongs in the repo.
+Dashboard → Pages → joelryerson-design → Settings → Functions → **AI binding**
+→ add binding named `AI` for the chosen environment, then redeploy. Do not do
+this until the preview-readiness gate passes.
 
 ## Evaluation
 
 ```sh
 EVAL_URL=http://localhost:8788/api/portfolio-ai node scripts/portfolio-ai/eval.mjs
+EVAL_URL=http://localhost:8788/api/portfolio-ai node scripts/portfolio-ai/human-review.mjs
 ```
 
-Writes `scripts/portfolio-ai/eval-results.json` and prints a pass/fail table.
-Against an unconfigured endpoint, grounded categories report
-`fallback (pending secrets)`; refusal and injection categories still validate.
+`eval.mjs` records `sourceMode` per case: a case only counts as a live pass
+when `sourceMode` is `workers_ai`; quota exhaustion marks cases
+`not_run_quota` (not failed). Usage: the Workers AI dashboard (Cloudflare →
+AI → Workers AI) shows neuron consumption; the response includes a `usage`
+field only when the runtime provides one.
 
-## Production-grade rate limiting (not in this prototype)
+## Archived OpenAI implementation (inactive)
 
-The function throttles per isolate (in-memory, 20 req/min/IP) and rejects
-duplicate request IDs. Real production limits need a durable counter —
-Cloudflare KV, a Durable Object, or the Rate Limiting binding — plus WAF rules.
-Documented here so the gap is explicit.
+`scripts/portfolio-ai/archive/` holds the previous OpenAI Responses +
+File Search endpoint and the vector-store uploader as `.txt` history. They
+are not imported, not routed, and require no configuration. `.dev.vars` /
+OpenAI secrets are no longer needed by anything active.
+
+## Production-grade controls still required before public exposure
+
+Turnstile (or equivalent) bot protection; a Cloudflare-backed global rate
+limit (KV/Durable Object/rate-limit binding) instead of per-isolate memory;
+a maximum daily inference budget with deterministic fallback after it.

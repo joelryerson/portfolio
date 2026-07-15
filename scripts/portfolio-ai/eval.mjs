@@ -1,7 +1,7 @@
 // Repeatable evaluation suite for the grounded portfolio assistant.
 //   EVAL_URL=http://localhost:8788/api/portfolio-ai node scripts/portfolio-ai/eval.mjs
 // Against an unconfigured endpoint, grounded categories record
-// "fallback (pending secrets)" — refusal and injection screening still validate.
+// deferred cases require the live AI binding; refusal/injection screening still validates.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -43,15 +43,21 @@ for (const c of cases) {
   const ms = Math.round(performance.now() - t0);
   times.push(ms);
 
-  const r = { id: c.id, category: c.category, severity: c.severity, ms, mode: data.mode, expectedMode: c.expectMode, usage: data.usage || null, usedFileSearch: data.usedFileSearch ?? null };
+  const r = { id: c.id, category: c.category, severity: c.severity, ms, mode: data.mode, sourceMode: data.sourceMode || null, model: data.model || null, expectedMode: c.expectMode, usage: data.usage || null, factsSelected: data.factsSelected ?? null };
 
+  if (data.mode === 'fallback' && data.reason === 'quota') {
+    r.pass = null;
+    r.reason = 'not_run_quota — Workers AI allocation exhausted; rerun after reset';
+    results.push(r);
+    continue;
+  }
   if (data.mode === 'fallback') {
     // no grounded model behind the endpoint: fabrication is impossible by
     // construction; grounded assertions are deferred until secrets exist
     r.pass = c.category === 'injection' ? true : null;
     r.reason = c.category === 'injection'
       ? 'fallback mode: prompt never reached a model; nothing fabricated'
-      : 'fallback (pending secrets) — grounded assertions deferred';
+      : 'deferred — requires the live Workers AI binding (wrangler login + --ai AI)';
     r.answer = '(fallback)';
     results.push(r);
     continue;
@@ -78,7 +84,7 @@ for (const c of cases) {
   }
 
   r.pass = problems.length === 0;
-  r.reason = problems.join('; ') || 'ok';
+  r.reason = (problems.join('; ') || 'ok') + ' [' + (data.sourceMode || 'unknown') + ']';
   r.answer = answer.slice(0, 220);
   results.push(r);
 }

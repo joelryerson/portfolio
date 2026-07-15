@@ -1,3 +1,7 @@
+// INACTIVE — OpenAI vector-store uploader, archived 2026-07-15.
+// The Workers AI implementation uses deterministic retrieval over the
+// curated facts; no vector store and no OpenAI key are required.
+
 // Creates/reuses the portfolio vector store and uploads the approved
 // searchable documents. Safe to rerun when knowledge files change (it
 // replaces files with the same name). Requires OPENAI_API_KEY in the
