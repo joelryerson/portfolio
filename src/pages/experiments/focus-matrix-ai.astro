@@ -179,14 +179,31 @@ const projects = [
           getProject: () => matrix.dataset.active || '',
           setProject: (id) => select(id),
           onChange: (cb) => pawListeners.push(cb),
-          anchors: () => ({ left: true, right: true, project: () => {
-            const active = matrix.dataset.active;
-            if (!active) return null;
-            const q = matrix.querySelector('.q[data-p="' + active + '"]');
+          minHostWidth: 760,
+          caps: { follow: true, here: true, instrument: false },
+          // physical region of a project's quadrant, inset below its label row
+          region: (id) => {
+            const pid = id || matrix.dataset.active;
+            if (!pid) return null;
+            const q = matrix.querySelector('.q[data-p="' + pid + '"]');
             if (!q) return null;
             const r = q.getBoundingClientRect();
             return { left: r.left + 12, right: r.right - 12, top: r.top + 64, bottom: r.bottom - 12, width: r.width - 24, height: r.height - 76 };
-          } }),
+          },
+          // measured defaults: pill straddles the bottom gutter between the two
+          // lower quadrants; the panel floats on the side away from the active
+          // column so the active title and case link stay clear
+          defaults: (vp, pillSz) => {
+            const m = matrix.getBoundingClientRect();
+            const active = matrix.dataset.active;
+            const minimized = { x: m.left + m.width / 2 - pillSz.w / 2, y: vp.h - pillSz.h - 20 };
+            const DIAG = { finderly: 'br', asteri: 'bl', startupos: 'tr', artparde: 'tl' };
+            let expanded;
+            if (!active) expanded = { kind: 'snap', zone: vp.w >= 1100 ? 'rc' : 'br' };
+            else if (vp.w >= 1100) expanded = { kind: 'snap', zone: active === 'finderly' || active === 'startupos' ? 'rc' : 'lc' };
+            else expanded = { kind: 'snap', zone: DIAG[active] };
+            return { minimized, expanded };
+          },
           reserve: (m) => {
             document.body.classList.toggle('paw-res-left', m === 'left');
             document.body.classList.toggle('paw-res-right', m === 'right');

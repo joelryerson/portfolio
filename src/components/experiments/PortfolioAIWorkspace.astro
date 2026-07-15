@@ -1,75 +1,82 @@
 ---
 /**
  * PortfolioAIWorkspace — shared floating AI workspace for the -ai
- * experiment variants. Interaction-shell phase: deterministic local
- * knowledge object + scripted answers, no external AI service.
+ * experiment variants. Interaction-shell phase 2 (usability pass):
+ * host-owned default placement, responsive docking (reserve / overlay /
+ * bottom fallback), Follow-active-project vs Dock-here, simplified
+ * header with one overflow menu, minimized "Answer ready" state.
+ * Deterministic scripted knowledge only — no external AI service.
  *
- * Host contract: the host route defines `window.PAW_HOST` BEFORE this
- * component's script runs:
+ * Host contract (window.PAW_HOST, defined BEFORE this script):
  *   {
- *     route:        string          — storage key suffix
- *     getProject(): 'finderly'|'asteri'|'startupos'|'artparde'|''
- *     setProject(id): void          — must use the host's own select()
- *     onChange(cb): void            — cb(id) on every project change
- *     anchors():    { left, right, project(): DOMRect|null }
- *     reserve(mode): void           — 'left'|'right'|'project'|null
- *     dockProjectLabel?: string     — menu label override
+ *     route:         string        — storage key suffix
+ *     getProject():  'finderly'|'asteri'|'startupos'|'artparde'|''
+ *     setProject(id): void         — must use the host's own select()
+ *     onChange(cb):  void          — cb(id) on every project change
+ *     minHostWidth:  px            — host is unusable narrower than this
+ *     caps:          { follow, here, instrument }   — dock modes offered
+ *     region(id?):   rect|null     — safe-inset rect of a project's
+ *                                    physical region (id omitted = active)
+ *     defaults(vp, pillSize): {
+ *       minimized: {x,y} | {corner:'tl'|'tr'|'bl'|'br'},
+ *       expanded:  place object ({kind:'snap'|'float'|'dock', ...}),
+ *     }
+ *     reserve(side|null): void     — 'left'|'right' body classes
  *   }
  * Theme: hosts set --paw-* custom properties on :root.
  */
 ---
 
 <!-- minimized trigger -->
-<div class="paw-pill" id="paw-pill" data-corner="br">
+<div class="paw-pill" id="paw-pill">
   <button class="paw-pill-grip" id="paw-pill-grip" type="button" aria-label="Move the assistant trigger (drag or arrow keys)">
     <span aria-hidden="true">⠿</span>
   </button>
   <button class="paw-pill-open" id="paw-pill-open" type="button" aria-haspopup="dialog" aria-expanded="false">
     <span class="paw-spark" aria-hidden="true">✦</span>
-    <span class="paw-pill-label">Ask about Joel</span>
+    <span class="paw-pill-label" id="paw-pill-label">Ask about Joel</span>
     <span class="paw-pill-ctx" id="paw-pill-ctx"></span>
+    <span class="paw-badge" id="paw-badge" hidden></span>
   </button>
 </div>
 
 <!-- expanded workspace -->
 <section class="paw-panel" id="paw-panel" role="dialog" aria-label="Ask about Joel — AI guide" tabindex="-1" hidden>
   <header class="paw-head">
-    <button class="paw-handle" id="paw-handle" type="button" aria-label="Move panel (drag, or use the Position menu)">
+    <button class="paw-handle" id="paw-handle" type="button" aria-label="Move panel (drag, or use the options menu)">
       <span aria-hidden="true">⠿</span>
     </button>
-    <div class="paw-titles">
-      <p class="paw-title"><span class="paw-spark" aria-hidden="true">✦</span> Ask about Joel</p>
-      <p class="paw-sub">AI guide grounded in verified portfolio information · <span id="paw-ctx">Overview</span></p>
-    </div>
-    <div class="paw-tools">
-      <div class="paw-menu-wrap">
-        <button class="paw-btn" id="paw-pos-btn" type="button" aria-haspopup="menu" aria-expanded="false">Position</button>
-        <div class="paw-menu" id="paw-menu" role="menu" aria-label="Panel position" hidden>
-          <button role="menuitem" data-pos="float" class="paw-desk">Float</button>
-          <button role="menuitem" data-pos="tl" class="paw-desk">Top left</button>
-          <button role="menuitem" data-pos="tr" class="paw-desk">Top right</button>
-          <button role="menuitem" data-pos="bl" class="paw-desk">Bottom left</button>
-          <button role="menuitem" data-pos="br" class="paw-desk">Bottom right</button>
-      <button role="menuitem" data-pos="dock-left" class="paw-desk">Dock left</button>
-          <button role="menuitem" data-pos="dock-right" class="paw-desk">Dock right</button>
-          <button role="menuitem" data-pos="dock-project" class="paw-desk" id="paw-dock-proj">Dock to active project</button>
-          <button role="menuitem" data-pos="pill-bl" class="paw-mob">Minimized dock: bottom left</button>
-          <button role="menuitem" data-pos="pill-br" class="paw-mob">Minimized dock: bottom right</button>
-          <button role="menuitem" data-pos="reset">Reset position</button>
-        </div>
+    <p class="paw-title"><span class="paw-spark" aria-hidden="true">✦</span> Ask about Joel<span class="paw-title-ctx"> · <span id="paw-ctx">Overview</span></span></p>
+    <button class="paw-btn paw-min" id="paw-min" type="button" aria-label="Minimize assistant">–</button>
+    <div class="paw-menu-wrap">
+      <button class="paw-btn" id="paw-more" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="Position and options">⋯</button>
+      <div class="paw-menu" id="paw-menu" role="menu" aria-label="Position and options" hidden>
+        <button role="menuitem" data-pos="float" class="paw-desk">Float</button>
+        <button role="menuitem" data-pos="follow" class="paw-desk" aria-label="Follow active project — the assistant anchors to whichever project is active and moves when it changes">Follow active project</button>
+        <button role="menuitem" data-pos="here" class="paw-desk" aria-label="Dock here — the assistant anchors to the current project's physical region and stays there when the active project changes">Dock here</button>
+        <button role="menuitem" data-pos="instrument" class="paw-desk">Dock to instrument</button>
+        <button role="menuitem" data-pos="dock-left" class="paw-desk">Dock left</button>
+        <button role="menuitem" data-pos="dock-right" class="paw-desk">Dock right</button>
+        <button role="menuitem" data-pos="tl" class="paw-desk">Top left</button>
+        <button role="menuitem" data-pos="tr" class="paw-desk">Top right</button>
+        <button role="menuitem" data-pos="bl" class="paw-desk">Bottom left</button>
+        <button role="menuitem" data-pos="br" class="paw-desk">Bottom right</button>
+        <button role="menuitem" data-pos="pill-bl" class="paw-mob">Minimized dock: bottom left</button>
+        <button role="menuitem" data-pos="pill-br" class="paw-mob">Minimized dock: bottom right</button>
+        <button role="menuitem" data-pos="reset">Reset position</button>
+        <button role="menuitem" data-pos="reset-convo">Reset conversation</button>
       </div>
-      <button class="paw-btn" id="paw-reset-convo" type="button">Reset</button>
-      <button class="paw-btn paw-min" id="paw-min" type="button" aria-label="Minimize assistant">–</button>
     </div>
   </header>
 
-  <p class="paw-docked-note" id="paw-docked-note" hidden>Anchored · <button type="button" id="paw-undock" class="paw-linklike">return to floating</button></p>
+  <p class="paw-note" id="paw-note" hidden><span id="paw-note-text"></span> · <button type="button" id="paw-float-now" class="paw-linklike">Float</button></p>
 
   <div class="paw-sheet-grip" id="paw-sheet-grip" aria-hidden="true"><span></span></div>
 
   <div class="paw-log" id="paw-log" role="log" aria-label="Conversation">
     <div class="paw-intro" id="paw-intro">
-      <p class="paw-intro-lede">A guide for evaluating Joel’s experience and role fit, grounded in his verified portfolio — nothing invented. This prototype runs on scripted local data; the live service comes later.</p>
+      <p class="paw-intro-note">AI guide grounded in verified portfolio information.</p>
+      <p class="paw-intro-lede">A guide for evaluating Joel’s experience and role fit — nothing invented. This prototype runs on scripted local data; the live service comes later.</p>
       <p class="paw-intro-ctx" id="paw-intro-ctx"></p>
       <div class="paw-sugg" id="paw-sugg" aria-label="Suggested questions"></div>
     </div>
@@ -95,18 +102,19 @@
     const HOST = window.PAW_HOST;
     if (!HOST) return;
     const $ = (id) => document.getElementById(id);
-    const pill = $('paw-pill'), pillOpen = $('paw-pill-open'), pillGrip = $('paw-pill-grip'), pillCtx = $('paw-pill-ctx');
-    const panel = $('paw-panel'), handle = $('paw-handle'), log = $('paw-log'), intro = $('paw-intro');
+    const pill = $('paw-pill'), pillOpen = $('paw-pill-open'), pillGrip = $('paw-pill-grip');
+    const pillCtx = $('paw-pill-ctx'), pillLabel = $('paw-pill-label'), badge = $('paw-badge');
+    const panel = $('paw-panel'), handle = $('paw-handle'), log = $('paw-log');
     const suggBox = $('paw-sugg'), introCtx = $('paw-intro-ctx'), ctxEl = $('paw-ctx');
     const form = $('paw-form'), input = $('paw-input'), live = $('paw-live');
-    const menu = $('paw-menu'), posBtn = $('paw-pos-btn'), dockedNote = $('paw-docked-note');
+    const menu = $('paw-menu'), posBtn = $('paw-more');
+    const note = $('paw-note'), noteText = $('paw-note-text');
     const M = 20;                       // safe margin
     const SNAP = 72;                    // snap threshold
+    const RESPONSE_LATENCY = 500;       // deterministic async delivery (models future real service)
     const NAMES = { finderly: 'Finderly', asteri: 'Asteri AI', startupos: 'StartupOS', artparde: 'ArtPärdē' };
     const CASE = { finderly: '/work/finderly/', asteri: '/work/asteri/', startupos: '/work/startup-platform/', artparde: '/work/artparde/' };
     const mobile = () => matchMedia('(max-width: 760px)').matches;
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if ($('paw-dock-proj') && HOST.dockProjectLabel) $('paw-dock-proj').textContent = HOST.dockProjectLabel;
 
     /* ============================================================
        KNOWLEDGE — deterministic local data. Verified facts only.
@@ -158,7 +166,6 @@
       },
     };
 
-    // Answer entries: id, chip label, keyword matchers, response.
     const A = (id, label, match, text, evidence, actions, project) =>
       ({ id, label, match, text, evidence: evidence || [], actions: actions || [], project: project || null });
     const ANSWERS = [
@@ -264,7 +271,6 @@
       artparde: ['ap-created', 'ap-maintain', 'ap-skills', 'ap-inuse', 'branding', 'gaps'],
     };
 
-    // free-text matcher: phrase hits > keyword hits; compare special-case
     const matchAnswer = (raw) => {
       const q = raw.toLowerCase().replace(/[?!.,;:'"’]/g, ' ').replace(/\s+/g, ' ').trim();
       if (!q) return null;
@@ -278,7 +284,6 @@
       for (const a of ANSWERS) {
         let s = 0;
         for (const m of a.match) if (q.includes(m.toLowerCase().replace(/[’]/g, ''))) s += m.includes(' ') ? 3 : 1;
-        // prefer answers for the project the user names
         if (a.project && q.includes(a.project === 'artparde' ? 'artp' : a.project)) s += 1;
         if (s > bestScore) { bestScore = s; best = a; }
       }
@@ -286,22 +291,50 @@
     };
 
     /* ============================================================
-       STATE
+       STATE — v2 (versioned key: stale v1 placement data is ignored)
        ============================================================ */
-    const KEY = 'paw:' + HOST.route;
-    const DEFAULTS = { mode: 'min', place: { kind: 'snap', zone: 'br' }, pill: 'br', size: { w: 404, h: 560 }, convo: [], draft: '', sheet: 'half' };
+    const KEY = 'paw2:' + HOST.route;
+    const vw = () => window.innerWidth, vh = () => window.innerHeight;
+    const pillSize = () => {
+      const r = pill.getBoundingClientRect();
+      return { w: r.width || 230, h: r.height || 50 };
+    };
+    const hostDefaults = () => HOST.defaults({ w: vw(), h: vh() }, pillSize());
+    const freshState = () => ({
+      v: 2, mode: 'min',
+      place: hostDefaults().expanded,
+      pillMode: 'host', pillCorner: 'br', pillXY: null,
+      size: { w: 404, h: 560 }, sheet: 'half',
+      convo: [], draft: '', unread: 0, herePid: null,
+    });
     let S;
-    try { S = Object.assign({}, DEFAULTS, JSON.parse(sessionStorage.getItem(KEY) || '{}')); }
-    catch (e) { S = Object.assign({}, DEFAULTS); }
+    try {
+      const raw = JSON.parse(sessionStorage.getItem(KEY) || 'null');
+      S = raw && raw.v === 2 ? Object.assign(freshState(), raw) : freshState();
+    } catch (e) { S = freshState(); }
+    // validate stored place against host capabilities
+    const placeValid = (p) => {
+      if (!p || !p.kind) return false;
+      if (p.kind === 'float') return Number.isFinite(p.x) && Number.isFinite(p.y);
+      if (p.kind === 'snap') return ['tl', 'tr', 'lc', 'rc', 'bl', 'br'].includes(p.zone);
+      if (p.kind === 'dock') {
+        if (p.side === 'left' || p.side === 'right') return true;
+        if (p.side === 'instrument') return !!HOST.caps.instrument;
+        if (p.side === 'follow') return !!HOST.caps.follow;
+        if (p.side === 'here') return !!HOST.caps.here && !!S.herePid;
+        return false;
+      }
+      return false;
+    };
+    if (!placeValid(S.place)) S.place = hostDefaults().expanded;
     const save = () => { try { sessionStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
 
     /* ============================================================
-       GEOMETRY — float / snap / dock, viewport clamped
+       GEOMETRY — float / snap / responsive dock, viewport clamped
        ============================================================ */
-    const vw = () => window.innerWidth, vh = () => window.innerHeight;
     const size = () => {
       const w = Math.min(Math.max(S.size.w, 340), Math.min(560, vw() - 2 * M));
-      const h = Math.min(Math.max(S.size.h, 420), vh() - 2 * M);
+      const h = Math.min(Math.max(S.size.h, 420), Math.max(360, vh() - 2 * M));
       return { w, h };
     };
     const zoneXY = (zone, w, h) => ({
@@ -314,25 +347,46 @@
       Math.min(Math.max(y, M), Math.max(M, vh() - h - M)),
     ];
 
+    // responsive dock policy: reserve on wide, overlay on medium, bottom on narrow/short
+    const dockPolicy = (w) => {
+      if (vh() < 540 || vw() < 720) return 'bottom';
+      return vw() - (w + 2 * M + 12) >= HOST.minHostWidth ? 'reserve' : 'overlay';
+    };
+    const NOTE_LABEL = { left: 'Docked left', right: 'Docked right', instrument: 'Docked to instrument', follow: 'Following active project', here: 'Docked here' };
+
     const layout = () => {
       if (mobile()) { layoutMobile(); return; }
       panel.classList.remove('paw-sheet');
-      panel.style.height = '';
       const { w, h } = size();
-      let x, y, W = w, H = h, dock = null;
+      let x, y, W = w, H = h, dock = null, reserveSide = null, noteMsg = '';
       if (S.place.kind === 'dock') {
         dock = S.place.side;
-        if (dock === 'project') {
-          const rect = HOST.anchors().project ? HOST.anchors().project() : null;
-          if (rect && rect.width > 380) {
-            W = Math.min(w, rect.width - 32); H = Math.min(h, Math.max(420, rect.height - 32));
-            [x, y] = clamp(rect.right - W - 16, rect.top + 16, W, H);
-          } else { // fall back to a right-side dock (host reserves space)
-            W = w; H = vh() - 2 * M; x = vw() - W - M; y = M;
+        if (dock === 'follow' || dock === 'here') {
+          const pid = dock === 'here' ? S.herePid : (HOST.getProject() || null);
+          const rect = pid ? HOST.region(pid) : HOST.region();
+          if (rect && rect.width > 300) {
+            W = Math.min(w, Math.max(320, rect.width - 24));
+            H = Math.min(h, Math.max(420, rect.height - 24));
+            [x, y] = clamp(rect.right - W - 12, rect.top + 12, W, H);
+            noteMsg = NOTE_LABEL[dock];
+          } else { // no region available: quiet fallback to a safe snap
+            [x, y] = zoneXY('br', W, H);
+            noteMsg = NOTE_LABEL[dock] + ' · no anchor available';
           }
         } else {
-          W = w; H = vh() - 2 * M;
-          x = dock === 'left' ? M : vw() - W - M; y = M;
+          const edge = dock === 'left' ? 'left' : 'right';
+          const policy = dockPolicy(w);
+          if (policy === 'bottom') {
+            W = Math.min(w, vw() - 2 * M);
+            H = Math.min(h, Math.max(360, vh() - 2 * M));
+            x = vw() - W - M; y = vh() - H - M;
+            noteMsg = NOTE_LABEL[dock] + ' · limited space, moved to bottom';
+          } else {
+            W = w; H = vh() - 2 * M;
+            x = edge === 'left' ? M : vw() - W - M; y = M;
+            if (policy === 'reserve') { reserveSide = edge; noteMsg = NOTE_LABEL[dock]; }
+            else noteMsg = NOTE_LABEL[dock] + ' · overlay (limited space)';
+          }
         }
       } else if (S.place.kind === 'snap') {
         [x, y] = zoneXY(S.place.zone, W, H);
@@ -341,38 +395,76 @@
       }
       Object.assign(panel.style, { left: x + 'px', top: y + 'px', width: W + 'px', height: H + 'px', right: 'auto', bottom: 'auto' });
       panel.classList.toggle('paw-docked', !!dock);
-      dockedNote.hidden = !dock;
-      HOST.reserve(dock);
+      panel.classList.toggle('paw-overlay', !!dock && !reserveSide);
+      note.hidden = !dock;
+      noteText.textContent = noteMsg;
+      HOST.reserve(reserveSide);
     };
     const layoutMobile = () => {
       panel.classList.add('paw-sheet');
-      panel.classList.remove('paw-docked');
-      dockedNote.hidden = true;
+      panel.classList.remove('paw-docked', 'paw-overlay');
+      note.hidden = true;
       HOST.reserve(null);
       panel.style.left = '0'; panel.style.right = '0'; panel.style.bottom = '0'; panel.style.top = 'auto'; panel.style.width = 'auto';
       panel.style.height = S.sheet === 'full' ? 'calc(100dvh - 52px)' : '58dvh';
     };
-    const layoutPill = () => {
-      const corners = mobile() ? ['bl', 'br'] : ['tl', 'tr', 'bl', 'br'];
-      const c = corners.includes(S.pill) ? S.pill : 'br';
-      pill.dataset.corner = c;
+    const applyCorner = (c) => {
       pill.style.left = c.endsWith('l') ? M + 'px' : 'auto';
       pill.style.right = c.endsWith('r') ? M + 'px' : 'auto';
       pill.style.top = c.startsWith('t') ? M + 'px' : 'auto';
       pill.style.bottom = c.startsWith('b') ? M + 'px' : 'auto';
+    };
+    const layoutPill = () => {
+      if (mobile()) { applyCorner(['bl', 'br'].includes(S.pillCorner) ? S.pillCorner : 'br'); return; }
+      if (S.pillMode === 'corner') { applyCorner(S.pillCorner); return; }
+      if (S.pillMode === 'custom' && S.pillXY) {
+        const { w, h } = pillSize();
+        const [x, y] = clamp(S.pillXY.x, S.pillXY.y, w, h);
+        Object.assign(pill.style, { left: x + 'px', top: y + 'px', right: 'auto', bottom: 'auto' });
+        return;
+      }
+      // host default placement
+      const d = hostDefaults().minimized;
+      if (d.corner) { applyCorner(d.corner); return; }
+      const { w, h } = pillSize();
+      const [x, y] = clamp(d.x, d.y, w, h);
+      Object.assign(pill.style, { left: x + 'px', top: y + 'px', right: 'auto', bottom: 'auto' });
+    };
+
+    /* ============================================================
+       UNREAD / ANSWER-READY
+       ============================================================ */
+    const updatePill = () => {
+      if (S.unread > 0) {
+        pillLabel.textContent = 'Answer ready';
+        pillCtx.textContent = '';
+        badge.hidden = S.unread < 2;
+        badge.textContent = String(S.unread);
+      } else {
+        pillLabel.textContent = 'Ask about Joel';
+        badge.hidden = true;
+        renderContext();
+      }
+    };
+    const markUnread = () => {
+      S.unread += 1; save();
+      updatePill();
+      live.textContent = S.unread === 1 ? 'Answer ready in the assistant' : S.unread + ' answers ready in the assistant';
     };
 
     /* ============================================================
        MODE (min / exp) + focus contract
        ============================================================ */
     const setMode = (mode, focusTarget) => {
-      S.mode = mode; save();
+      S.mode = mode;
       const exp = mode === 'exp';
+      if (exp && S.unread) S.unread = 0;
+      save();
       panel.hidden = !exp;
       pill.hidden = exp;
       pillOpen.setAttribute('aria-expanded', String(exp));
-      if (exp) { layout(); (focusTarget || panel).focus(); }
-      else { HOST.reserve(null); layoutPill(); (focusTarget || pillOpen).focus(); }
+      if (exp) { updatePill(); layout(); log.scrollTop = log.scrollHeight; (focusTarget || panel).focus(); }
+      else { HOST.reserve(null); updatePill(); layoutPill(); (focusTarget || pillOpen).focus(); }
     };
 
     /* ============================================================
@@ -418,19 +510,23 @@
       save();
       log.appendChild(renderMsg(m));
       log.scrollTop = log.scrollHeight;
+      if (m.who === 'a' && panel.hidden) markUnread();
     };
+    // responses are delivered asynchronously (deterministic latency) so the
+    // minimized "Answer ready" state is reachable, matching a future real service
+    const respond = (m) => setTimeout(() => push(m), RESPONSE_LATENCY);
     const answer = (a, asked) => {
       push({ who: 'u', text: asked });
       if (!a) {
-        push({ who: 'a', text: 'This prototype’s guide is scripted and covers Joel’s four public projects: what he owned, what shipped, how technical he is, and the honest limits of the public evidence. Try one of the suggested questions below, or name a project.', evidence: [], actions: [['ask', 'own-global'], ['ask', 'gaps']] });
+        respond({ who: 'a', text: 'This prototype’s guide is scripted and covers Joel’s four public projects: what he owned, what shipped, how technical he is, and the honest limits of the public evidence. Try one of the suggested questions below, or name a project.', evidence: [], actions: [['ask', 'own-global'], ['ask', 'gaps']] });
         return;
       }
       if (a.id === 'open-relevant') {
         const p = HOST.getProject() || 'finderly';
-        push({ who: 'a', text: (HOST.getProject() ? NAMES[p] + ' is active, so its case study is the direct next step.' : 'With nothing selected, Finderly is the strongest starting point: recent, end to end, and shipped.'), evidence: [], actions: [['case', p], ['show', p]] });
+        respond({ who: 'a', text: (HOST.getProject() ? NAMES[p] + ' is active, so its case study is the direct next step.' : 'With nothing selected, Finderly is the strongest starting point: recent, end to end, and shipped.'), evidence: [], actions: [['case', p], ['show', p]] });
         return;
       }
-      push({ who: 'a', text: a.text, evidence: a.evidence, actions: a.actions });
+      respond({ who: 'a', text: a.text, evidence: a.evidence, actions: a.actions });
     };
 
     const renderSuggestions = () => {
@@ -449,7 +545,7 @@
       const p = HOST.getProject();
       const name = p ? NAMES[p] : '';
       ctxEl.textContent = p ? 'Viewing ' + name : 'Overview';
-      pillCtx.textContent = p ? ' · ' + name : '';
+      if (S.unread === 0) pillCtx.textContent = p ? ' · ' + name : '';
       introCtx.textContent = p
         ? 'You are viewing ' + name + ' (' + KB.projects[p].year + ' · ' + KB.projects[p].cat + '). ' + KB.projects[p].role + '.'
         : 'Nothing selected yet — questions below cover the whole portfolio.';
@@ -466,15 +562,19 @@
     const dragState = { active: null };
     const beginDrag = (kind, e) => {
       if (kind === 'panel' && (mobile() || panel.classList.contains('paw-docked'))) return;
-      if (kind === 'pill' && panelVisible()) return;
+      if (kind === 'pill' && !panel.hidden) return;
+      if (kind === 'pill' && mobile()) return;
       e.preventDefault();
       const target = e.currentTarget;
       try { target.setPointerCapture(e.pointerId); } catch (err) {}
       const r = (kind === 'pill' ? pill : panel).getBoundingClientRect();
-      dragState.active = { kind, id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: r.left, oy: r.top, ow: r.width, oh: r.height, prevPlace: JSON.parse(JSON.stringify(S.place)), prevPill: S.pill, prevSize: Object.assign({}, S.size), prevSheet: S.sheet };
+      dragState.active = {
+        kind, id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: r.left, oy: r.top, ow: r.width, oh: r.height,
+        prevPlace: JSON.parse(JSON.stringify(S.place)), prevPillMode: S.pillMode, prevPillCorner: S.pillCorner,
+        prevPillXY: S.pillXY ? Object.assign({}, S.pillXY) : null, prevSize: Object.assign({}, S.size), prevSheet: S.sheet,
+      };
       document.body.classList.add('paw-dragging');
     };
-    const panelVisible = () => !panel.hidden;
     const onMove = (e) => {
       const d = dragState.active;
       if (!d || e.pointerId !== d.id) return;
@@ -486,7 +586,7 @@
         panel.style.left = x + 'px'; panel.style.top = y + 'px';
       } else if (d.kind === 'pill') {
         const [x, y] = clamp(d.ox + dx, d.oy + dy, d.ow, d.oh);
-        pill.style.left = x + 'px'; pill.style.top = y + 'px'; pill.style.right = 'auto'; pill.style.bottom = 'auto';
+        Object.assign(pill.style, { left: x + 'px', top: y + 'px', right: 'auto', bottom: 'auto' });
       } else if (d.kind === 'resize') {
         S.size = { w: d.ow + dx, h: d.oh + dy };
         const { w, h } = size();
@@ -506,12 +606,12 @@
       dragState.active = null;
       document.body.classList.remove('paw-dragging');
       if (cancelled) {
-        S.place = d.prevPlace; S.pill = d.prevPill; S.size = d.prevSize; S.sheet = d.prevSheet;
-        save(); layout(); layoutPill();
+        S.place = d.prevPlace; S.pillMode = d.prevPillMode; S.pillCorner = d.prevPillCorner;
+        S.pillXY = d.prevPillXY; S.size = d.prevSize; S.sheet = d.prevSheet;
+        save(); if (!panel.hidden) layout(); layoutPill();
         return;
       }
       if (d.kind === 'panel') {
-        // snap if released near a zone
         const { w, h } = size();
         const r = panel.getBoundingClientRect();
         let snapped = null, bestDist = SNAP + 1;
@@ -524,16 +624,18 @@
         save(); layout();
       } else if (d.kind === 'pill') {
         const r = pill.getBoundingClientRect();
-        const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-        const corners = mobile() ? ['bl', 'br'] : ['tl', 'tr', 'bl', 'br'];
-        let best = 'br', bd = Infinity;
+        // near a corner → corner mode; otherwise keep the custom position
+        const corners = ['tl', 'tr', 'bl', 'br'];
+        let best = null, bd = 96;
         for (const c of corners) {
-          const px = c.endsWith('l') ? M + r.width / 2 : vw() - M - r.width / 2;
-          const py = c.startsWith('t') ? M + r.height / 2 : vh() - M - r.height / 2;
-          const dist = Math.hypot(cx - px, cy - py);
+          const px = c.endsWith('l') ? M : vw() - M - r.width;
+          const py = c.startsWith('t') ? M : vh() - M - r.height;
+          const dist = Math.hypot(r.left - px, r.top - py);
           if (dist < bd) { bd = dist; best = c; }
         }
-        S.pill = best; save(); layoutPill();
+        if (best) { S.pillMode = 'corner'; S.pillCorner = best; }
+        else { S.pillMode = 'custom'; S.pillXY = { x: r.left, y: r.top }; }
+        save(); layoutPill();
       } else if (d.kind === 'resize') {
         save();
       } else if (d.kind === 'sheet') {
@@ -554,31 +656,46 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && dragState.active) { endDrag({ pointerId: dragState.active.id }, true); e.stopPropagation(); }
     }, true);
-    // keyboard nudge for the pill grip (no drag required)
     pillGrip.addEventListener('keydown', (e) => {
       const map = { ArrowLeft: 'l', ArrowRight: 'r', ArrowUp: 't', ArrowDown: 'b' };
       if (!map[e.key]) return;
       e.preventDefault();
-      let [v, hz] = [S.pill[0], S.pill[1]];
+      const cur = S.pillMode === 'corner' ? S.pillCorner : 'br';
+      let [v, hz] = [cur[0], cur[1]];
       if (map[e.key] === 'l') hz = 'l'; if (map[e.key] === 'r') hz = 'r';
       if (map[e.key] === 't' && !mobile()) v = 't'; if (map[e.key] === 'b') v = 'b';
-      S.pill = v + hz; save(); layoutPill();
+      S.pillMode = 'corner'; S.pillCorner = v + hz; save(); layoutPill();
     });
 
     /* ============================================================
-       POSITION MENU
+       OVERFLOW MENU
        ============================================================ */
     const closeMenu = () => { menu.hidden = true; posBtn.setAttribute('aria-expanded', 'false'); };
+    const filterMenu = () => {
+      const caps = HOST.caps || {};
+      const vis = {
+        follow: !mobile() && caps.follow,
+        here: !mobile() && caps.here,
+        instrument: !mobile() && caps.instrument,
+      };
+      for (const b of menu.querySelectorAll('[data-pos]')) {
+        const p = b.dataset.pos;
+        if (p in vis) b.hidden = !vis[p];
+      }
+    };
     posBtn.addEventListener('click', () => {
-      menu.hidden = !menu.hidden;
-      posBtn.setAttribute('aria-expanded', String(!menu.hidden));
-      if (!menu.hidden) menu.querySelector('button:not([hidden])').focus();
+      if (menu.hidden) { filterMenu(); menu.hidden = false; posBtn.setAttribute('aria-expanded', 'true'); }
+      else closeMenu();
+      if (!menu.hidden) {
+        const first = [...menu.querySelectorAll('button')].find((b) => !b.hidden && b.offsetParent !== null);
+        if (first) first.focus();
+      }
     });
     menu.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') { closeMenu(); posBtn.focus(); e.stopPropagation(); }
       if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         e.preventDefault();
-        const items = [...menu.querySelectorAll('button')].filter((b) => b.offsetParent);
+        const items = [...menu.querySelectorAll('button')].filter((b) => !b.hidden && b.offsetParent !== null);
         const i = items.indexOf(document.activeElement);
         items[(i + (e.key === 'ArrowDown' ? 1 : items.length - 1)) % items.length].focus();
       }
@@ -588,17 +705,32 @@
       const b = e.target.closest('[data-pos]');
       if (!b) return;
       const pos = b.dataset.pos;
-      if (pos === 'reset') { S.place = JSON.parse(JSON.stringify(DEFAULTS.place)); S.pill = DEFAULTS.pill; S.size = Object.assign({}, DEFAULTS.size); S.sheet = 'half'; }
-      else if (pos === 'float') { const r = panel.getBoundingClientRect(); S.place = { kind: 'float', x: r.left, y: r.top }; }
+      if (pos === 'reset') {
+        S.place = hostDefaults().expanded;
+        S.pillMode = 'host'; S.pillCorner = 'br'; S.pillXY = null;
+        S.size = { w: 404, h: 560 }; S.sheet = 'half'; S.herePid = null;
+      } else if (pos === 'reset-convo') {
+        S.convo = []; S.draft = ''; S.unread = 0; input.value = '';
+        log.querySelectorAll('.paw-msg').forEach((m) => m.remove());
+        updatePill();
+      } else if (pos === 'float') { const r = panel.getBoundingClientRect(); S.place = { kind: 'float', x: r.left, y: r.top }; }
+      else if (pos === 'follow') S.place = { kind: 'dock', side: 'follow' };
+      else if (pos === 'here') { S.herePid = HOST.getProject() || null; S.place = S.herePid ? { kind: 'dock', side: 'here' } : S.place; }
+      else if (pos === 'instrument') S.place = { kind: 'dock', side: 'instrument' };
       else if (pos === 'dock-left') S.place = { kind: 'dock', side: 'left' };
       else if (pos === 'dock-right') S.place = { kind: 'dock', side: 'right' };
-      else if (pos === 'dock-project') S.place = { kind: 'dock', side: 'project' };
-      else if (pos === 'pill-bl') S.pill = 'bl';
-      else if (pos === 'pill-br') S.pill = 'br';
+      else if (pos === 'pill-bl') { S.pillMode = 'corner'; S.pillCorner = 'bl'; }
+      else if (pos === 'pill-br') { S.pillMode = 'corner'; S.pillCorner = 'br'; }
       else S.place = { kind: 'snap', zone: pos };
-      save(); layout(); layoutPill(); closeMenu(); posBtn.focus();
+      save(); if (!panel.hidden) layout(); layoutPill(); closeMenu(); posBtn.focus();
     });
-    $('paw-undock').addEventListener('click', () => { S.place = { kind: 'snap', zone: 'br' }; save(); layout(); });
+    $('paw-float-now').addEventListener('click', () => {
+      const r = panel.getBoundingClientRect();
+      const { w, h } = size();
+      const [x, y] = clamp(r.left, r.top, w, h);
+      S.place = { kind: 'float', x, y };
+      save(); layout();
+    });
 
     /* ============================================================
        WIRING
@@ -607,13 +739,9 @@
     $('paw-min').addEventListener('click', () => setMode('min'));
     panel.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !dragState.active) {
-        if (!menu.hidden) return; // menu handler closes itself
+        if (!menu.hidden) { closeMenu(); posBtn.focus(); return; }
         setMode('min');
       }
-    });
-    $('paw-reset-convo').addEventListener('click', () => {
-      S.convo = []; S.draft = ''; input.value = ''; save();
-      log.querySelectorAll('.paw-msg').forEach((m) => m.remove());
     });
     form.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -624,20 +752,26 @@
     });
     input.addEventListener('input', () => { S.draft = input.value; save(); });
 
-    HOST.onChange(() => { renderContext(); if (S.place.kind === 'dock' && S.place.side === 'project' && !panel.hidden) layout(); });
+    HOST.onChange(() => {
+      renderContext();
+      if (S.unread === 0) updatePill();
+      if (!panel.hidden && S.place.kind === 'dock' && (S.place.side === 'follow' || S.place.side === 'here')) layout();
+      if (panel.hidden && S.pillMode === 'host') layoutPill();
+    });
     window.addEventListener('resize', () => { layoutPill(); if (!panel.hidden) layout(); });
 
     // init
     input.value = S.draft || '';
     renderContext();
     restoreConvo();
+    updatePill();
     layoutPill();
-    if (S.mode === 'exp') { panel.hidden = false; pill.hidden = true; pillOpen.setAttribute('aria-expanded', 'true'); layout(); }
+    if (S.mode === 'exp') { S.unread = 0; save(); panel.hidden = false; pill.hidden = true; pillOpen.setAttribute('aria-expanded', 'true'); updatePill(); layout(); }
   })();
 </script>
 
 <style is:global>
-  .paw-panel[hidden], .paw-menu[hidden], .paw-pill[hidden], .paw-docked-note[hidden] { display: none !important; }
+  .paw-panel[hidden], .paw-menu[hidden], .paw-pill[hidden], .paw-note[hidden], .paw-badge[hidden] { display: none !important; }
 
   .paw-pill, .paw-panel {
     --bg: var(--paw-bg, #fbfaf7);
@@ -687,6 +821,13 @@
   }
   .paw-pill-ctx { color: var(--mute); font-weight: 600; }
   .paw-spark { color: var(--accent); }
+  .paw-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 18px; height: 18px; padding: 0 5px;
+    border-radius: 9px;
+    background: var(--accent); color: var(--bg);
+    font-size: 11px; font-weight: 800;
+  }
 
   /* ---------- panel ---------- */
   .paw-panel {
@@ -702,11 +843,12 @@
   }
   body.paw-dragging .paw-panel, body.paw-dragging .paw-pill { transition: none !important; }
   .paw-panel.paw-docked { border-color: var(--accent); }
+  .paw-panel.paw-overlay { box-shadow: 0 28px 70px -20px rgba(0, 0, 0, 0.6); }
   .paw-panel:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
   .paw-head {
-    display: flex; align-items: flex-start; gap: 8px;
-    padding: 10px 10px 8px 8px;
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px 8px 8px;
     border-bottom: 1px solid var(--line);
   }
   .paw-handle {
@@ -717,24 +859,27 @@
     cursor: grab; touch-action: none;
   }
   .paw-docked .paw-handle { cursor: default; opacity: 0.4; }
-  .paw-titles { flex: 1; min-width: 0; }
-  .paw-title { margin: 0; font-weight: 800; font-size: 14.5px; line-height: 1.2; padding-top: 4px; }
-  .paw-sub { margin: 3px 0 0; font-size: 11px; color: var(--mute); line-height: 1.35; }
-  .paw-tools { display: flex; gap: 6px; align-items: flex-start; }
+  .paw-title {
+    flex: 1; min-width: 0;
+    margin: 0; font-weight: 800; font-size: 14px; line-height: 1.25;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .paw-title-ctx { font-weight: 600; color: var(--mute); }
   .paw-btn {
-    min-height: 44px; padding: 0 10px;
+    min-height: 44px; min-width: 44px; padding: 0 10px;
     background: none; border: 1px solid var(--line); border-radius: calc(var(--radius) - 4px);
-    font: inherit; font-size: 12px; font-weight: 700; color: var(--ink);
+    font: inherit; font-size: 15px; font-weight: 700; color: var(--ink);
     cursor: pointer;
   }
   .paw-btn:hover { background: var(--bg2); }
-  .paw-min { min-width: 44px; font-size: 16px; }
 
   .paw-menu-wrap { position: relative; }
   .paw-menu {
     position: absolute; right: 0; top: calc(100% + 4px);
     display: flex; flex-direction: column;
-    min-width: 220px;
+    min-width: 230px;
+    max-height: min(60vh, 480px);
+    overflow-y: auto;
     background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius);
     box-shadow: 0 16px 40px -18px rgba(0, 0, 0, 0.5);
     padding: 6px; z-index: 10;
@@ -749,7 +894,7 @@
   @media (max-width: 760px) { .paw-desk { display: none; } }
   @media (min-width: 761px) { .paw-mob { display: none; } }
 
-  .paw-docked-note {
+  .paw-note {
     margin: 0; padding: 6px 14px;
     font-size: 11.5px; color: var(--mute);
     border-bottom: 1px solid var(--line);
@@ -765,6 +910,11 @@
     padding: 14px;
     display: flex; flex-direction: column; gap: 12px;
     overscroll-behavior: contain;
+  }
+  .paw-intro-note {
+    margin: 0 0 6px;
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--mute);
   }
   .paw-intro-lede { margin: 0; font-size: 13px; line-height: 1.5; color: var(--ink); }
   .paw-intro-ctx { margin: 8px 0 10px; font-size: 12px; line-height: 1.45; color: var(--mute); }

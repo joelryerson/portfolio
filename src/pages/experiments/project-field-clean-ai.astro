@@ -125,12 +125,31 @@ const projects = [
           getProject: () => { const r = document.querySelector('.region.active'); return r ? r.dataset.p : ''; },
           setProject: (id) => activate(id, true),
           onChange: (cb) => pawListeners.push(cb),
-          anchors: () => ({ left: true, right: true, project: () => {
-            const r = document.querySelector('.region.active');
-            if (!r) return null;
-            const b = r.getBoundingClientRect();
+          minHostWidth: 1060,
+          caps: { follow: true, here: true, instrument: false },
+          // physical region of a project's column, inset below the name block
+          region: (id) => {
+            const pid = id || (document.querySelector('.region.active') || {}).dataset?.p;
+            if (!pid) return null;
+            const el = document.querySelector('.region[data-p="' + pid + '"]');
+            if (!el) return null;
+            const b = el.getBoundingClientRect();
             return { left: b.left + 12, right: b.right - 12, top: b.top + 96, bottom: b.bottom - 12, width: b.width - 24, height: b.height - 108 };
-          } }),
+          },
+          // measured defaults: live inside the active region's negative space
+          // (right side, below the name, above the field's bottom edge) —
+          // overlay rather than compress the field
+          defaults: (vp, pillSz) => {
+            const a = document.querySelector('.region.active');
+            const b = a ? a.getBoundingClientRect() : null;
+            const minimized = b
+              ? { x: b.right - pillSz.w - 24, y: Math.min(vp.h - pillSz.h - 20, b.bottom - pillSz.h - 20) }
+              : { corner: 'br' };
+            const expanded = b && vp.w >= 1000
+              ? { kind: 'float', x: Math.max(20, b.right - 428), y: Math.max(96, Math.min(b.bottom - 584, vp.h - 600)) }
+              : { kind: 'snap', zone: 'br' };
+            return { minimized, expanded };
+          },
           reserve: (m) => {
             document.body.classList.toggle('paw-res-left', m === 'left');
             document.body.classList.toggle('paw-res-right', m === 'right');
@@ -139,9 +158,11 @@ const projects = [
 
 
         const activate = (id, push) => {
+          const cur = document.querySelector('.region.active');
+          const prev = cur ? cur.dataset.p : '';
           regions.forEach((r) => r.classList.toggle('active', r.dataset.p === id));
           hits.forEach((h) => h.setAttribute('aria-expanded', String(h.dataset.select === id)));
-          if (push) history.replaceState(null, '', '?p=' + id);
+          if (push && prev !== id) history.pushState({ p: id }, '', '?p=' + id);
           pawListeners.forEach((f) => f(id));
         };
 
@@ -152,8 +173,14 @@ const projects = [
           });
         });
 
+        window.addEventListener('popstate', (e) => {
+          const q = e.state?.p ?? new URLSearchParams(location.search).get('p');
+          activate(ids.includes(q) ? q : 'finderly', false);
+        });
         const wanted = new URLSearchParams(location.search).get('p');
-        activate(ids.includes(wanted) ? wanted : 'finderly', false);
+        const initial = ids.includes(wanted) ? wanted : 'finderly';
+        activate(initial, false);
+        history.replaceState({ p: initial }, '', '?p=' + initial);
       })();
     </script>
 

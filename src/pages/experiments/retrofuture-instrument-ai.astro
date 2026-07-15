@@ -180,14 +180,28 @@ const projects = [
         const pawListeners = [];
         window.PAW_HOST = {
           route: 'retrofuture-instrument',
-          dockProjectLabel: 'Dock to instrument',
           getProject: () => device.dataset.active || '',
           setProject: (id) => { if (device.dataset.active !== id) select(id); },
           onChange: (cb) => pawListeners.push(cb),
-          anchors: () => ({ left: true, right: true, project: () => null }),
+          minHostWidth: 880,
+          caps: { follow: false, here: false, instrument: true },
+          region: () => null,
+          // measured defaults: pill sits in the console's empty shell area
+          // below the channel keys; expanded docks beside the instrument
+          defaults: (vp, pillSz) => {
+            const ch = document.querySelector('.channels');
+            const r = ch ? ch.getBoundingClientRect() : null;
+            const minimized = r && r.bottom + pillSz.h + 40 < vp.h
+              ? { x: Math.max(20, r.left), y: r.bottom + 14 }
+              : { corner: 'bl' };
+            const expanded = vp.w >= 900
+              ? { kind: 'dock', side: 'instrument' }
+              : { kind: 'snap', zone: 'br' };
+            return { minimized, expanded };
+          },
           reserve: (m) => {
             document.body.classList.toggle('paw-res-left', m === 'left');
-            document.body.classList.toggle('paw-res-right', m === 'right' || m === 'project');
+            document.body.classList.toggle('paw-res-right', m === 'right');
           },
         };
 
