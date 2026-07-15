@@ -19,3 +19,4 @@ npm-debug.log*
 # raw case-study material stays local; framing rules and client context are not public
 content/raw/
 .dev.vars
+.wrangler/
