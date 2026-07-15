@@ -8,7 +8,9 @@ import { fileURLToPath } from 'node:url';
 
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const URL_ = process.env.EVAL_URL || 'http://localhost:8788/api/portfolio-ai';
-const { cases } = JSON.parse(fs.readFileSync(path.join(DIR, 'eval-cases.json'), 'utf8'));
+let { cases } = JSON.parse(fs.readFileSync(path.join(DIR, 'eval-cases.json'), 'utf8'));
+const only = (process.env.ONLY_IDS || '').split(',').filter(Boolean);
+if (only.length) cases = cases.filter((c) => only.includes(c.id));
 
 const results = [];
 const times = [];
@@ -89,7 +91,13 @@ for (const c of cases) {
   results.push(r);
 }
 
-const out = { url: URL_, ranAt: new Date().toISOString(), results };
+let finalResults = results;
+if (only.length && fs.existsSync(path.join(DIR, 'eval-results.json'))) {
+  const prev = JSON.parse(fs.readFileSync(path.join(DIR, 'eval-results.json'), 'utf8')).results || [];
+  finalResults = prev.map((p0) => results.find((r) => r.id === p0.id) || p0);
+  for (const r of results) if (!finalResults.find((f) => f.id === r.id)) finalResults.push(r);
+}
+const out = { url: URL_, ranAt: new Date().toISOString(), results: finalResults };
 fs.writeFileSync(path.join(DIR, 'eval-results.json'), JSON.stringify(out, null, 2));
 
 const passed = results.filter((r) => r.pass === true).length;

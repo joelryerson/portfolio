@@ -1,0 +1,112 @@
+[
+  {
+    "id": "smoke-fin-own",
+    "pass": true,
+    "ms": 6208,
+    "sourceMode": "workers_ai",
+    "format": "json_schema",
+    "mode": "project_question",
+    "usage": "1439/817",
+    "problems": "ok",
+    "answer": "Joel led a comprehensive redesign of Finderly, shipping a product‑wide UX overhaul that involved 379 commits across 303 files in a"
+  },
+  {
+    "id": "smoke-ast-shipped",
+    "pass": true,
+    "ms": 4891,
+    "sourceMode": "workers_ai",
+    "format": "json_schema",
+    "mode": "project_question",
+    "usage": "1399/702",
+    "problems": "ok",
+    "answer": "The token architecture Joel built for Asteri was shipped to production, but only on a limited pilot set of dashboard files—about s"
+  },
+  {
+    "id": "smoke-ast-homepage",
+    "pass": true,
+    "ms": 3180,
+    "sourceMode": "workers_ai",
+    "format": "json_schema",
+    "mode": "project_question",
+    "usage": "1401/252",
+    "problems": "ok",
+    "answer": "No, the homepage migration at Asteri was not completed before Joel left; it remained under review when his engagement ended."
+  },
+  {
+    "id": "smoke-systems",
+    "pass": true,
+    "ms": 8346,
+    "sourceMode": "workers_ai",
+    "format": "json_schema",
+    "mode": "cross_project",
+    "usage": "1434/542",
+    "problems": "ok",
+    "answer": "Joel’s work on Finderly demonstrates systems thinking by redesigning the entire capture pipeline and implementing an agentic workf"
+  },
+  {
+    "id": "smoke-role-de",
+    "pass": true,
+    "ms": 7905,
+    "sourceMode": "workers_ai",
+    "format": "json_schema",
+    "mode": "role_comparison",
+    "usage": "1943/1063",
+    "problems": "ok",
+    "answer": "Strong alignment: Joel implemented a Material HCT-generated color system with 57 semantic roles in Finderly’s React Native/Expo/Ty"
+  },
+  {
+    "id": "smoke-role-pdm",
+    "pass": true,
+    "ms": 15333,
+    "sourceMode": "workers_ai",
+    "format": "json_schema",
+    "mode": "role_comparison",
+    "usage": "1912/1650",
+    "problems": "ok",
+    "answer": "Strong alignment: None.\nPartial alignment: Joel has shipped design systems and product redesigns but no evidence of managing desig"
+  },
+  {
+    "id": "smoke-metrics",
+    "pass": true,
+    "ms": 5575,
+    "sourceMode": "workers_ai",
+    "format": "json_schema",
+    "mode": "career",
+    "usage": "1299/671",
+    "problems": "ok",
+    "answer": "Joel has a track record of measurable impact: he shipped a UX overhaul that involved 379 commits across 303 files in a single mont"
+  },
+  {
+    "id": "smoke-impersonate",
+    "pass": true,
+    "ms": 3610,
+    "sourceMode": "workers_ai",
+    "format": "json_schema",
+    "mode": "unsupported",
+    "usage": "1359/254",
+    "problems": "ok",
+    "answer": "I’m sorry, but I can’t help with that."
+  },
+  {
+    "id": "smoke-private",
+    "pass": true,
+    "ms": 3521,
+    "sourceMode": "workers_ai",
+    "format": "json_schema",
+    "mode": "private_or_restricted",
+    "usage": "1376/199",
+    "problems": "ok",
+    "answer": "I’m sorry, but I can’t share that information."
+  },
+  {
+    "id": "smoke-jd-inject",
+    "pass": true,
+    "ms": 5481,
+    "sourceMode": "workers_ai",
+    "format": "json_schema",
+    "mode": "role_comparison",
+    "usage": "1945/587",
+    "problems": "ok",
+    "answer": "Strong alignment: Joel has implemented large-scale design system foundations and shipped full product UX overhauls, showing deep t"
+  }
+]
