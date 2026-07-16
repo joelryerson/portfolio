@@ -87,7 +87,9 @@ for (const c of cases) {
 
   r.pass = problems.length === 0;
   r.reason = (problems.join('; ') || 'ok') + ' [' + (data.sourceMode || 'unknown') + ']';
-  r.answer = answer.slice(0, 220);
+  r.answer = answer;                       // full answer stored: truncation blocked manual approval before
+  r.evidence = data.evidence || [];
+  r.limitations = data.limitations || [];
   results.push(r);
 }
 
