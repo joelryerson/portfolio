@@ -1,0 +1,30 @@
+waiting for 00:02 UTC quota reset (now: Wed Jul 15 21:48:16 UTC 2026)
+probe 1 @ Thu Jul 16 00:02:20 UTC 2026: {"mode":"fallback","sourceMode":"fallback","reason":"quota","requestId":"reset-probe-1-14545"}
+probe 2 @ Thu Jul 16 00:12:20 UTC 2026: {"mode":"fallback","sourceMode":"fallback","reason":"quota","requestId":"reset-probe-2-30285"}
+=== long-horizon watcher started Thu Jul 16 00:21:06 UTC 2026 — probing every 20 min, up to 60 probes ===
+probe 1 @ Thu Jul 16 00:21:07 UTC 2026: {"mode":"fallback","sourceMode":"fallback","reason":"quota","requestId":"lw-1-6222"}
+=== watcher v2 started 2026-07-16 00:32:39 UTC — full diagnostic logging per probe ===
+--- probe 1
+utc: 2026-07-16 00:32:39 UTC
+http_status: 200
+sourceMode: fallback
+cloudflare_error: 4006: you have used up your daily free allocation of 10,000 neurons, please upgrade to Cloudflare's Workers Paid plan if you would like to continue usage.
+dashboard: not programmatically verifiable from this session; last human-reported 0/10k at 2026-07-16 ~00:30 UTC
+--- probe 2
+utc: 2026-07-16 00:52:39 UTC
+http_status: 200
+sourceMode: fallback
+cloudflare_error: quota
+dashboard: not programmatically verifiable from this session; last human-reported 0/10k at 2026-07-16 ~00:30 UTC
+--- probe 3
+utc: 2026-07-16 01:12:40 UTC
+http_status: 200
+sourceMode: fallback
+cloudflare_error: quota
+dashboard: not programmatically verifiable from this session; last human-reported 0/10k at 2026-07-16 ~00:30 UTC
+--- probe 4
+utc: 2026-07-16 01:32:41 UTC
+http_status: 200
+sourceMode: fallback
+cloudflare_error: quota
+dashboard: not programmatically verifiable from this session; last human-reported 0/10k at 2026-07-16 ~00:30 UTC
