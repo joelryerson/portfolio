@@ -8,3 +8,6 @@ PAW_FORCE_FALLBACK=
 # OPENAI_API_KEY=
 # OPENAI_VECTOR_STORE_ID=
 # OPENAI_MODEL=
+# Local diagnostics ONLY: includes the raw upstream error in fallback
+# responses. NEVER set this on Cloudflare Preview or Production.
+PAW_DEBUG_UPSTREAM=

@@ -28,6 +28,7 @@ interface Env {
   AI?: { run: (model: string, options: Record<string, unknown>) => Promise<any> };
   WORKERS_AI_MODEL?: string;
   PAW_FORCE_FALLBACK?: string;
+  PAW_DEBUG_UPSTREAM?: string;   // 'true' only in local .dev.vars — never Preview/Production
 }
 
 // Single configurable model value; documented default only.
@@ -143,7 +144,17 @@ const retrieveFacts = (question: string, activeProject: string, mode: string) =>
 const json = (obj: unknown, status = 200) =>
   new Response(JSON.stringify(obj), { status, headers: { 'content-type': 'application/json', 'cache-control': 'no-store' } });
 const fail = (status: number, message: string, requestId = '') => json({ error: message, requestId }, status);
-const fallbackResp = (reason: string, requestId: string) => json({ mode: 'fallback', sourceMode: 'fallback', reason, requestId });
+// Upstream diagnostics: the complete error ALWAYS goes to the server console
+// (visible in `wrangler pages dev` output / evaluation logs). It is included
+// in the response body ONLY when the explicit dev flag PAW_DEBUG_UPSTREAM
+// equals 'true' — never based on hostname or any request property, so a
+// manipulated Host header can never expose it. The flag lives in .dev.vars
+// (gitignored); Preview/Production would require deliberately adding the
+// variable in the dashboard, which setup docs forbid.
+const fallbackResp = (reason: string, requestId: string, rawError?: string, debugUpstream?: boolean) => {
+  if (rawError) console.error(`[portfolio-ai upstream] ${reason} req=${requestId}: ${rawError}`);
+  return json({ mode: 'fallback', sourceMode: 'fallback', reason, requestId, ...(debugUpstream === true && rawError ? { rawError } : {}) });
+};
 
 const hits = new Map<string, number[]>();
 const seenRequests = new Map<string, number>();
@@ -314,13 +325,13 @@ Respond with ONLY a JSON object, no markdown fences, exactly these keys:
         max_tokens: 2800,
       }));
     } catch (e1: any) {
-      if (/quota|allocation|neurons|capacity|limit exceeded|3040/i.test(String(e1?.message))) return fallbackResp('quota', requestId);
+      if (/quota|allocation|neurons|capacity|limit exceeded|3040/i.test(String(e1?.message))) return fallbackResp('quota', requestId, String(e1?.message).slice(0, 600), env.PAW_DEBUG_UPSTREAM === 'true');
       // fallback A: plain chat format, JSON requested via prompt only
       try {
         formatPath = 'chat';
         result = await withTimeout(env.AI.run(model, { messages, max_tokens: 2800 }));
       } catch (e2: any) {
-        if (/quota|allocation|neurons|capacity|limit exceeded|3040/i.test(String(e2?.message))) return fallbackResp('quota', requestId);
+        if (/quota|allocation|neurons|capacity|limit exceeded|3040/i.test(String(e2?.message))) return fallbackResp('quota', requestId, String(e2?.message).slice(0, 600), env.PAW_DEBUG_UPSTREAM === 'true');
         // fallback B: responses-style input (gpt-oss variants)
         formatPath = 'input';
         result = await withTimeout(env.AI.run(model, { input: SYSTEM + '\n\n' + userTask }));
@@ -397,8 +408,8 @@ Respond with ONLY a JSON object, no markdown fences, exactly these keys:
     });
     }
   } catch (err: any) {
-    if (/quota|allocation|neurons|capacity|limit exceeded|3040/i.test(String(err?.message))) return fallbackResp('quota', requestId);
-    return fallbackResp(String(err?.message) === 'timeout' ? 'timeout' : 'error', requestId);
+    if (/quota|allocation|neurons|capacity|limit exceeded|3040/i.test(String(err?.message))) return fallbackResp('quota', requestId, String(err?.message).slice(0, 600), env.PAW_DEBUG_UPSTREAM === 'true');
+    return fallbackResp(String(err?.message) === 'timeout' ? 'timeout' : 'error', requestId, String(err?.message).slice(0, 600), env.PAW_DEBUG_UPSTREAM === 'true');
   }
 };
 
